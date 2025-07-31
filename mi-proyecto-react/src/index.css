@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* Sistema Operativo */
+/* Fuente custom */
+@layer base {
+  html {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+}
