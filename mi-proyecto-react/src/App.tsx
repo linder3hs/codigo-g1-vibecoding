@@ -22,8 +22,8 @@ function App() {
       <h1>Mi primero proyecto de React</h1>
       <div className="flex gap-5 mt-5">
         <div>
-          <Button leftIcon={<PlusIcon />} variant="danger">
-            Mi primero boton
+          <Button leftIcon={<PlusIcon />} isLoading={true} variant="danger">
+            Mi primer boton
           </Button>
         </div>
         <div>
