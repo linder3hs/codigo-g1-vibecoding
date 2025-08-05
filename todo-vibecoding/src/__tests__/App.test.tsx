@@ -1,6 +1,6 @@
-import { render } from "@testing-library/react";
-import { screen } from "@testing-library/dom";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
 import App from "../App";
 
 describe("App Component", () => {
@@ -9,80 +9,69 @@ describe("App Component", () => {
 
     const title = screen.getByRole("heading", { level: 1 });
     expect(title).toBeInTheDocument();
-    expect(title).toHaveTextContent("Vite + React + Tailwind");
+    expect(title).toHaveTextContent("Lista de Tareas");
   });
 
-  it("renders logos with correct alt text and links", () => {
+  it("renders the subtitle correctly", () => {
     render(<App />);
 
-    // Check Vite logo
-    const viteLogo = screen.getByAltText("Vite logo");
-    expect(viteLogo).toBeInTheDocument();
-
-    // Check React logo
-    const reactLogo = screen.getByAltText("React logo");
-    expect(reactLogo).toBeInTheDocument();
-
-    // Check links
-    const viteLink = screen.getByLabelText("Visit Vite website");
-    const reactLink = screen.getByLabelText("Visit React website");
-
-    expect(viteLink).toHaveAttribute("href", "https://vite.dev");
-    expect(reactLink).toHaveAttribute("href", "https://react.dev");
-    expect(viteLink).toHaveAttribute("target", "_blank");
-    expect(reactLink).toHaveAttribute("target", "_blank");
+    const subtitle = screen.getByText(
+      "Gestiona tus tareas de manera eficiente"
+    );
+    expect(subtitle).toBeInTheDocument();
   });
 
-  it("displays initial counter value", () => {
+  it("displays statistics section with correct values", () => {
     render(<App />);
 
-    const button = screen.getByRole("button");
-    expect(button).toHaveTextContent("Count is 0");
+    // Check for stats cards - there should be multiple elements with these texts
+    const totalLabels = screen.getAllByText("Total");
+    const completedLabels = screen.getAllByText("Completadas");
+    const pendingLabels = screen.getAllByText("Pendientes");
+
+    expect(totalLabels.length).toBeGreaterThan(0);
+    expect(completedLabels.length).toBeGreaterThan(0);
+    expect(pendingLabels.length).toBeGreaterThan(0);
   });
 
-  it("increments counter when button is clicked", async () => {
+  it("renders filter buttons with correct labels", () => {
+    render(<App />);
+
+    const allButton = screen.getByLabelText("Mostrar todas las tareas");
+    const pendingButton = screen.getByLabelText("Mostrar tareas pendientes");
+    const completedButton = screen.getByLabelText("Mostrar tareas completadas");
+
+    expect(allButton).toBeInTheDocument();
+    expect(pendingButton).toBeInTheDocument();
+    expect(completedButton).toBeInTheDocument();
+
+    expect(allButton).toHaveTextContent("Todas");
+    expect(pendingButton).toHaveTextContent("Pendientes");
+    expect(completedButton).toHaveTextContent("Completadas");
+  });
+
+  it("changes filter when filter buttons are clicked", async () => {
     const user = userEvent.setup();
     render(<App />);
 
-    const button = screen.getByRole("button");
+    const pendingButton = screen.getByLabelText("Mostrar tareas pendientes");
+    const completedButton = screen.getByLabelText("Mostrar tareas completadas");
+    const allButton = screen.getByLabelText("Mostrar todas las tareas");
 
-    // Initial state
-    expect(button).toHaveTextContent("Count is 0");
+    // Click pending filter
+    await user.click(pendingButton);
+    expect(pendingButton).toHaveClass("bg-orange-600");
 
-    // Click once
-    await user.click(button);
-    expect(button).toHaveTextContent("Count is 1");
+    // Click completed filter
+    await user.click(completedButton);
+    expect(completedButton).toHaveClass("bg-green-600");
 
-    // Click again
-    await user.click(button);
-    expect(button).toHaveTextContent("Count is 2");
+    // Click all filter
+    await user.click(allButton);
+    expect(allButton).toHaveClass("bg-blue-600");
   });
 
-  it("has proper accessibility attributes", () => {
-    render(<App />);
-
-    const button = screen.getByRole("button");
-    expect(button).toHaveAttribute("aria-label");
-    expect(button.getAttribute("aria-label")).toContain("Increment counter");
-
-    // Check that links have proper aria-labels
-    const viteLink = screen.getByLabelText("Visit Vite website");
-    const reactLink = screen.getByLabelText("Visit React website");
-
-    expect(viteLink).toBeInTheDocument();
-    expect(reactLink).toBeInTheDocument();
-  });
-
-  it("displays HMR instruction text", () => {
-    render(<App />);
-
-    const instruction = screen.getByText(
-      "Click on the Vite and React logos to learn more"
-    );
-    expect(instruction).toBeInTheDocument();
-  });
-
-  it("displays Tailwind CSS badge", () => {
+  it("displays Tailwind CSS badge in footer", () => {
     render(<App />);
 
     const badge = screen.getByText("Powered by Tailwind CSS v4");
@@ -92,21 +81,44 @@ describe("App Component", () => {
   it("has proper semantic structure", () => {
     render(<App />);
 
-    // Check for main landmark
-    const main = screen.getByRole("main");
-    expect(main).toBeInTheDocument();
+    // Check for header
+    const header = screen.getByRole("banner");
+    expect(header).toBeInTheDocument();
 
     // Check for heading hierarchy
     const heading = screen.getByRole("heading", { level: 1 });
     expect(heading).toBeInTheDocument();
+
+    // Check for footer
+    const footer = screen.getByRole("contentinfo");
+    expect(footer).toBeInTheDocument();
   });
 
-  it("applies correct CSS classes for styling", () => {
+  it("applies correct gradient background classes", () => {
+    const { container } = render(<App />);
+
+    // Check the root div has the gradient classes
+    const rootDiv = container.firstChild as HTMLElement;
+    expect(rootDiv).toHaveClass("min-h-screen");
+    expect(rootDiv).toHaveClass("bg-gradient-to-br");
+  });
+
+  it("renders todo list with existing todos", () => {
     render(<App />);
 
-    const button = screen.getByRole("button");
-    expect(button).toHaveClass("bg-gradient-to-r");
-    expect(button).toHaveClass("from-blue-500");
-    expect(button).toHaveClass("to-purple-600");
+    // Since we have todos in the data, we should see todo items
+    // Look for todo names from our test data
+    const todoItem = screen.getByText("Implementar autenticación de usuarios");
+    expect(todoItem).toBeInTheDocument();
+  });
+
+  it("has proper accessibility attributes on filter buttons", () => {
+    render(<App />);
+
+    const filterButtons = screen.getAllByRole("button");
+
+    filterButtons.forEach((button) => {
+      expect(button).toHaveAttribute("aria-label");
+    });
   });
 });

@@ -1,7 +1,7 @@
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 // Mock IntersectionObserver
-Object.defineProperty(globalThis, 'IntersectionObserver', {
+Object.defineProperty(globalThis, "IntersectionObserver", {
   writable: true,
   value: class IntersectionObserver {
     constructor() {}
@@ -9,10 +9,10 @@ Object.defineProperty(globalThis, 'IntersectionObserver', {
     observe() {}
     unobserve() {}
   },
-})
+});
 
 // Mock ResizeObserver
-Object.defineProperty(globalThis, 'ResizeObserver', {
+Object.defineProperty(globalThis, "ResizeObserver", {
   writable: true,
   value: class ResizeObserver {
     constructor() {}
@@ -20,10 +20,10 @@ Object.defineProperty(globalThis, 'ResizeObserver', {
     observe() {}
     unobserve() {}
   },
-})
+});
 
 // Mock matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: jest.fn().mockImplementation((query: string) => ({
     matches: false,
@@ -35,11 +35,11 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-})
+});
 
 // Mock CSS imports
-Object.defineProperty(window, 'CSS', {
+Object.defineProperty(window, "CSS", {
   value: {
     supports: jest.fn().mockReturnValue(false),
   },
-})
+});

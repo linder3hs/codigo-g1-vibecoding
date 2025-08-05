@@ -10,13 +10,16 @@ module.exports = {
     "^.+\\.svg$": "jest-transform-stub",
   },
   transform: {
-    "^.+\\.(ts|tsx)$": ["ts-jest", {
-      tsconfig: {
-        jsx: "react-jsx",
-        esModuleInterop: true,
-        allowSyntheticDefaultImports: true,
+    "^.+\\.(ts|tsx)$": [
+      "ts-jest",
+      {
+        tsconfig: {
+          jsx: "react-jsx",
+          esModuleInterop: true,
+          allowSyntheticDefaultImports: true,
+        },
       },
-    }],
+    ],
     "^.+\\.(js|jsx)$": "babel-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
@@ -33,6 +36,10 @@ module.exports = {
   ],
   coverageDirectory: "coverage",
   coverageReporters: ["text", "lcov", "html"],
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/dist/", "<rootDir>/src/__tests__/setup.ts"],
+  testPathIgnorePatterns: [
+    "<rootDir>/node_modules/",
+    "<rootDir>/dist/",
+    "<rootDir>/src/__tests__/setup.ts",
+  ],
   transformIgnorePatterns: ["node_modules/(?!(.*\\.mjs$))"],
 };
