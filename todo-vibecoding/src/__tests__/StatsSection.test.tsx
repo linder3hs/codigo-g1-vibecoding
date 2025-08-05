@@ -1,14 +1,52 @@
+/**
+ * @fileoverview Tests para el componente StatsSection
+ * 
+ * Este archivo contiene tests unitarios que verifican:
+ * - Renderizado correcto de las tres tarjetas de estadísticas
+ * - Layout de grid responsivo y espaciado
+ * - Paso correcto de props a cada StatsCard
+ * - Manejo de diferentes valores numéricos (cero, grandes)
+ * - Relaciones matemáticas entre estadísticas
+ * - Estructura semántica y accesibilidad
+ * - Comportamiento como componente sin estado
+ * 
+ * @author Vibe Coding Team
+ * @version 1.0.0
+ */
+
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { StatsSection } from "../components/ui/StatsSection";
+import { StatsSection } from "../components";
 
+/**
+ * Suite de tests para el componente StatsSection
+ * 
+ * Verifica el renderizado y funcionalidad de la sección de estadísticas
+ * que contiene tres tarjetas: Total, Completadas y Pendientes.
+ */
 describe("StatsSection Component", () => {
+  /**
+   * Datos de prueba por defecto para las estadísticas
+   * 
+   * @constant {Object} defaultTodosCount - Conteo de todos por defecto
+   * @property {number} total - Total de todos
+   * @property {number} completed - Todos completados
+   * @property {number} pending - Todos pendientes
+   */
   const defaultTodosCount = {
     total: 15,
     completed: 8,
     pending: 7,
   };
 
+  /**
+   * Test: Renderizado correcto del componente
+   * 
+   * Verifica que el componente se renderice correctamente
+   * con el contenedor grid y las tarjetas de estadísticas.
+   * 
+   * @test {HTMLElement} container - Contenedor grid principal
+   */
   it("renders the component correctly", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -18,6 +56,19 @@ describe("StatsSection Component", () => {
     expect(container).toBeInTheDocument();
   });
 
+  /**
+   * Test: Visualización de las tres tarjetas de estadísticas
+   * 
+   * Verifica que se muestren todas las tarjetas con sus
+   * valores y etiquetas correspondientes.
+   * 
+   * @test {HTMLElement} totalValue - Valor total (15)
+   * @test {HTMLElement} completedValue - Valor completadas (8)
+   * @test {HTMLElement} pendingValue - Valor pendientes (7)
+   * @test {HTMLElement} totalLabel - Etiqueta "Total"
+   * @test {HTMLElement} completedLabel - Etiqueta "Completadas"
+   * @test {HTMLElement} pendingLabel - Etiqueta "Pendientes"
+   */
   it("displays all three stats cards", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -32,6 +83,18 @@ describe("StatsSection Component", () => {
     expect(screen.getByText("Pendientes")).toBeInTheDocument();
   });
 
+  /**
+   * Test: Clases de layout de grid correctas
+   * 
+   * Verifica que el contenedor tenga todas las clases CSS
+   * necesarias para el layout de grid responsivo.
+   * 
+   * @test {string} grid - Display grid
+   * @test {string} grid-cols-1 - Una columna en móvil
+   * @test {string} md:grid-cols-3 - Tres columnas en pantallas medianas+
+   * @test {string} gap-6 - Espacio entre tarjetas
+   * @test {string} mb-8 - Margen inferior
+   */
   it("applies correct grid layout classes", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -45,6 +108,17 @@ describe("StatsSection Component", () => {
     expect(container).toHaveClass("mb-8");
   });
 
+  /**
+   * Test: Props correctas para StatsCard Total
+   * 
+   * Verifica que la tarjeta Total reciba las props correctas
+   * incluyendo valor, etiqueta y color azul.
+   * 
+   * @test {HTMLElement} totalValue - Valor total debe estar presente
+   * @test {HTMLElement} totalLabel - Etiqueta "Total" debe estar presente
+   * @test {string} text-blue-600 - Color azul en modo claro
+   * @test {string} dark:text-blue-400 - Color azul claro en modo oscuro
+   */
   it("passes correct props to Total StatsCard", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -57,6 +131,17 @@ describe("StatsSection Component", () => {
     expect(totalValue).toHaveClass("dark:text-blue-400");
   });
 
+  /**
+   * Test: Props correctas para StatsCard Completadas
+   * 
+   * Verifica que la tarjeta Completadas reciba las props correctas
+   * incluyendo valor, etiqueta y color verde.
+   * 
+   * @test {HTMLElement} completedValue - Valor completadas debe estar presente
+   * @test {HTMLElement} completedLabel - Etiqueta "Completadas" debe estar presente
+   * @test {string} text-green-600 - Color verde en modo claro
+   * @test {string} dark:text-green-400 - Color verde claro en modo oscuro
+   */
   it("passes correct props to Completadas StatsCard", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -69,6 +154,17 @@ describe("StatsSection Component", () => {
     expect(completedValue).toHaveClass("dark:text-green-400");
   });
 
+  /**
+   * Test: Props correctas para StatsCard Pendientes
+   * 
+   * Verifica que la tarjeta Pendientes reciba las props correctas
+   * incluyendo valor, etiqueta y color naranja.
+   * 
+   * @test {HTMLElement} pendingValue - Valor pendientes debe estar presente
+   * @test {HTMLElement} pendingLabel - Etiqueta "Pendientes" debe estar presente
+   * @test {string} text-orange-600 - Color naranja en modo claro
+   * @test {string} dark:text-orange-400 - Color naranja claro en modo oscuro
+   */
   it("passes correct props to Pendientes StatsCard", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -81,6 +177,17 @@ describe("StatsSection Component", () => {
     expect(pendingValue).toHaveClass("dark:text-orange-400");
   });
 
+  /**
+   * Test: Manejo correcto de valores cero
+   * 
+   * Verifica que el componente maneje correctamente el caso
+   * donde todas las estadísticas son cero.
+   * 
+   * @test {HTMLElement[]} zeroElements - Tres elementos con valor "0"
+   * @test {HTMLElement} totalLabel - Etiqueta "Total" debe permanecer
+   * @test {HTMLElement} completedLabel - Etiqueta "Completadas" debe permanecer
+   * @test {HTMLElement} pendingLabel - Etiqueta "Pendientes" debe permanecer
+   */
   it("handles zero values correctly", () => {
     const zeroTodosCount = {
       total: 0,
@@ -100,6 +207,16 @@ describe("StatsSection Component", () => {
     expect(screen.getByText("Pendientes")).toBeInTheDocument();
   });
 
+  /**
+   * Test: Manejo correcto de números grandes
+   * 
+   * Verifica que el componente pueda mostrar correctamente
+   * números grandes sin problemas de layout.
+   * 
+   * @test {HTMLElement} largeTotal - Número grande total (1000)
+   * @test {HTMLElement} largeCompleted - Número grande completadas (750)
+   * @test {HTMLElement} largePending - Número grande pendientes (250)
+   */
   it("handles large numbers correctly", () => {
     const largeTodosCount = {
       total: 1000,
@@ -114,6 +231,17 @@ describe("StatsSection Component", () => {
     expect(screen.getByText("250")).toBeInTheDocument();
   });
 
+  /**
+   * Test: Relación matemática correcta
+   * 
+   * Verifica que las estadísticas mantengan la relación
+   * matemática correcta: completadas + pendientes = total.
+   * 
+   * @test {HTMLElement} totalDisplay - Total mostrado (20)
+   * @test {HTMLElement} completedDisplay - Completadas mostradas (12)
+   * @test {HTMLElement} pendingDisplay - Pendientes mostradas (8)
+   * @test {boolean} mathRelation - Suma debe ser igual al total
+   */
   it("maintains correct mathematical relationship", () => {
     const todosCount = {
       total: 20,
@@ -132,6 +260,17 @@ describe("StatsSection Component", () => {
     expect(todosCount.completed + todosCount.pending).toBe(todosCount.total);
   });
 
+  /**
+   * Test: Renderizado de tres componentes StatsCard distintos
+   * 
+   * Verifica que se rendericen exactamente tres tarjetas
+   * con la estructura y clases CSS correctas.
+   * 
+   * @test {HTMLElement[]} cards - Exactamente 3 tarjetas
+   * @test {string} bg-white - Fondo blanco de cada tarjeta
+   * @test {string} dark:bg-slate-800 - Fondo oscuro de cada tarjeta
+   * @test {string} rounded-xl - Bordes redondeados de cada tarjeta
+   */
   it("renders three distinct StatsCard components", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -149,6 +288,15 @@ describe("StatsSection Component", () => {
     });
   });
 
+  /**
+   * Test: Clases de diseño responsivo
+   * 
+   * Verifica que el contenedor tenga las clases CSS necesarias
+   * para un diseño responsivo apropiado.
+   * 
+   * @test {string} grid-cols-1 - Una columna en dispositivos móviles
+   * @test {string} md:grid-cols-3 - Tres columnas en pantallas medianas+
+   */
   it("has responsive design classes", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -161,6 +309,15 @@ describe("StatsSection Component", () => {
     expect(container).toHaveClass("md:grid-cols-3");
   });
 
+  /**
+   * Test: Espaciado apropiado
+   * 
+   * Verifica que el contenedor tenga el espaciado correcto
+   * entre tarjetas y márgenes apropiados.
+   * 
+   * @test {string} gap-6 - Espacio entre tarjetas
+   * @test {string} mb-8 - Margen inferior del contenedor
+   */
   it("maintains proper spacing", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
@@ -173,6 +330,16 @@ describe("StatsSection Component", () => {
     expect(container).toHaveClass("mb-8");   // Margin bottom
   });
 
+  /**
+   * Test: Actualización cuando cambia la prop todosCount
+   * 
+   * Verifica que el componente se actualice correctamente
+   * cuando cambian los valores de las estadísticas.
+   * 
+   * @test {HTMLElement} initialValues - Valores iniciales deben mostrarse
+   * @test {HTMLElement} updatedValues - Valores actualizados deben mostrarse
+   * @test {null} oldValues - Valores anteriores no deben estar presentes
+   */
   it("updates when todosCount prop changes", () => {
     const initialCount = {
       total: 10,
@@ -202,6 +369,15 @@ describe("StatsSection Component", () => {
     expect(screen.queryByText("4")).not.toBeInTheDocument();
   });
 
+  /**
+   * Test: Estructura semántica apropiada
+   * 
+   * Verifica que el componente use la estructura HTML
+   * semántica correcta con un contenedor div y layout grid.
+   * 
+   * @test {string} tagName - Debe ser un elemento DIV
+   * @test {string} grid - Debe tener clase grid para layout
+   */
   it("has proper semantic structure", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 

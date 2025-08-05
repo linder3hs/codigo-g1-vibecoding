@@ -3,7 +3,7 @@
  * Reusable component with status indicator and formatted dates
  */
 
-import type { Todo } from "../../todos";
+import type { Todo } from "../../../todos";
 
 interface TodoItemProps {
   todo: Todo;

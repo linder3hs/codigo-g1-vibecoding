@@ -3,8 +3,8 @@
  * Handles empty states and renders TodoItem components
  */
 
-import type { Todo } from "../../todos";
-import { TodoItem } from "./TodoItem";
+import type { Todo } from "../../../todos";
+import { TodoItem } from "../TodoItem";
 
 interface TodoListProps {
   todos: Todo[];

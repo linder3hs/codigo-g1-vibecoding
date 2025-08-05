@@ -3,7 +3,7 @@
  * Handles filter state and provides accessible filter controls
  */
 
-import type { FilterType } from "../../hooks/useTodo";
+import type { FilterType } from "../../../hooks/useTodo";
 
 interface FilterButtonsProps {
   currentFilter: FilterType;

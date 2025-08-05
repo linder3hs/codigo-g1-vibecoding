@@ -1,11 +1,11 @@
 import { useTodo } from "./hooks/useTodo";
 import {
   Header,
+  Footer,
   StatsSection,
   FilterButtons,
   TodoList,
-  Footer,
-} from "./components/ui";
+} from "./components";
 
 /**
  * Modern Todo List App with responsive design
