@@ -3,7 +3,8 @@
  * Tests for the main routing configuration
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { HomePage, CreateTodoPage } from "../../pages";
 import ErrorPage from "../ErrorPage";
@@ -60,7 +61,7 @@ describe("AppRouter", () => {
     expect(screen.getByText("Error Page Component")).toBeInTheDocument();
   });
 
-  it("handles navigation between routes", () => {
+  it("handles navigation between routes", async () => {
     const router = createMemoryRouter(
       [
         {
@@ -80,16 +81,20 @@ describe("AppRouter", () => {
     );
 
     render(<RouterProvider router={router} />);
-    
+
     // Initially shows HomePage
     expect(screen.getByText("HomePage Component")).toBeInTheDocument();
-    
+
     // Navigate to create todo page
     router.navigate("/crear-todo");
-    expect(screen.getByText("CreateTodoPage Component")).toBeInTheDocument();
-    
+    await waitFor(() => {
+      expect(screen.getByText("CreateTodoPage Component")).toBeInTheDocument();
+    });
+
     // Navigate back to home
     router.navigate("/");
-    expect(screen.getByText("HomePage Component")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("HomePage Component")).toBeInTheDocument();
+    });
   });
 });

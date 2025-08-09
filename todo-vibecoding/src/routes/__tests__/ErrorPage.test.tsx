@@ -4,6 +4,7 @@
  */
 
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router";
 import { ErrorPage } from "../ErrorPage";
 
@@ -63,19 +64,21 @@ describe("ErrorPage", () => {
   it("displays error message when error is present", () => {
     const mockError = new Error("Test error message");
     mockUseRouteError.mockReturnValue(mockError);
-    
+
     renderWithRouter(<ErrorPage />);
 
-    expect(screen.getByText("Error: Test error message")).toBeInTheDocument();
+    expect(screen.getByText("Test error message")).toBeInTheDocument();
+    expect(screen.getByText("Error:")).toBeInTheDocument();
   });
 
   it("displays unknown error message when error has no message", () => {
     const mockError = { message: "" };
     mockUseRouteError.mockReturnValue(mockError);
-    
+
     renderWithRouter(<ErrorPage />);
 
-    expect(screen.getByText("Error: Error desconocido")).toBeInTheDocument();
+    expect(screen.getByText("Error desconocido")).toBeInTheDocument();
+    expect(screen.getByText("Error:")).toBeInTheDocument();
   });
 
   it("does not display error section when no error is present", () => {
@@ -110,9 +113,10 @@ describe("ErrorPage", () => {
   it("handles error objects without message property", () => {
     const mockError = { someOtherProperty: "value" };
     mockUseRouteError.mockReturnValue(mockError);
-    
+
     renderWithRouter(<ErrorPage />);
 
-    expect(screen.getByText("Error: Error desconocido")).toBeInTheDocument();
+    expect(screen.getByText("Error desconocido")).toBeInTheDocument();
+    expect(screen.getByText("Error:")).toBeInTheDocument();
   });
 });

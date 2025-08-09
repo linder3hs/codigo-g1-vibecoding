@@ -1,21 +1,21 @@
 /**
  * HomePage component - Main todo list view
- * This is the main page that displays the todo list functionality
+ * Displays the complete todo management interface with navigation
  */
 
 import { Link } from "react-router";
-import { useTodo } from "../hooks/useTodo";
+import { useTodo } from "../../hooks/useTodo";
 import {
   Header,
   Footer,
   StatsSection,
   FilterButtons,
   TodoList,
-} from "../components";
+} from "../../components";
 
 /**
- * HomePage - Main todo application page
- * Contains the complete todo list functionality
+ * HomePage - Main page component for todo list management
+ * Features todo list display, filtering, statistics, and navigation to create new todos
  */
 export const HomePage = () => {
   const { filter, setFilter, filteredTodos, todosCount, formatDate } =
