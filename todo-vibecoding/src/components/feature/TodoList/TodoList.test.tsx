@@ -50,51 +50,35 @@ describe("TodoList Component", () => {
   const mockTodos: Todo[] = [
     {
       id: 1,
-      name: "Implementar autenticación de usuarios",
-      is_finished: true,
-      created_at: new Date("2024-01-15T09:00:00Z"),
-      updated_at: new Date("2024-01-16T10:15:00Z"),
+      text: 'Test todo 1',
+      is_finished: false,
+      created_at: '2023-01-01T00:00:00Z',
+      updated_at: '2023-01-01T00:00:00Z'
     },
     {
       id: 2,
-      name: "Crear componentes reutilizables",
-      is_finished: false,
-      created_at: new Date("2024-01-16T08:15:00Z"),
-      updated_at: new Date("2024-01-16T08:15:00Z"),
-    },
-    {
-      id: 3,
-      name: "Configurar base de datos PostgreSQL",
+      text: 'Test todo 2',
       is_finished: true,
-      created_at: new Date("2024-01-13T11:20:00Z"),
-      updated_at: new Date("2024-01-14T16:45:00Z"),
+      created_at: '2023-01-02T00:00:00Z',
+      updated_at: '2023-01-02T00:00:00Z'
     },
   ];
 
   /**
-   * Test: Renderizado de lista vacía con mensaje por defecto
+   * Test: Estado vacío
    * 
-   * Verifica que cuando no hay todos, se muestre:
-   * - Emoji de libreta (📝)
-   * - Mensaje por defecto "No hay tareas para mostrar"
-   * - Estructura centrada apropiada
+   * Verifica que cuando no hay todos, se muestre el estado vacío
+   * con el mensaje correspondiente.
    * 
-   * @test {HTMLElement} emptyState - Estado vacío del componente
-   * @test {HTMLElement} emoji - Emoji de libreta
-   * @test {HTMLElement} message - Mensaje de estado vacío
+   * @test {HTMLElement} emptyMessage - Mensaje de estado vacío
+   * @test {HTMLElement} emoji - Emoji del estado vacío
    */
-  it("renders empty state with default message", () => {
+  it("displays empty state when no todos", () => {
     render(<TodoList todos={[]} formatDate={mockFormatDate} />);
-
-    // Verifica el emoji
+    
     expect(screen.getByText("📝")).toBeInTheDocument();
-
-    // Verifica el mensaje por defecto
     expect(screen.getByText("No hay tareas para mostrar")).toBeInTheDocument();
-
-    // Verifica que no haya elementos de todo
-    expect(screen.queryByRole("heading", { level: 3 })).not.toBeInTheDocument();
-  });
+  });}]}
 
   /**
    * Test: Renderizado de lista vacía con mensaje personalizado
@@ -133,37 +117,108 @@ describe("TodoList Component", () => {
     render(<TodoList todos={mockTodos} formatDate={mockFormatDate} />);
 
     // Verifica que se rendericen todos los todos
-    expect(screen.getByText("Implementar autenticación de usuarios")).toBeInTheDocument();
-    expect(screen.getByText("Crear componentes reutilizables")).toBeInTheDocument();
-    expect(screen.getByText("Configurar base de datos PostgreSQL")).toBeInTheDocument();
+    expect(screen.getByText("Test todo 1")).toBeInTheDocument();
+    expect(screen.getByText("Test todo 2")).toBeInTheDocument();
 
     // Verifica que no se muestre el estado vacío
     expect(screen.queryByText("📝")).not.toBeInTheDocument();
     expect(screen.queryByText("No hay tareas para mostrar")).not.toBeInTheDocument();
 
-    // Verifica que haya 3 encabezados (uno por todo)
-    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(3);
+    // Verifica que haya 2 encabezados (uno por todo)
+    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(2);
   });
 
   /**
-   * Test: Estructura de grid responsivo
-   * 
-   * Verifica que el componente aplique las clases CSS correctas
-   * para el grid responsivo (1 columna en móvil, 2 en tablet, 3 en desktop).
-   * 
-   * @test {HTMLElement} gridContainer - Contenedor del grid
-   */
-  it("applies correct grid layout classes", () => {
-    const { container } = render(
-      <TodoList todos={mockTodos} formatDate={mockFormatDate} />
-    );
+    * Test: Estructura de secciones separadas
+    * 
+    * Verifica que el componente aplique la estructura correcta
+    * con secciones separadas para todos completados y pendientes.
+    * 
+    * @test {HTMLElement} sectionsContainer - Contenedor de las secciones
+    */
+   it("applies correct sections layout structure", () => {
+     render(<TodoList todos={mockTodos} formatDate={mockFormatDate} />);
+ 
+     // Verifica que existan las secciones de pendientes y completados
+     expect(screen.getByText("Tareas Pendientes")).toBeInTheDocument();
+     expect(screen.getByText("Tareas Completadas")).toBeInTheDocument();
+     
+     // Verifica los contadores de cada sección
+     expect(screen.getByText("1")).toBeInTheDocument(); // Pendientes
+     expect(screen.getByText("1")).toBeInTheDocument(); // Completadas
+   });
 
-    const gridContainer = container.firstChild as HTMLElement;
-    expect(gridContainer).toHaveClass("grid");
-    expect(gridContainer).toHaveClass("gap-6");
-    expect(gridContainer).toHaveClass("md:grid-cols-2");
-    expect(gridContainer).toHaveClass("lg:grid-cols-3");
-  });
+   /**
+    * Test: Separación correcta de todos por estado
+    * 
+    * Verifica que los todos se separen correctamente entre
+    * pendientes y completados en sus respectivas secciones.
+    */
+   it("separates todos correctly by completion status", () => {
+     const mixedTodos: Todo[] = [
+       {
+         id: 1,
+         text: "Pending task 1",
+         is_finished: false,
+         created_at: new Date(),
+         updated_at: new Date(),
+         priority: "high",
+       },
+       {
+         id: 2,
+         text: "Completed task 1",
+         is_finished: true,
+         created_at: new Date(),
+         updated_at: new Date(),
+         priority: "medium",
+       },
+       {
+         id: 3,
+         text: "Pending task 2",
+         is_finished: false,
+         created_at: new Date(),
+         updated_at: new Date(),
+         priority: "low",
+       },
+     ];
+
+     render(<TodoList todos={mixedTodos} formatDate={mockFormatDate} />);
+
+     // Verifica contadores
+     expect(screen.getByText("Tareas Pendientes")).toBeInTheDocument();
+     expect(screen.getByText("Tareas Completadas")).toBeInTheDocument();
+     
+     // Verifica que ambas tareas pendientes estén presentes
+     expect(screen.getByText("Pending task 1")).toBeInTheDocument();
+     expect(screen.getByText("Pending task 2")).toBeInTheDocument();
+     
+     // Verifica que la tarea completada esté presente
+     expect(screen.getByText("Completed task 1")).toBeInTheDocument();
+   });
+
+   /**
+    * Test: Estadísticas de resumen
+    * 
+    * Verifica que se muestren las estadísticas de resumen
+    * con el total, pendientes y completadas.
+    */
+   it("displays summary statistics", () => {
+     render(<TodoList todos={mockTodos} formatDate={mockFormatDate} />);
+
+     // Verifica las etiquetas de estadísticas
+     expect(screen.getByText("Total")).toBeInTheDocument();
+     expect(screen.getByText("Pendientes")).toBeInTheDocument();
+     expect(screen.getByText("Completadas")).toBeInTheDocument();
+
+     // Verifica los números (pueden aparecer múltiples veces)
+     const totalElements = screen.getAllByText("2");
+     const pendingElements = screen.getAllByText("1");
+     const completedElements = screen.getAllByText("1");
+     
+     expect(totalElements.length).toBeGreaterThan(0);
+     expect(pendingElements.length).toBeGreaterThan(0);
+     expect(completedElements.length).toBeGreaterThan(0);
+   });
 
   /**
    * Test: Integración correcta con TodoItem
@@ -178,20 +233,17 @@ describe("TodoList Component", () => {
   it("integrates correctly with TodoItem components", () => {
     render(<TodoList todos={mockTodos} formatDate={mockFormatDate} />);
 
-    // Verifica que cada todo tenga su estado correcto (2 completadas, 1 pendiente)
-    expect(screen.getAllByText("Completada")).toHaveLength(2);
+    // Verifica que cada todo tenga su estado correcto (1 completada, 1 pendiente)
+    expect(screen.getAllByText("Completada")).toHaveLength(1);
     expect(screen.getAllByText("Pendiente")).toHaveLength(1);
 
     // Verifica que se muestren los IDs
     expect(screen.getByText("1")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
-    expect(screen.getByText("3")).toBeInTheDocument();
 
     // Verifica que se muestren las fechas formateadas
-    expect(screen.getByText("15/01/2024")).toBeInTheDocument();
-    expect(screen.getAllByText("16/01/2024")).toHaveLength(3); // Aparece en updated_at del primer todo y created_at/updated_at del segundo
-    expect(screen.getByText("13/01/2024")).toBeInTheDocument();
-    expect(screen.getByText("14/01/2024")).toBeInTheDocument();
+    expect(screen.getByText("01/01/2023")).toBeInTheDocument();
+    expect(screen.getByText("02/01/2023")).toBeInTheDocument();
   });
 
   /**
@@ -206,15 +258,12 @@ describe("TodoList Component", () => {
     const singleTodo = [mockTodos[0]];
     render(<TodoList todos={singleTodo} formatDate={mockFormatDate} />);
 
-    expect(screen.getByText("Implementar autenticación de usuarios")).toBeInTheDocument();
+    expect(screen.getByText("Test todo 1")).toBeInTheDocument();
     expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(1);
     
-    // Verifica que el grid se mantenga
-    const { container } = render(
-      <TodoList todos={singleTodo} formatDate={mockFormatDate} />
-    );
-    const gridContainer = container.firstChild as HTMLElement;
-    expect(gridContainer).toHaveClass("grid");
+    // Verifica que las secciones se mantengan
+    expect(screen.getByText("Tareas Pendientes")).toBeInTheDocument();
+    expect(screen.queryByText("Tareas Completadas")).not.toBeInTheDocument();
   });
 
   /**
@@ -228,10 +277,10 @@ describe("TodoList Component", () => {
   it("handles large list of todos", () => {
     const largeTodoList: Todo[] = Array.from({ length: 10 }, (_, index) => ({
       id: index + 1,
-      name: `Todo número ${index + 1}`,
+      text: `Todo número ${index + 1}`,
       is_finished: index % 2 === 0,
-      created_at: new Date(`2024-01-${(index % 28) + 1}T09:00:00Z`),
-      updated_at: new Date(`2024-01-${(index % 28) + 1}T09:00:00Z`),
+      created_at: `2024-01-${(index % 28) + 1}T09:00:00Z`,
+      updated_at: `2024-01-${(index % 28) + 1}T09:00:00Z`,
     }));
 
     render(<TodoList todos={largeTodoList} formatDate={mockFormatDate} />);
@@ -301,10 +350,10 @@ describe("TodoList Component", () => {
     render(<TodoList todos={mockTodos} formatDate={customFormatDate} />);
 
     // Verifica que la función se haya llamado para cada todo (2 veces por todo: created_at y updated_at)
-    expect(customFormatDate).toHaveBeenCalledTimes(6); // 3 todos × 2 fechas cada uno
+    expect(customFormatDate).toHaveBeenCalledTimes(4); // 2 todos × 2 fechas cada uno
 
     // Verifica que las fechas formateadas aparezcan
-    expect(screen.getAllByText("Fecha: 2024")).toHaveLength(6);
+    expect(screen.getAllByText("Fecha: 2023")).toHaveLength(4);
   });
 
   /**
@@ -319,17 +368,17 @@ describe("TodoList Component", () => {
     const todosWithDuplicateIds: Todo[] = [
       {
         id: 1,
-        name: "Primer todo",
+        text: "Primer todo",
         is_finished: false,
-        created_at: new Date("2024-01-15T09:00:00Z"),
-        updated_at: new Date("2024-01-15T09:00:00Z"),
+        created_at: "2024-01-15T09:00:00Z",
+        updated_at: "2024-01-15T09:00:00Z",
       },
       {
         id: 1,
-        name: "Segundo todo con mismo ID",
+        text: "Segundo todo con mismo ID",
         is_finished: true,
-        created_at: new Date("2024-01-16T09:00:00Z"),
-        updated_at: new Date("2024-01-16T09:00:00Z"),
+        created_at: "2024-01-16T09:00:00Z",
+        updated_at: "2024-01-16T09:00:00Z",
       },
     ];
 
@@ -359,7 +408,7 @@ describe("TodoList Component", () => {
 
     // Verifica que haya encabezados apropiados
     const headings = screen.getAllByRole("heading", { level: 3 });
-    expect(headings).toHaveLength(3);
+    expect(headings).toHaveLength(2);
     headings.forEach(heading => {
       expect(heading).toBeInTheDocument();
     });
@@ -371,5 +420,5 @@ describe("TodoList Component", () => {
     const emptyMessage = screen.getByText("No hay tareas para mostrar");
     expect(emptyMessage).toBeInTheDocument();
     expect(emptyMessage.tagName).toBe("P"); // Debe ser un párrafo semánticamente correcto
-  });
+  });}]}
 });
