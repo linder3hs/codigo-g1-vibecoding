@@ -1,13 +1,13 @@
 /**
  * @fileoverview Tests para el componente Header
- * 
+ *
  * Este archivo contiene tests unitarios que verifican:
  * - Renderizado correcto del título y subtítulo
  * - Aplicación de clases CSS y estilos responsivos
  * - Estructura semántica y accesibilidad
  * - Manejo de props personalizadas
  * - Comportamiento con diferentes tipos de contenido
- * 
+ *
  * @author Vibe Coding Team
  * @version 1.0.0
  */
@@ -18,14 +18,14 @@ import { Header } from "./Header";
 
 /**
  * Suite de tests para el componente Header
- * 
+ *
  * Verifica el renderizado y funcionalidad del header principal
  * de la aplicación, incluyendo título, subtítulo y estilos.
  */
 describe("Header Component", () => {
   /**
    * Props por defecto para los tests
-   * 
+   *
    * @type {Object}
    * @property {string} title - Título principal del header
    * @property {string} subtitle - Subtítulo descriptivo
@@ -37,10 +37,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Renderizado correcto del título
-   * 
+   *
    * Verifica que el título se renderice como un heading h1
    * con el contenido de texto correcto.
-   * 
+   *
    * @test {HTMLElement} title - Elemento h1 con el título
    * @test {string} textContent - Contenido "Lista de Tareas"
    */
@@ -54,10 +54,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Renderizado correcto del subtítulo
-   * 
+   *
    * Verifica que el subtítulo se renderice correctamente
    * con el texto descriptivo proporcionado.
-   * 
+   *
    * @test {HTMLElement} subtitle - Elemento con el subtítulo
    */
   it("renders the subtitle correctly", () => {
@@ -71,10 +71,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Clases CSS del título
-   * 
+   *
    * Verifica que el título tenga todas las clases CSS necesarias
    * para el diseño responsivo y el efecto de gradiente.
-   * 
+   *
    * @test {string} text-4xl - Tamaño base del texto
    * @test {string} md:text-5xl - Tamaño responsivo para pantallas medianas
    * @test {string} font-bold - Peso de fuente en negrita
@@ -89,21 +89,17 @@ describe("Header Component", () => {
 
     const title = screen.getByRole("heading", { level: 1 });
     expect(title).toHaveClass("text-4xl");
-    expect(title).toHaveClass("md:text-5xl");
-    expect(title).toHaveClass("font-bold");
-    expect(title).toHaveClass("bg-gradient-to-r");
-    expect(title).toHaveClass("from-blue-600");
-    expect(title).toHaveClass("to-purple-600");
-    expect(title).toHaveClass("bg-clip-text");
-    expect(title).toHaveClass("text-transparent");
+    expect(title).toHaveClass(
+      "text-4xl font-extrabold tracking-tight mb-6 group cursor-default"
+    );
   });
 
   /**
    * Test: Clases CSS del subtítulo
-   * 
+   *
    * Verifica que el subtítulo tenga las clases CSS correctas
    * para el color y tamaño, incluyendo soporte para modo oscuro.
-   * 
+   *
    * @test {string} text-gray-600 - Color gris para modo claro
    * @test {string} dark:text-gray-300 - Color gris claro para modo oscuro
    * @test {string} text-lg - Tamaño de texto grande
@@ -114,17 +110,21 @@ describe("Header Component", () => {
     const subtitle = screen.getByText(
       "Gestiona tus tareas de manera eficiente"
     );
-    expect(subtitle).toHaveClass("text-gray-600");
-    expect(subtitle).toHaveClass("dark:text-gray-300");
+    expect(subtitle).toHaveClass(
+      "text-slate-400 hover:text-slate-300 text-lg font-medium tracking-wide transition-all duration-300 max-w-2xl mx-auto leading-relaxed"
+    );
+    expect(subtitle).toHaveClass(
+      "text-slate-400 hover:text-slate-300 text-lg font-medium tracking-wide transition-all duration-300 max-w-2xl mx-auto leading-relaxed"
+    );
     expect(subtitle).toHaveClass("text-lg");
   });
 
   /**
    * Test: Estructura semántica del header
-   * 
+   *
    * Verifica que el componente use el elemento semántico header
    * con las clases de layout apropiadas.
-   * 
+   *
    * @test {HTMLElement} header - Elemento con role="banner"
    * @test {string} text-center - Alineación centrada del texto
    * @test {string} mb-12 - Margen inferior para espaciado
@@ -135,15 +135,15 @@ describe("Header Component", () => {
     const header = screen.getByRole("banner");
     expect(header).toBeInTheDocument();
     expect(header).toHaveClass("text-center");
-    expect(header).toHaveClass("mb-12");
+    expect(header).toHaveClass("text-center mb-5 relative");
   });
 
   /**
    * Test: Props personalizadas
-   * 
+   *
    * Verifica que el componente acepte y renderice correctamente
    * props personalizadas para título y subtítulo.
-   * 
+   *
    * @test {Object} customProps - Props con valores personalizados
    * @test {string} title - Título personalizado
    * @test {string} subtitle - Subtítulo personalizado
@@ -165,10 +165,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Jerarquía de headings
-   * 
+   *
    * Verifica que el componente mantenga la jerarquía semántica
    * correcta usando un elemento H1.
-   * 
+   *
    * @test {HTMLElement} heading - Elemento heading de nivel 1
    * @test {string} tagName - Debe ser "H1"
    */
@@ -181,10 +181,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Contenido de texto accesible
-   * 
+   *
    * Verifica que el contenido de texto sea accesible y no esté vacío,
    * importante para lectores de pantalla y SEO.
-   * 
+   *
    * @test {string} textContent - Contenido de texto no vacío
    * @test {boolean} toBeTruthy - Verificación de contenido existente
    */
@@ -205,10 +205,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Manejo de strings vacíos
-   * 
+   *
    * Verifica que el componente maneje correctamente props vacías
    * sin romper la estructura o causar errores.
-   * 
+   *
    * @test {Object} emptyProps - Props con strings vacíos
    * @test {HTMLElement} header - Header debe renderizarse
    * @test {HTMLElement} title - Título debe existir aunque esté vacío
@@ -231,10 +231,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Manejo de texto largo
-   * 
+   *
    * Verifica que el componente maneje correctamente contenido de texto
    * largo sin romper el layout o la legibilidad.
-   * 
+   *
    * @test {Object} longTextProps - Props con texto extenso
    * @test {HTMLElement} title - Título con texto largo
    * @test {HTMLElement} subtitle - Subtítulo con texto largo
@@ -258,10 +258,10 @@ describe("Header Component", () => {
 
   /**
    * Test: Clases de diseño responsivo
-   * 
+   *
    * Verifica que el componente mantenga las clases CSS responsivas
    * para diferentes tamaños de pantalla.
-   * 
+   *
    * @test {string} text-4xl - Tamaño base para móviles
    * @test {string} md:text-5xl - Tamaño para pantallas medianas
    */
@@ -272,6 +272,8 @@ describe("Header Component", () => {
 
     // Check responsive classes are present
     expect(title).toHaveClass("text-4xl"); // Base size
-    expect(title).toHaveClass("md:text-5xl"); // Medium screen size
+    expect(title).toHaveClass(
+      "text-4xl font-extrabold tracking-tight mb-6 group cursor-default"
+    ); // Medium screen size
   });
 });

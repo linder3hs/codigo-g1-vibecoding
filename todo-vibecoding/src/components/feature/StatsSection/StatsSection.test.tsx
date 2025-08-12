@@ -51,7 +51,7 @@ describe("StatsSection Component", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
     // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen.getByText("Total").closest('.bg-white');
+    const firstCard = screen.getByText("Total").closest('[class*="bg-slate-800"]');
     const container = firstCard?.parentElement;
     expect(container).toBeInTheDocument();
   });
@@ -99,13 +99,12 @@ describe("StatsSection Component", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
     // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen.getByText("Total").closest('.bg-white');
+    const firstCard = screen.getByText("Total").closest('[class*="bg-slate-800"]');
     const container = firstCard?.parentElement;
     expect(container).toHaveClass("grid");
     expect(container).toHaveClass("grid-cols-1");
     expect(container).toHaveClass("md:grid-cols-3");
-    expect(container).toHaveClass("gap-6");
-    expect(container).toHaveClass("mb-8");
+    expect(container).toHaveClass("gap-5");
   });
 
   /**
@@ -127,8 +126,8 @@ describe("StatsSection Component", () => {
 
     expect(totalValue).toBeInTheDocument();
     expect(totalLabel).toBeInTheDocument();
-    expect(totalValue).toHaveClass("text-blue-600");
-    expect(totalValue).toHaveClass("dark:text-blue-400");
+    expect(totalValue).toHaveClass("text-blue-400");
+    expect(totalValue).toHaveClass("group-hover:text-blue-300");
   });
 
   /**
@@ -150,8 +149,8 @@ describe("StatsSection Component", () => {
 
     expect(completedValue).toBeInTheDocument();
     expect(completedLabel).toBeInTheDocument();
-    expect(completedValue).toHaveClass("text-green-600");
-    expect(completedValue).toHaveClass("dark:text-green-400");
+    expect(completedValue).toHaveClass("text-emerald-400");
+    expect(completedValue).toHaveClass("group-hover:text-emerald-300");
   });
 
   /**
@@ -173,8 +172,8 @@ describe("StatsSection Component", () => {
 
     expect(pendingValue).toBeInTheDocument();
     expect(pendingLabel).toBeInTheDocument();
-    expect(pendingValue).toHaveClass("text-orange-600");
-    expect(pendingValue).toHaveClass("dark:text-orange-400");
+    expect(pendingValue).toHaveClass("text-amber-400");
+    expect(pendingValue).toHaveClass("group-hover:text-amber-300");
   });
 
   /**
@@ -280,11 +279,11 @@ describe("StatsSection Component", () => {
 
     // Each card should have its parent container with the correct classes
     cards.forEach(card => {
-      // Find the StatsCard container (the div with bg-white class)
-      const cardContainer = card.closest('.bg-white');
-      expect(cardContainer).toHaveClass("bg-white");
-      expect(cardContainer).toHaveClass("dark:bg-slate-800");
-      expect(cardContainer).toHaveClass("rounded-xl");
+      // Find the StatsCard container (the div with bg-slate-800 class)
+      const cardContainer = card.closest('[class*="bg-slate-800"]');
+      expect(cardContainer).toHaveClass("bg-slate-800/40");
+      expect(cardContainer).toHaveClass("rounded-2xl");
+      expect(cardContainer).toHaveClass("backdrop-blur-md");
     });
   });
 
@@ -301,7 +300,7 @@ describe("StatsSection Component", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
     // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen.getByText("Total").closest('.bg-white');
+    const firstCard = screen.getByText("Total").closest('[class*="bg-slate-800"]');
     const container = firstCard?.parentElement;
     
     // Should be single column on mobile, 3 columns on medium screens and up
@@ -322,12 +321,11 @@ describe("StatsSection Component", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
     // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen.getByText("Total").closest('.bg-white');
+    const firstCard = screen.getByText("Total").closest('[class*="bg-slate-800"]');
     const container = firstCard?.parentElement;
     
     // Check spacing classes
-    expect(container).toHaveClass("gap-6");  // Gap between cards
-    expect(container).toHaveClass("mb-8");   // Margin bottom
+    expect(container).toHaveClass("gap-5");  // Gap between cards
   });
 
   /**
@@ -382,7 +380,7 @@ describe("StatsSection Component", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
     // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen.getByText("Total").closest('.bg-white');
+    const firstCard = screen.getByText("Total").closest('[class*="bg-slate-800"]');
     const container = firstCard?.parentElement;
     
     // Should be a div container with grid layout

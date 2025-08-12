@@ -67,20 +67,46 @@ describe("CreateTodoPage", () => {
     expect(screen.getByText("Footer")).toBeInTheDocument();
   });
 
-  it("renders the back to home link", () => {
+  it("renders the back to home link with modern styling", () => {
     renderWithRouter(<CreateTodoPage />);
 
     const backLink = screen.getByRole("link", { name: /volver al inicio/i });
     expect(backLink).toBeInTheDocument();
     expect(backLink).toHaveAttribute("href", "/");
+    expect(backLink).toHaveClass(
+      "inline-flex",
+      "items-center",
+      "text-blue-400",
+      "hover:text-blue-300",
+      "transition-all",
+      "duration-300",
+      "font-medium",
+      "group"
+    );
   });
 
-  it("renders the cancel link", () => {
+  it("renders the cancel link with proper styling", () => {
     renderWithRouter(<CreateTodoPage />);
 
     const cancelLink = screen.getByRole("link", { name: /cancelar/i });
     expect(cancelLink).toBeInTheDocument();
     expect(cancelLink).toHaveAttribute("href", "/");
+    expect(cancelLink).toHaveClass(
+      "px-6",
+      "py-3",
+      "bg-slate-700/50",
+      "hover:bg-slate-600/50",
+      "text-slate-300",
+      "hover:text-white",
+      "rounded-xl",
+      "font-medium",
+      "text-center",
+      "transition-all",
+      "duration-300",
+      "border",
+      "border-slate-600/30",
+      "hover:border-slate-500/50"
+    );
   });
 
   it("updates input value when typing", async () => {
@@ -187,6 +213,12 @@ describe("CreateTodoPage", () => {
     }) as HTMLButtonElement;
 
     expect(submitButton.disabled).toBe(true);
+    expect(submitButton).toHaveClass(
+      "disabled:from-slate-600", 
+      "disabled:to-slate-600",
+      "disabled:cursor-not-allowed",
+      "disabled:hover:scale-100"
+    );
   });
 
   it("enables submit button when input has content", async () => {
@@ -201,6 +233,15 @@ describe("CreateTodoPage", () => {
     await user.type(input, "Nueva tarea");
 
     expect(submitButton.disabled).toBe(false);
+    expect(submitButton).toHaveClass(
+      "bg-gradient-to-r",
+      "from-blue-600",
+      "to-indigo-600",
+      "hover:from-blue-700",
+      "hover:to-indigo-700",
+      "transform",
+      "hover:scale-105"
+    );
   });
 
   it("applies correct CSS classes to form elements", () => {
@@ -214,24 +255,69 @@ describe("CreateTodoPage", () => {
       "w-full",
       "px-4",
       "py-3",
+      "bg-slate-700/50",
       "border",
-      "border-gray-300",
-      "rounded-lg"
+      "border-slate-600/50",
+      "rounded-xl"
     );
 
     expect(submitButton).toHaveClass(
       "flex-1",
       "px-6",
       "py-3",
-      "bg-blue-600",
+      "bg-gradient-to-r",
+      "from-blue-600",
+      "to-indigo-600",
       "text-white",
-      "rounded-lg"
+      "rounded-xl"
     );
 
-    expect(cancelLink).toHaveClass("px-6", "py-3", "bg-gray-200", "rounded-lg");
+    expect(cancelLink).toHaveClass(
+      "px-6", 
+      "py-3", 
+      "bg-slate-700/50", 
+      "text-slate-300", 
+      "rounded-xl"
+    );
   });
 
-  it("displays proper form structure with labels", () => {
+  it("renders with correct container structure and glassmorphism styling", () => {
+    renderWithRouter(<CreateTodoPage />);
+
+    // Check main container
+    const mainContainer = document.querySelector('.min-h-screen.relative');
+    expect(mainContainer).toBeInTheDocument();
+    expect(mainContainer).toHaveClass("min-h-screen", "relative");
+    
+    // Check inner container
+    const innerContainer = document.querySelector('.container.mx-auto.px-4.py-8.max-w-2xl.relative.z-10');
+    expect(innerContainer).toBeInTheDocument();
+    expect(innerContainer).toHaveClass(
+      "container",
+      "mx-auto",
+      "px-4",
+      "py-8",
+      "max-w-2xl",
+      "relative",
+      "z-10"
+    );
+    
+    // Check form container with glassmorphism
+    const formContainer = document.querySelector('.backdrop-blur-md');
+    expect(formContainer).toBeInTheDocument();
+    expect(formContainer).toHaveClass(
+      "backdrop-blur-md",
+      "bg-slate-800/40",
+      "rounded-2xl",
+      "shadow-2xl",
+      "p-8",
+      "mb-8",
+      "border",
+      "border-slate-700/30"
+    );
+  });
+
+  it("displays proper form structure with labels and glassmorphism styling", () => {
     renderWithRouter(<CreateTodoPage />);
 
     const label = screen.getByText("Descripción de la tarea");
@@ -240,5 +326,17 @@ describe("CreateTodoPage", () => {
     expect(label).toBeInTheDocument();
     expect(label).toHaveAttribute("for", "todoText");
     expect(input).toHaveAttribute("id", "todoText");
+    
+    // Verify label styling
+    expect(label).toHaveClass(
+      "block",
+      "text-sm",
+      "font-medium",
+      "text-slate-300",
+      "mb-3"
+    );
+    
+    // Verify input has autofocus
+    expect(input).toHaveFocus();
   });
 });

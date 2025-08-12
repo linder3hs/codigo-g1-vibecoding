@@ -56,8 +56,8 @@ describe("FilterButtons Component", () => {
     const pendingButton = screen.getByText("Pendientes");
     const allButton = screen.getByText("Todas");
     
-    expect(pendingButton).toHaveClass("bg-orange-600", "text-white");
-    expect(allButton).toHaveClass("bg-white", "text-gray-700");
+    expect(pendingButton).toHaveClass("bg-amber-600", "text-white");
+    expect(allButton).toHaveClass("bg-slate-800", "text-slate-300");
   });
 
   /**
@@ -122,7 +122,7 @@ describe("FilterButtons Component", () => {
   /**
    * @test Estilos responsivos
    * Verifica que el contenedor tenga las clases CSS
-   * correctas para el diseño responsivo.
+   * correctas para el diseño responsivo minimalista.
    */
   it("should have responsive design classes", () => {
     const { container } = render(<FilterButtons {...defaultProps} />);
@@ -131,9 +131,8 @@ describe("FilterButtons Component", () => {
     expect(buttonContainer).toHaveClass(
       "flex",
       "flex-wrap",
-      "gap-2",
       "justify-center",
-      "mb-8"
+      "gap-3"
     );
   });
 
@@ -151,11 +150,11 @@ describe("FilterButtons Component", () => {
     
     // Test "pending" filter
     rerender(<FilterButtons {...defaultProps} currentFilter="pending" />);
-    expect(screen.getByText("Pendientes")).toHaveClass("bg-orange-600");
+    expect(screen.getByText("Pendientes")).toHaveClass("bg-amber-600");
     
     // Test "completed" filter
     rerender(<FilterButtons {...defaultProps} currentFilter="completed" />);
-    expect(screen.getByText("Completadas")).toHaveClass("bg-green-600");
+    expect(screen.getByText("Completadas")).toHaveClass("bg-emerald-600");
   });
 
   /**
@@ -172,5 +171,53 @@ describe("FilterButtons Component", () => {
     // Verify container structure
     expect(container.firstChild).toBeInTheDocument();
     expect(container.firstChild?.nodeName).toBe("DIV");
+  });
+
+  /**
+   * @test Clases base del diseño minimalista
+   * Verifica que los botones inactivos tengan las clases
+   * correctas del diseño minimalista.
+   */
+  it("should have minimalist base classes for inactive buttons", () => {
+    render(<FilterButtons {...defaultProps} currentFilter="all" />);
+    
+    const pendingButton = screen.getByText("Pendientes");
+    const completedButton = screen.getByText("Completadas");
+    
+    // Check base classes for inactive buttons
+    expect(pendingButton).toHaveClass("bg-slate-800", "text-slate-300", "border", "border-slate-700");
+    expect(completedButton).toHaveClass("bg-slate-800", "text-slate-300", "border", "border-slate-700");
+  });
+
+  /**
+   * @test Efectos de transición
+   * Verifica que los botones tengan las clases de transición
+   * correctas para el diseño minimalista.
+   */
+  it("should have transition effects", () => {
+    render(<FilterButtons {...defaultProps} />);
+    
+    const buttons = screen.getAllByRole("button");
+    
+    buttons.forEach((button) => {
+      expect(button).toHaveClass("transition-colors", "duration-200");
+    });
+  });
+
+  /**
+   * @test Clases de focus ring
+   * Verifica que cada botón tenga su anillo de focus
+   * específico según su color.
+   */
+  it("should have proper focus ring classes", () => {
+    render(<FilterButtons {...defaultProps} />);
+    
+    const allButton = screen.getByText("Todas");
+    const pendingButton = screen.getByText("Pendientes");
+    const completedButton = screen.getByText("Completadas");
+    
+    expect(allButton).toHaveClass("focus:ring-blue-500/50");
+    expect(pendingButton).toHaveClass("focus:ring-amber-500/50");
+    expect(completedButton).toHaveClass("focus:ring-emerald-500/50");
   });
 });

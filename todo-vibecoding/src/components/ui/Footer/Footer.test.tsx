@@ -49,7 +49,7 @@ describe("Footer Component", () => {
   it("displays the Tailwind CSS badge text", () => {
     render(<Footer />);
 
-    const badgeText = screen.getByText("Powered by Tailwind CSS v4");
+    const badgeText = screen.getByText(/Powered by/);
     expect(badgeText).toBeInTheDocument();
   });
 
@@ -57,42 +57,40 @@ describe("Footer Component", () => {
    * Test: Clases CSS del elemento footer
    *
    * Verifica que el footer tenga todas las clases CSS necesarias
-   * para el layout, espaciado y bordes.
+   * para el layout, espaciado y posicionamiento.
    *
+   * @test {string} relative - Posicionamiento relativo
    * @test {string} text-center - Alineación centrada del contenido
-   * @test {string} mt-12 - Margen superior
-   * @test {string} pt-8 - Padding superior
-   * @test {string} border-t - Borde superior
-   * @test {string} border-gray-200 - Color del borde en modo claro
-   * @test {string} dark:border-slate-700 - Color del borde en modo oscuro
+   * @test {string} mt-16 - Margen superior
+   * @test {string} pt-12 - Padding superior
    */
   it("applies correct CSS classes to footer element", () => {
     render(<Footer />);
 
     const footer = screen.getByRole("contentinfo");
+    expect(footer).toHaveClass("relative");
     expect(footer).toHaveClass("text-center");
-    expect(footer).toHaveClass("mt-12");
-    expect(footer).toHaveClass("pt-8");
-    expect(footer).toHaveClass("border-t");
-    expect(footer).toHaveClass("border-gray-200");
-    expect(footer).toHaveClass("dark:border-slate-700");
+    expect(footer).toHaveClass("mt-16");
+    expect(footer).toHaveClass("pt-12");
   });
 
   /**
    * Test: Clases CSS del contenedor del badge
    *
    * Verifica que el contenedor del badge tenga todas las clases
-   * necesarias para el diseño, colores y espaciado.
+   * necesarias para el diseño minimalista, efectos y espaciado.
    *
+   * @test {string} group - Grupo para efectos hover
    * @test {string} inline-flex - Display flex inline
    * @test {string} items-center - Alineación vertical centrada
-   * @test {string} gap-2 - Espacio entre elementos
-   * @test {string} bg-blue-50 - Fondo azul claro
-   * @test {string} dark:bg-blue-900/20 - Fondo azul oscuro con opacidad
-   * @test {string} text-blue-700 - Color de texto azul
-   * @test {string} dark:text-blue-300 - Color de texto azul claro en modo oscuro
-   * @test {string} px-4 - Padding horizontal
-   * @test {string} py-2 - Padding vertical
+   * @test {string} gap-3 - Espacio entre elementos
+   * @test {string} backdrop-blur-sm - Efecto de desenfoque
+   * @test {string} bg-slate-800/20 - Fondo con opacidad
+   * @test {string} border - Borde
+   * @test {string} border-slate-700/30 - Color del borde
+   * @test {string} text-slate-400 - Color de texto
+   * @test {string} px-6 - Padding horizontal
+   * @test {string} py-3 - Padding vertical
    * @test {string} rounded-full - Bordes completamente redondeados
    * @test {string} text-sm - Tamaño de texto pequeño
    * @test {string} font-medium - Peso de fuente medio
@@ -101,17 +99,19 @@ describe("Footer Component", () => {
     render(<Footer />);
 
     const badgeContainer = screen
-      .getByText("Powered by Tailwind CSS v4")
+      .getByText(/Powered by/)
       .closest("div");
+    expect(badgeContainer).toHaveClass("group");
     expect(badgeContainer).toHaveClass("inline-flex");
     expect(badgeContainer).toHaveClass("items-center");
-    expect(badgeContainer).toHaveClass("gap-2");
-    expect(badgeContainer).toHaveClass("bg-blue-50");
-    expect(badgeContainer).toHaveClass("dark:bg-blue-900/20");
-    expect(badgeContainer).toHaveClass("text-blue-700");
-    expect(badgeContainer).toHaveClass("dark:text-blue-300");
-    expect(badgeContainer).toHaveClass("px-4");
-    expect(badgeContainer).toHaveClass("py-2");
+    expect(badgeContainer).toHaveClass("gap-3");
+    expect(badgeContainer).toHaveClass("backdrop-blur-sm");
+    expect(badgeContainer).toHaveClass("bg-slate-800/20");
+    expect(badgeContainer).toHaveClass("border");
+    expect(badgeContainer).toHaveClass("border-slate-700/30");
+    expect(badgeContainer).toHaveClass("text-slate-400");
+    expect(badgeContainer).toHaveClass("px-6");
+    expect(badgeContainer).toHaveClass("py-3");
     expect(badgeContainer).toHaveClass("rounded-full");
     expect(badgeContainer).toHaveClass("text-sm");
     expect(badgeContainer).toHaveClass("font-medium");
@@ -134,48 +134,49 @@ describe("Footer Component", () => {
   });
 
   /**
-   * Test: Consistencia de estilos entre temas
+   * Test: Efectos de transición y hover
    *
    * Verifica que el componente tenga las clases CSS necesarias
-   * para mantener consistencia visual en modo claro y oscuro.
+   * para efectos de transición y hover del diseño minimalista.
    *
-   * @test {string} dark:border-slate-700 - Borde en modo oscuro
-   * @test {string} dark:bg-blue-900/20 - Fondo del badge en modo oscuro
-   * @test {string} dark:text-blue-300 - Color de texto en modo oscuro
+   * @test {string} transition-all - Transición suave
+   * @test {string} duration-300 - Duración de transición
+   * @test {string} hover:bg-slate-700/30 - Fondo en hover
+   * @test {string} hover:text-slate-300 - Color de texto en hover
    */
-  it("maintains consistent styling across themes", () => {
+  it("has transition and hover effects", () => {
     render(<Footer />);
 
-    const footer = screen.getByRole("contentinfo");
     const badgeContainer = screen
-      .getByText("Powered by Tailwind CSS v4")
+      .getByText(/Powered by/)
       .closest("div");
 
-    // Check dark mode classes are present
-    expect(footer).toHaveClass("dark:border-slate-700");
-    expect(badgeContainer).toHaveClass("dark:bg-blue-900/20");
-    expect(badgeContainer).toHaveClass("dark:text-blue-300");
+    // Check transition and hover classes are present
+    expect(badgeContainer).toHaveClass("transition-all");
+    expect(badgeContainer).toHaveClass("duration-300");
+    expect(badgeContainer).toHaveClass("hover:bg-slate-700/30");
+    expect(badgeContainer).toHaveClass("hover:text-slate-300");
   });
 
   /**
-   * Test: Contraste de colores accesible
+   * Test: Contraste de colores del diseño minimalista
    *
-   * Verifica que el badge tenga colores con contraste suficiente
-   * para cumplir con estándares de accesibilidad.
+   * Verifica que el badge tenga colores apropiados
+   * para el diseño minimalista con buen contraste.
    *
-   * @test {string} text-blue-700 - Color de texto con buen contraste
-   * @test {string} bg-blue-50 - Color de fondo que contrasta con el texto
+   * @test {string} text-slate-400 - Color de texto principal
+   * @test {string} bg-slate-800/20 - Fondo con opacidad
    */
-  it("has accessible color contrast", () => {
+  it("has appropriate minimalist color scheme", () => {
     render(<Footer />);
 
     const badgeContainer = screen
-      .getByText("Powered by Tailwind CSS v4")
+      .getByText(/Powered by/)
       .closest("div");
 
-    // Check that appropriate color classes are applied for contrast
-    expect(badgeContainer).toHaveClass("text-blue-700");
-    expect(badgeContainer).toHaveClass("bg-blue-50");
+    // Check that appropriate color classes are applied for minimalist design
+    expect(badgeContainer).toHaveClass("text-slate-400");
+    expect(badgeContainer).toHaveClass("bg-slate-800/20");
   });
 
   /**
@@ -191,73 +192,81 @@ describe("Footer Component", () => {
     render(<Footer />);
 
     const footer = screen.getByRole("contentinfo");
-    const badgeText = screen.getByText("Powered by Tailwind CSS v4");
+    const badgeText = screen.getByText(/Powered by/);
 
     expect(footer).toBeInTheDocument();
     expect(badgeText).toBeInTheDocument();
   });
 
   /**
-   * Test: Clases de espaciado y layout
+   * Test: Clases de espaciado y layout del diseño minimalista
    *
    * Verifica que el footer y el badge tengan el espaciado
-   * correcto para una buena presentación visual.
+   * correcto para el diseño minimalista con mayor separación.
    *
-   * @test {string} mt-12 - Margen superior del footer
-   * @test {string} pt-8 - Padding superior del footer
-   * @test {string} px-4 - Padding horizontal del badge
-   * @test {string} py-2 - Padding vertical del badge
-   * @test {string} gap-2 - Espacio entre elementos del badge
+   * @test {string} mt-16 - Margen superior aumentado
+   * @test {string} pt-12 - Padding superior aumentado
+   * @test {string} px-6 - Padding horizontal del badge
+   * @test {string} py-3 - Padding vertical del badge
+   * @test {string} gap-3 - Espacio entre elementos del badge
    */
   it("has proper spacing and layout classes", () => {
     render(<Footer />);
 
     const footer = screen.getByRole("contentinfo");
     const badgeContainer = screen
-      .getByText("Powered by Tailwind CSS v4")
+      .getByText(/Powered by/)
       .closest("div");
 
-    // Check spacing classes
-    expect(footer).toHaveClass("mt-12"); // Margin top
-    expect(footer).toHaveClass("pt-8"); // Padding top
-    expect(badgeContainer).toHaveClass("px-4"); // Horizontal padding
-    expect(badgeContainer).toHaveClass("py-2"); // Vertical padding
-    expect(badgeContainer).toHaveClass("gap-2"); // Gap between items
+    // Check spacing classes for minimalist design
+    expect(footer).toHaveClass("mt-16"); // Margin top
+    expect(footer).toHaveClass("pt-12"); // Padding top
+    expect(badgeContainer).toHaveClass("px-6"); // Horizontal padding
+    expect(badgeContainer).toHaveClass("py-3"); // Vertical padding
+    expect(badgeContainer).toHaveClass("gap-3"); // Gap between items
   });
 
   /**
-   * Test: Jerarquía de texto apropiada
+   * Test: Jerarquía de texto del diseño minimalista
    *
    * Verifica que el texto del badge tenga el tamaño y peso
-   * de fuente apropiados para su función secundaria.
+   * de fuente apropiados para el diseño minimalista.
    *
    * @test {string} text-sm - Tamaño de texto pequeño
    * @test {string} font-medium - Peso de fuente medio
    */
-  it("maintains proper text hierarchy", () => {
+  it("has appropriate text hierarchy", () => {
     render(<Footer />);
 
-    const badgeText = screen.getByText("Powered by Tailwind CSS v4");
-    expect(badgeText).toHaveClass("text-sm");
-    expect(badgeText).toHaveClass("font-medium");
+    const badgeContainer = screen
+      .getByText(/Powered by/)
+      .closest("div");
+    expect(badgeContainer).toHaveClass("text-sm");
+    expect(badgeContainer).toHaveClass("font-medium");
   });
 
   /**
-   * Test: Estilo de bordes apropiado
+   * Test: Efectos visuales del diseño minimalista
    *
-   * Verifica que el footer tenga el borde superior correcto
-   * para separarlo visualmente del contenido principal.
+   * Verifica que el badge tenga los efectos visuales
+   * apropiados para el diseño minimalista.
    *
-   * @test {string} border-t - Borde superior
-   * @test {string} border-gray-200 - Color del borde en modo claro
-   * @test {string} dark:border-slate-700 - Color del borde en modo oscuro
+   * @test {string} backdrop-blur-sm - Efecto de desenfoque
+   * @test {string} border - Borde del badge
+   * @test {string} border-slate-700/30 - Color del borde con opacidad
+   * @test {string} rounded-full - Bordes redondeados
    */
-  it("has proper border styling", () => {
+  it("has proper visual effects", () => {
     render(<Footer />);
 
-    const footer = screen.getByRole("contentinfo");
-    expect(footer).toHaveClass("border-t");
-    expect(footer).toHaveClass("border-gray-200");
-    expect(footer).toHaveClass("dark:border-slate-700");
+    const badgeContainer = screen
+      .getByText(/Powered by/)
+      .closest("div");
+
+    // Check visual effect classes
+    expect(badgeContainer).toHaveClass("backdrop-blur-sm");
+    expect(badgeContainer).toHaveClass("border");
+    expect(badgeContainer).toHaveClass("border-slate-700/30");
+    expect(badgeContainer).toHaveClass("rounded-full");
   });
 });

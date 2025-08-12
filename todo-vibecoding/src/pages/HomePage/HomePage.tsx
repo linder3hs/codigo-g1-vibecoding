@@ -25,7 +25,6 @@ export const HomePage = () => {
     setFilter,
     filteredTodos,
     todosCount,
-    formatDate,
     toggleTodo,
     deleteTodo,
   } = useTodo();
@@ -78,7 +77,6 @@ export const HomePage = () => {
               <div className="flex-1 overflow-y-auto lg:overflow-visible pb-20 lg:pb-0 min-h-0">
                 <TodoList
                   todos={filteredTodos}
-                  formatDate={formatDate}
                   emptyMessage="No hay tareas para mostrar"
                   onToggleTodo={(id) => toggleTodo(Number(id))}
                   onDeleteTodo={(id) => deleteTodo(Number(id))}

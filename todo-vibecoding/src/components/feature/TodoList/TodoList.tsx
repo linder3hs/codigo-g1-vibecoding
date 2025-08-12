@@ -8,7 +8,6 @@ import { TodoItem } from "../TodoItem";
 
 interface TodoListProps {
   todos: Todo[];
-  formatDate: (date: Date) => string;
   emptyMessage?: string;
   onToggleTodo: (id: number) => void;
   onDeleteTodo: (id: number) => void;
