@@ -13,6 +13,7 @@ export * from './feature';
 export { default as Header } from './ui/Header';
 export { default as Footer } from './ui/Footer';
 export { default as StatsCard } from './ui/StatsCard';
+export { default as Sidebar } from './ui/Sidebar';
 
 export { default as FilterButtons } from './feature/FilterButtons';
 export { default as StatsSection } from './feature/StatsSection';

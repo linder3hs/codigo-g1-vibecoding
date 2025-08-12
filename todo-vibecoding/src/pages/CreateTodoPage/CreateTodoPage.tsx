@@ -38,43 +38,45 @@ export const CreateTodoPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="min-h-screen relative">
+      <div className="container mx-auto px-4 py-8 max-w-2xl relative z-10">
         <Header
           title="Crear Nueva Tarea"
           subtitle="Agrega una nueva tarea a tu lista"
         />
 
-        {/* Back to home navigation */}
-        <div className="mb-6">
+        {/* Back to home navigation with modern styling */}
+        <div className="mb-8">
           <Link
             to="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors font-medium"
+            className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-all duration-300 font-medium group"
           >
-            <svg
-              className="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-              />
-            </svg>
+            <div className="p-1 rounded-lg group-hover:bg-blue-500/10 transition-colors duration-300 mr-2">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+            </div>
             Volver al inicio
           </Link>
         </div>
 
-        {/* Todo creation form */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 mb-8">
+        {/* Todo creation form with glassmorphism */}
+        <div className="backdrop-blur-md bg-slate-800/40 rounded-2xl shadow-2xl p-8 mb-8 border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="todoText"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-300 mb-3"
               >
                 Descripción de la tarea
               </label>
@@ -84,7 +86,7 @@ export const CreateTodoPage = () => {
                 value={todoText}
                 onChange={handleInputChange}
                 placeholder="Escribe tu nueva tarea..."
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-slate-700 dark:text-white transition-colors"
+                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500/50 text-white placeholder-slate-400 transition-all duration-300 backdrop-blur-sm"
                 autoFocus
               />
             </div>
@@ -93,14 +95,14 @@ export const CreateTodoPage = () => {
               <button
                 type="submit"
                 disabled={!todoText.trim()}
-                className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium shadow-lg hover:shadow-xl"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-slate-600 disabled:to-slate-600 text-white rounded-xl font-medium shadow-xl hover:shadow-blue-500/25 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 disabled:hover:scale-100"
               >
                 Crear Tarea
               </button>
 
               <Link
                 to="/"
-                className="px-6 py-3 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors font-medium text-center"
+                className="px-6 py-3 bg-slate-700/50 hover:bg-slate-600/50 text-slate-300 hover:text-white rounded-xl font-medium text-center transition-all duration-300 border border-slate-600/30 hover:border-slate-500/50"
               >
                 Cancelar
               </Link>

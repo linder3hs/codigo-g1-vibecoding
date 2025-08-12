@@ -31,20 +31,32 @@ interface StatsCardProps {
  * Mapeo de colores para las variantes del componente
  *
  * Define las clases CSS de Tailwind para cada variante de color,
- * incluyendo soporte para modo oscuro.
+ * incluyendo gradientes sutiles y efectos hover premium.
  *
  * @constant {Object} colorClasses
- * @property {string} blue - Clases para variante azul (total)
- * @property {string} green - Clases para variante verde (completadas)
- * @property {string} orange - Clases para variante naranja (pendientes)
+ * @property {Object} blue - Clases para variante azul (total)
+ * @property {Object} green - Clases para variante verde (completadas)
+ * @property {Object} orange - Clases para variante naranja (pendientes)
  */
 const colorClasses = {
   /** Azul para estadísticas totales */
-  blue: "text-blue-600 dark:text-blue-400",
+  blue: {
+    text: "text-blue-400 group-hover:text-blue-300",
+    accent: "bg-blue-500/10 group-hover:bg-blue-500/20",
+    border: "border-blue-500/20 group-hover:border-blue-500/30",
+  },
   /** Verde para tareas completadas */
-  green: "text-green-600 dark:text-green-400",
+  green: {
+    text: "text-emerald-400 group-hover:text-emerald-300",
+    accent: "bg-emerald-500/10 group-hover:bg-emerald-500/20",
+    border: "border-emerald-500/20 group-hover:border-emerald-500/30",
+  },
   /** Naranja para tareas pendientes */
-  orange: "text-orange-600 dark:text-orange-400",
+  orange: {
+    text: "text-amber-400 group-hover:text-amber-300",
+    accent: "bg-amber-500/10 group-hover:bg-amber-500/20",
+    border: "border-amber-500/20 group-hover:border-amber-500/30",
+  },
 };
 
 /**
@@ -80,25 +92,46 @@ const colorClasses = {
  * - Espaciado apropiado para facilitar la lectura
  *
  * @design
- * - Fondo blanco/slate-800 según el tema
- * - Bordes redondeados (rounded-xl)
- * - Sombra sutil (shadow-lg)
- * - Padding interno de 6 unidades
- * - Texto centrado
- * - Valor en texto grande y bold
- * - Etiqueta en texto pequeño y color secundario
+ * - Diseño premium con glassmorphism y gradientes sutiles
+ * - Bordes redondeados (rounded-2xl) con efectos hover
+ * - Shadows refinados con múltiples capas
+ * - Padding interno optimizado para mejor distribución
+ * - Animaciones hover suaves y elegantes
+ * - Valor prominente con tipografía mejorada
+ * - Etiqueta con mejor contraste y spacing
+ * - Efectos de acento de color dinámicos
  */
 export const StatsCard = ({ value, label, color }: StatsCardProps) => {
+  const colorConfig = colorClasses[color];
+
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-slate-700">
-      <div className="text-center">
-        <div className={`text-3xl font-bold ${colorClasses[color]}`}>
+    <div
+      className={`group relative backdrop-blur-md bg-slate-800/40 rounded-2xl p-4 shadow-2xl hover:shadow-3xl border transition-all duration-500 hover:scale-105 hover:-translate-y-1 cursor-default ${colorConfig.border}`}
+    >
+      {/* Decorative accent background */}
+      <div
+        className={`absolute inset-0 rounded-2xl transition-all duration-500 ${colorConfig.accent}`}
+      />
+
+      {/* Content container */}
+      <div className="relative z-10 text-center space-y-3">
+        {/* Value display with enhanced typography */}
+        <div
+          className={`text-2xl font-black tracking-tight transition-all duration-300 ${colorConfig.text}`}
+        >
           {value}
         </div>
-        <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+
+        {/* Label with improved styling */}
+        <div className="text-sm font-medium text-slate-400 group-hover:text-slate-300 transition-colors duration-300 tracking-wide uppercase">
           {label}
         </div>
       </div>
+
+      {/* Subtle glow effect on hover */}
+      <div
+        className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 ${colorConfig.accent} blur-xl`}
+      />
     </div>
   );
 };

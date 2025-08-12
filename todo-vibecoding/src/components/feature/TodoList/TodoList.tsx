@@ -10,28 +10,45 @@ interface TodoListProps {
   todos: Todo[];
   formatDate: (date: Date) => string;
   emptyMessage?: string;
+  onToggleTodo: (id: number) => void;
+  onDeleteTodo: (id: number) => void;
 }
 
 export const TodoList = ({
   todos,
-  formatDate,
   emptyMessage = "No hay tareas para mostrar",
+  onToggleTodo,
+  onDeleteTodo,
 }: TodoListProps) => {
   if (todos.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="text-6xl mb-4">📝</div>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">
-          {emptyMessage}
-        </p>
+      <div className="flex flex-col items-center justify-center py-20">
+        <div className="relative mb-8">
+          <div className="text-8xl opacity-20 animate-pulse">📝</div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent rounded-full blur-xl" />
+        </div>
+        <div className="text-center space-y-3">
+          <h3 className="text-xl font-semibold text-slate-300">
+            No hay tareas
+          </h3>
+          <p className="text-slate-400 max-w-md leading-relaxed">
+            {emptyMessage}
+          </p>
+          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-slate-600 to-transparent mx-auto mt-6" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-3">
       {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} formatDate={formatDate} />
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={() => onToggleTodo(todo.id)}
+          onDelete={() => onDeleteTodo(todo.id)}
+        />
       ))}
     </div>
   );

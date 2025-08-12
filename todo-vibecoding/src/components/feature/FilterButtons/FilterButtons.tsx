@@ -8,13 +8,15 @@ import type { FilterType } from "../../../hooks/useTodo";
 interface FilterButtonsProps {
   currentFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
+  layout?: 'horizontal' | 'vertical';
 }
 
 interface FilterOption {
   key: FilterType;
   label: string;
   ariaLabel: string;
-  activeColor: string;
+  activeClasses: string;
+  hoverClasses: string;
   focusRing: string;
 }
 
@@ -23,48 +25,71 @@ const filterOptions: FilterOption[] = [
     key: "all",
     label: "Todas",
     ariaLabel: "Mostrar todas las tareas",
-    activeColor: "bg-blue-600 text-white shadow-lg",
-    focusRing: "focus:ring-blue-500",
+    activeClasses: "bg-blue-600 text-white",
+    hoverClasses: "hover:bg-slate-700 hover:text-white",
+    focusRing: "focus:ring-blue-500/50",
   },
   {
     key: "pending",
     label: "Pendientes",
     ariaLabel: "Mostrar tareas pendientes",
-    activeColor: "bg-orange-600 text-white shadow-lg",
-    focusRing: "focus:ring-orange-500",
+    activeClasses: "bg-amber-600 text-white",
+    hoverClasses: "hover:bg-slate-700 hover:text-white",
+    focusRing: "focus:ring-amber-500/50",
   },
   {
     key: "completed",
     label: "Completadas",
     ariaLabel: "Mostrar tareas completadas",
-    activeColor: "bg-green-600 text-white shadow-lg",
-    focusRing: "focus:ring-green-500",
+    activeClasses: "bg-emerald-600 text-white",
+    hoverClasses: "hover:bg-slate-700 hover:text-white",
+    focusRing: "focus:ring-emerald-500/50",
   },
 ];
 
-const inactiveClasses =
-  "bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700";
+const baseClasses = "bg-slate-800 text-slate-300 border border-slate-700";
+const transitionClasses = "transition-colors duration-200";
 
 export const FilterButtons = ({
   currentFilter,
   onFilterChange,
+  layout = 'horizontal',
 }: FilterButtonsProps) => {
+  const containerClasses = layout === 'vertical' 
+    ? "flex flex-col gap-3" 
+    : "flex flex-wrap justify-center gap-3";
+    
+  const buttonClasses = layout === 'vertical'
+    ? "w-full justify-start px-3 py-2 rounded-lg text-left"
+    : "px-4 py-2 rounded-lg";
+
   return (
-    <div className="flex flex-wrap justify-center gap-2 mb-8">
-      {filterOptions.map((option) => (
-        <button
-          key={option.key}
-          onClick={() => onFilterChange(option.key)}
-          className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 ${
-            option.focusRing
-          } focus:ring-offset-2 ${
-            currentFilter === option.key ? option.activeColor : inactiveClasses
-          }`}
-          aria-label={option.ariaLabel}
-        >
-          {option.label}
-        </button>
-      ))}
+    <div className={containerClasses}>
+      {filterOptions.map((option) => {
+        const isActive = currentFilter === option.key;
+
+        return (
+          <button
+            key={option.key}
+            onClick={() => onFilterChange(option.key)}
+            className={`
+              ${buttonClasses} font-medium text-sm
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900
+              ${transitionClasses}
+              ${option.focusRing}
+              ${
+                isActive
+                  ? option.activeClasses
+                  : `${baseClasses} ${option.hoverClasses}`
+              }
+            `}
+            aria-label={option.ariaLabel}
+            aria-pressed={isActive}
+          >
+            {option.label}
+          </button>
+        );
+      })}
     </div>
   );
 };

@@ -15,7 +15,7 @@ interface StatsSectionProps {
 
 export const StatsSection = ({ todosCount }: StatsSectionProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
       <StatsCard value={todosCount.total} label="Total" color="blue" />
       <StatsCard
         value={todosCount.completed}
