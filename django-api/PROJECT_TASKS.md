@@ -34,59 +34,59 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
   pip install -r requirements.txt
   ```
 
-- [ ] **T1.4** - Crear proyecto Django
+- [x] **T1.4** - Crear proyecto Django
 
   ```bash
   django-admin startproject todoapi .
   ```
 
-- [ ] **T1.5** - Crear aplicación principal 'tasks'
+- [x] **T1.5** - Crear aplicación principal 'tasks'
 
   ```bash
   python manage.py startapp tasks
   ```
 
-- [ ] **T1.6** - Crear aplicación 'authentication'
+- [x] **T1.6** - Crear aplicación 'authentication'
   ```bash
   python manage.py startapp authentication
   ```
 
 ### ⚙️ Configuración Django
 
-- [ ] **T1.7** - Configurar `settings.py` básico
+- [x] **T1.7** - Configurar `settings.py` básico
 
   - Agregar apps instaladas (DRF, CORS, etc.)
   - Configurar base de datos SQLite para desarrollo
   - Configurar internacionalización (es-ES)
   - Configurar zona horaria
 
-- [ ] **T1.8** - Configurar Django REST Framework en settings
+- [x] **T1.8** - Configurar Django REST Framework en settings
 
   - DEFAULT_AUTHENTICATION_CLASSES
   - DEFAULT_PERMISSION_CLASSES
   - DEFAULT_PAGINATION_CLASS
   - PAGE_SIZE
 
-- [ ] **T1.9** - Configurar autenticación JWT
+- [x] **T1.9** - Configurar autenticación JWT
 
   - Instalar y configurar SimpleJWT
   - Configurar tiempos de expiración
   - Configurar algoritmos de encriptación
 
-- [ ] **T1.10** - Configurar CORS
+- [x] **T1.10** - Configurar CORS
 
   - Permitir orígenes para desarrollo
   - Configurar headers permitidos
   - Configurar métodos HTTP permitidos
 
-- [ ] **T1.11** - Configurar variables de entorno
+- [x] **T1.11** - Configurar variables de entorno
 
   - Crear archivo `.env`
   - Configurar SECRET_KEY
   - Configurar DEBUG
   - Configurar DATABASE_URL
 
-- [ ] **T1.12** - Crear archivo `.gitignore`
+- [x] **T1.12** - Crear archivo `.gitignore`
   - Ignorar venv/
   - Ignorar .env
   - Ignorar **pycache**/

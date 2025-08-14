@@ -1,1 +1,64 @@
+# Python Virtual Environment
 venv/
+env/
+.venv/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Python Cache Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Django Database
+db.sqlite3
+db.sqlite3-journal
+
+# Django Static Files
+/static/
+/staticfiles/
+/media/
+
+# Django Logs
+*.log
+logs/
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Coverage Reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# Backup Files
+*.bak
+*.backup
+*.orig

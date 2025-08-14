@@ -23,5 +23,8 @@ drf-spectacular>=0.28.0
 # Manejo de variables de entorno - Stable
 python-decouple>=3.8
 
+# Configuración de base de datos desde URL - Latest
+dj-database-url>=2.1.0
+
 # Driver PostgreSQL para producción - Updated
 psycopg2-binary>=2.9.9
