@@ -95,27 +95,27 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
 
 ### 🗄️ Base de Datos Inicial
 
-- [ ] **T1.13** - Ejecutar migraciones iniciales
+- [x] **T1.13** - Ejecutar migraciones iniciales
 
   ```bash
   python manage.py makemigrations
   python manage.py migrate
   ```
 
-- [ ] **T1.14** - Crear superusuario
+- [x] **T1.14** - Crear superusuario
 
   ```bash
   python manage.py createsuperuser
   ```
 
-- [ ] **T1.15** - Verificar servidor de desarrollo
+- [x] **T1.15** - Verificar servidor de desarrollo
   ```bash
   python manage.py runserver
   ```
 
 ### 📁 Estructura de Proyecto
 
-- [ ] **T1.16** - Crear estructura de carpetas
+- [x] **T1.16** - Crear estructura de carpetas
 
   ```
   todoapi/
@@ -133,7 +133,7 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
   └── .gitignore
   ```
 
-- [ ] **T1.17** - Configurar settings modulares
+- [x] **T1.17** - Configurar settings modulares
   - Separar configuraciones por ambiente
   - Configurar base.py con configuraciones comunes
   - Configurar development.py
