@@ -229,7 +229,7 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
 
 ### 📊 Modelo de Tareas
 
-- [ ] **T3.1** - Crear modelo Task
+- [x] **T3.1** - Crear modelo Task
 
   - Campo title (CharField, max_length=200)
   - Campo description (TextField, opcional)
@@ -239,20 +239,20 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
   - Campo updated_at (DateTimeField, auto_now)
   - Campo completed_at (DateTimeField, opcional)
 
-- [ ] **T3.2** - Definir choices para estados
+- [x] **T3.2** - Definir choices para estados
 
   - 'pendiente': 'Pendiente'
   - 'en_progreso': 'En Progreso'
   - 'completada': 'Completada'
 
-- [ ] **T3.3** - Agregar métodos al modelo Task
+- [x] **T3.3** - Agregar métodos al modelo Task
 
   - **str** method
   - Método para marcar como completada
   - Método para cambiar estado
   - Meta class con ordering
 
-- [ ] **T3.4** - Crear y ejecutar migraciones
+- [x] **T3.4** - Crear y ejecutar migraciones
   ```bash
   python manage.py makemigrations tasks
   python manage.py migrate
@@ -260,26 +260,26 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
 
 ### 📝 Serializers de Tareas
 
-- [ ] **T3.5** - Crear TaskSerializer básico
+- [x] **T3.5** - Crear TaskSerializer básico
 
   - Incluir todos los campos necesarios
   - Excluir user del input (auto-asignación)
-  - Validaciones de título y descripción
+  - Validaciones de título
 
-- [ ] **T3.6** - Crear TaskCreateSerializer
+- [x] **T3.6** - Crear TaskCreateSerializer
 
   - Solo campos necesarios para creación
   - Validaciones específicas
   - Método create personalizado
 
-- [ ] **T3.7** - Crear TaskUpdateSerializer
+- [x] **T3.7** - Crear TaskUpdateSerializer
 
   - Campos editables
   - Validaciones de estado
   - Método update personalizado
   - Lógica para completed_at
 
-- [ ] **T3.8** - Crear TaskListSerializer
+- [x] **T3.8** - Crear TaskListSerializer
   - Campos optimizados para listado
   - Información mínima necesaria
   - Campos calculados si es necesario
