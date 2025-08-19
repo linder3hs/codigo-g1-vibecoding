@@ -145,13 +145,13 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
 
 ### 👤 Modelos de Usuario
 
-- [ ] **T2.1** - Configurar modelo User personalizado (opcional)
+- [x] **T2.1** - Configurar modelo User personalizado (opcional)
 
   - Evaluar si usar User de Django por defecto
   - Crear modelo personalizado si es necesario
   - Configurar AUTH_USER_MODEL en settings
 
-- [ ] **T2.2** - Crear serializers de autenticación
+- [x] **T2.2** - Crear serializers de autenticación
   - UserRegistrationSerializer
   - UserLoginSerializer
   - UserProfileSerializer
@@ -159,7 +159,7 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
 
 ### 🔑 Endpoints de Autenticación
 
-- [ ] **T2.3** - Implementar vista de registro
+- [x] **T2.3** - Implementar vista de registro
 
   - POST /api/auth/register/
   - Validaciones de email único
