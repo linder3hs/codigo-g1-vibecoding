@@ -286,45 +286,45 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
 
 ### 🔄 ViewSets y Vistas
 
-- [ ] **T3.9** - Crear TaskViewSet
+- [x] **T3.9** - Crear TaskViewSet
 
   - Heredar de ModelViewSet
   - Configurar queryset filtrado por usuario
   - Configurar serializer_class
   - Configurar permission_classes
 
-- [ ] **T3.10** - Implementar método get_queryset
+- [x] **T3.10** - Implementar método get_queryset
 
   - Filtrar tareas por usuario autenticado
   - Optimizar queries con select_related
   - Aplicar ordering por defecto
 
-- [ ] **T3.11** - Implementar método perform_create
+- [x] **T3.11** - Implementar método perform_create
 
   - Asignar usuario automáticamente
   - Validaciones adicionales
   - Logging de creación
 
-- [ ] **T3.12** - Implementar método perform_update
+- [x] **T3.12** - Implementar método perform_update
 
   - Validar ownership
   - Actualizar completed_at si es necesario
   - Logging de modificaciones
 
-- [ ] **T3.13** - Implementar método perform_destroy
+- [x] **T3.13** - Implementar método perform_destroy
   - Validar ownership
   - Soft delete opcional
   - Logging de eliminación
 
 ### 🌐 URLs y Routing
 
-- [ ] **T3.14** - Configurar URLs de tareas
+- [x] **T3.14** - Configurar URLs de tareas
 
   - Crear tasks/urls.py
   - Configurar router para ViewSet
   - Incluir en urls.py principal
 
-- [ ] **T3.15** - Documentar endpoints de tareas
+- [x] **T3.15** - Documentar endpoints de tareas
   - GET /api/tasks/ (listar)
   - POST /api/tasks/ (crear)
   - GET /api/tasks/{id}/ (detalle)

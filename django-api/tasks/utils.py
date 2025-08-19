@@ -72,7 +72,7 @@ class TaskValidationUtils:
                 f"El {field_name} debe contener al menos un carácter alfanumérico."
             )
         
-        return cleaned_title
+        return cleaned_value
     
     @staticmethod
     def validate_title_uniqueness(cleaned_title, user, exclude_instance=None):
@@ -127,7 +127,7 @@ class TaskValidationUtils:
         if user:
             TaskValidationUtils.validate_title_uniqueness(cleaned_title, user, exclude_instance)
         
-        return cleaned_value
+        return cleaned_title
     
     @staticmethod
     def validate_title_for_update(value, user=None, exclude_instance=None, field_name="título"):

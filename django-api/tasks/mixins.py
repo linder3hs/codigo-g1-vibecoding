@@ -154,7 +154,7 @@ class TaskValidationMixin:
             return TaskValidationUtils.validate_title_complete(
                 value,
                 TaskValidationUtils.get_user_from_context(self.context),
-                self
+                None  # Para creación no hay instancia que excluir
             )
     
     def validate_task_description(self, value, required=False):

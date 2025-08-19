@@ -18,6 +18,6 @@ urlpatterns = [
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     
-    # 📝 Próximos endpoints a incluir:
-    # path('api/tasks/', include('tasks.urls')),
+    # ✅ Endpoints de tareas
+    path('', include('tasks.urls')),
 ]
