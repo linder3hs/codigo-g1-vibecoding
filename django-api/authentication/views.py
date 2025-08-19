@@ -4,9 +4,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from drf_spectacular.utils import extend_schema, OpenApiResponse
+from rest_framework import serializers
 
-from .serializers import UserRegistrationSerializer, UserLoginSerializer
+from .serializers import UserRegistrationSerializer, UserLoginSerializer, RefreshTokenSerializer
 
 User = get_user_model()
 
@@ -215,3 +217,120 @@ def login_user(request):
         'error': 'Credenciales de login inválidas',
         'details': serializer.errors
     }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(
+    request=RefreshTokenSerializer,
+    responses={
+        200: OpenApiResponse(
+            description="Nuevo access token generado exitosamente",
+            response={
+                'type': 'object',
+                'properties': {
+                    'access': {'type': 'string', 'description': 'Nuevo access token'},
+                    'refresh': {'type': 'string', 'description': 'Nuevo refresh token (si está habilitada la rotación)'},
+                    'message': {'type': 'string', 'description': 'Mensaje de confirmación'}
+                }
+            }
+        ),
+        400: OpenApiResponse(
+            description="Refresh token inválido o expirado",
+            response={
+                'type': 'object',
+                'properties': {
+                    'error': {'type': 'string', 'description': 'Descripción del error'}
+                }
+            }
+        ),
+        500: OpenApiResponse(
+            description="Error interno del servidor",
+            response={
+                'type': 'object',
+                'properties': {
+                    'error': {'type': 'string', 'description': 'Error interno del servidor'}
+                }
+            }
+        )
+    },
+    summary="Renovar access token",
+    description="Valida un refresh token y genera un nuevo access token. Si está habilitada la rotación de tokens, también se genera un nuevo refresh token.",
+    tags=["Autenticación"]
+)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def refresh_token(request):
+    """
+    Vista para renovar el access token usando un refresh token válido
+    
+    Esta vista:
+    1. Valida el refresh token recibido
+    2. Genera un nuevo access token
+    3. Si está habilitada la rotación, genera un nuevo refresh token
+    4. Retorna los nuevos tokens
+    """
+    try:
+        # Validar los datos de entrada
+        serializer = RefreshTokenSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(
+                {'error': 'Datos inválidos', 'details': serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Obtener el refresh token validado
+        refresh_token_str = serializer.validated_data['refresh']
+        
+        try:
+            # Crear objeto RefreshToken desde el string
+            refresh = RefreshToken(refresh_token_str)
+            
+            # Generar nuevo access token
+            new_access_token = str(refresh.access_token)
+            
+            # Preparar respuesta
+            response_data = {
+                'access': new_access_token,
+                'message': 'Access token renovado exitosamente'
+            }
+            
+            # Si está habilitada la rotación de refresh tokens, incluir el nuevo refresh token
+            # Esto se configura en settings.py con ROTATE_REFRESH_TOKENS = True
+            # La rotación está habilitada por defecto en nuestra configuración
+            try:
+                # Obtener el usuario del refresh token
+                user_id = refresh.get('user_id')
+                User = get_user_model()
+                user = User.objects.get(id=user_id)
+                
+                # Generar nuevo refresh token
+                new_refresh = RefreshToken.for_user(user)
+                response_data['refresh'] = str(new_refresh)
+                
+                # Blacklist el refresh token anterior si está configurado
+                try:
+                    refresh.blacklist()
+                except AttributeError:
+                    # Si no está disponible el blacklist, continuar
+                    pass
+            except (User.DoesNotExist, KeyError):
+                # Si hay problemas obteniendo el usuario, solo devolver el access token
+                pass
+            
+            return Response(response_data, status=status.HTTP_200_OK)
+            
+        except TokenError as e:
+            return Response(
+                {'error': 'Refresh token inválido o expirado'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except InvalidToken as e:
+            return Response(
+                {'error': 'Token inválido'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+    except Exception as e:
+        return Response(
+            {'error': 'Error interno del servidor'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

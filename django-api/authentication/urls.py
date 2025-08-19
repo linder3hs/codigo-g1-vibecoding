@@ -15,6 +15,10 @@ urlpatterns = [
     # POST /api/auth/login/
     path('login/', views.login_user, name='login'),
     
+    # 🔄 Endpoint para renovar access token
+    # POST /api/auth/refresh/
+    path('refresh/', views.refresh_token, name='refresh_token'),
+    
     # 📝 Próximos endpoints a implementar:
     # path('logout/', views.logout_user, name='logout'),
     # path('profile/', views.user_profile, name='profile'),

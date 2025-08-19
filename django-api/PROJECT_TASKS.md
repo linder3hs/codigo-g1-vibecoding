@@ -166,14 +166,14 @@ Este documento contiene todas las tareas necesarias para desarrollar la TODO-App
   - Validaciones de contraseña segura
   - Hasheo automático de contraseña
 
-- [ ] **T2.4** - Implementar vista de login
+- [x] **T2.4** - Implementar vista de login
 
   - POST /api/auth/login/
   - Validación de credenciales
   - Generación de tokens JWT
   - Respuesta con access y refresh token
 
-- [ ] **T2.5** - Implementar vista de refresh token
+- [x] **T2.5** - Implementar vista de refresh token
 
   - POST /api/auth/refresh/
   - Validación de refresh token

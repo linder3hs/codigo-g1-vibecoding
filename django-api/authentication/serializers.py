@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -265,3 +267,28 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.set_password(self.validated_data['new_password'])
         user.save()
         return user
+
+
+class RefreshTokenSerializer(serializers.Serializer):
+    """Serializer para validar el refresh token.
+    
+    Valida que el refresh token recibido sea válido y no haya expirado
+    antes de proceder con la renovación del access token.
+    """
+    
+    refresh = serializers.CharField(
+        help_text="Refresh token válido",
+        write_only=True
+    )
+
+    def validate_refresh(self, value):
+        """Valida que el refresh token sea válido y no haya expirado."""
+        try:
+            # Intentar crear un objeto RefreshToken desde el string
+            # Esto validará automáticamente la firma y expiración
+            RefreshToken(value)
+            return value
+        except TokenError:
+            raise serializers.ValidationError(
+                "El refresh token no es válido o ha expirado"
+            )
