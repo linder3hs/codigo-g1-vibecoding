@@ -5,6 +5,7 @@
 
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { HomePage, CreateTodoPage } from "../pages";
+import { LoginPage } from "../pages/LoginPage";
 import { ErrorPage } from "./ErrorPage";
 
 /**
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
   {
     path: "/crear-todo",
     element: <CreateTodoPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
     errorElement: <ErrorPage />,
   },
 ]);

@@ -1,130 +1,378 @@
 /**
- * Custom hook for managing todo list logic
- * Encapsulates filtering, formatting, and state management
+ * Custom hook for managing todo list logic with Redux integration
+ * Encapsulates CRUD operations, filtering, pagination, and state management
  */
 
-import { useState, useMemo, useEffect } from "react";
-import { todos as initialTodos } from "../todos";
-import type { Todo } from "../todos";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchTodos,
+  fetchTodosSuccess,
+  fetchTodosFailure,
+  createTodo,
+  createTodoSuccess,
+  createTodoFailure,
+  updateTodo,
+  updateTodoSuccess,
+  updateTodoFailure,
+  deleteTodo,
+  deleteTodoSuccess,
+  deleteTodoFailure,
+  setFilters,
+  clearFilters,
+  setCurrentTodo,
+  clearError,
+  toggleTodoOptimistic,
+  selectTodosArray,
+  selectCurrentTodo,
+  selectTodoFilters,
+  selectTodoIsLoading,
+  selectTodoError,
+  selectTodoPagination,
+  selectFilteredTodos,
+  selectTodoStats,
+  selectTodoById,
+} from "../stores/slices/todoSlice";
+import taskService from "../services/taskService";
 import { formatDate } from "../utils";
+import type {
+  Todo,
+  CreateTodoInput,
+  UpdateTodoInput,
+  TodoFilters,
+  TodoPagination,
+  TodoError,
+} from "../types/todo";
 
-export type FilterType = "all" | "pending" | "completed";
-
+/**
+ * Return type for the useTodo hook
+ */
 export interface UseTodoReturn {
-  // State
-  filter: FilterType;
-  setFilter: (filter: FilterType) => void;
+  // State from Redux
   todos: Todo[];
+  currentTodo: Todo | null;
+  filters: TodoFilters;
+  isLoading: boolean;
+  error: TodoError | null;
+  pagination: TodoPagination;
 
   // Computed values
   filteredTodos: Todo[];
-  todosCount: {
+  todosStats: {
     total: number;
     completed: number;
     pending: number;
   };
 
-  // Actions
-  addTodo: (todo: Omit<Todo, "id">) => void;
-  updateTodo: (id: number, updates: Partial<Todo>) => void;
-  deleteTodo: (id: number) => void;
-  toggleTodo: (id: number) => void;
+  // CRUD Actions
+  fetchTodosList: (filters?: Partial<TodoFilters>, pagination?: Partial<Pick<TodoPagination, 'page' | 'limit'>>) => Promise<void>;
+  createNewTodo: (todoData: CreateTodoInput) => Promise<void>;
+  updateExistingTodo: (id: string, updates: UpdateTodoInput) => Promise<void>;
+  deleteExistingTodo: (id: string) => Promise<void>;
+  toggleTodoStatus: (id: string) => Promise<void>;
+  markTodoCompleted: (id: string) => Promise<void>;
+
+  // Filter and pagination actions
+  updateFilters: (filters: Partial<TodoFilters>) => void;
+  resetFilters: () => void;
+  setCurrentTodoItem: (todo: Todo | null) => void;
+  getTodoById: (id: string) => Todo | undefined;
 
   // Utility functions
+  clearTodoError: () => void;
   formatDate: (date: Date) => string;
 }
 
 /**
- * Custom hook that manages todo list state and provides utility functions
+ * Custom hook that manages todo list state with Redux integration
+ * Provides CRUD operations, filtering, pagination, and optimistic updates
  *
  * @returns {UseTodoReturn} Object containing state, computed values, and utility functions
  */
 export const useTodo = (): UseTodoReturn => {
-  const [filter, setFilter] = useState<FilterType>("all");
-  const [todos, setTodos] = useState<Todo[]>(() => {
-    // Try to load from localStorage, fallback to initial todos
-    const savedTodos = localStorage.getItem("todos");
-    if (savedTodos) {
+  const dispatch = useDispatch();
+
+  // Redux state selectors
+  const todos = useSelector(selectTodosArray);
+  const currentTodo = useSelector(selectCurrentTodo);
+  const filters = useSelector(selectTodoFilters);
+  const isLoading = useSelector(selectTodoIsLoading);
+  const error = useSelector(selectTodoError);
+  const pagination = useSelector(selectTodoPagination);
+  const filteredTodos = useSelector(selectFilteredTodos);
+  const todosStats = useSelector(selectTodoStats);
+
+  /**
+   * Fetch todos from API with optional filters and pagination
+   * @param filters - Optional filters to apply
+   * @param pagination - Optional pagination parameters
+   */
+  const fetchTodosList = useCallback(
+    async (
+      filters?: Partial<TodoFilters>,
+      pagination?: Partial<Pick<TodoPagination, 'page' | 'limit'>>
+    ): Promise<void> => {
       try {
-        const parsed = JSON.parse(savedTodos);
-        return parsed.map((todo: Todo) => ({
-          ...todo,
-          created_at: new Date(todo.created_at),
-          updated_at: new Date(todo.updated_at),
+        dispatch(fetchTodos({ filters, pagination }));
+        const response = await taskService.getTasks(filters, pagination);
+        
+        if (response.success) {
+          dispatch(fetchTodosSuccess({
+            todos: response.data.todos,
+            pagination: response.data.pagination,
+          }));
+        } else {
+          dispatch(fetchTodosFailure({
+            error: { message: response.message || 'Failed to fetch todos' },
+          }));
+        }
+      } catch (err) {
+        dispatch(fetchTodosFailure({
+          error: {
+            message: err instanceof Error ? err.message : 'Unknown error occurred',
+          },
         }));
-      } catch {
-        return initialTodos;
       }
-    }
-    return initialTodos;
-  });
+    },
+    [dispatch]
+  );
 
-  // Save to localStorage whenever todos change
+  /**
+   * Create a new todo with optimistic update
+   * @param todoData - Data for the new todo
+   */
+  const createNewTodo = useCallback(
+    async (todoData: CreateTodoInput): Promise<void> => {
+      try {
+        dispatch(createTodo());
+        const response = await taskService.createTask(todoData);
+        
+        if (response.success) {
+          dispatch(createTodoSuccess({ todo: response.data.todo }));
+        } else {
+          dispatch(createTodoFailure({
+            error: { message: response.message || 'Failed to create todo' },
+          }));
+        }
+      } catch (err) {
+        dispatch(createTodoFailure({
+          error: {
+            message: err instanceof Error ? err.message : 'Unknown error occurred',
+          },
+        }));
+      }
+    },
+    [dispatch]
+  );
+
+  /**
+   * Update an existing todo
+   * @param id - Todo ID
+   * @param updates - Updates to apply
+   */
+  const updateExistingTodo = useCallback(
+    async (id: string, updates: UpdateTodoInput): Promise<void> => {
+      try {
+        dispatch(updateTodo());
+        const response = await taskService.updateTask(id, updates);
+        
+        if (response.success) {
+          dispatch(updateTodoSuccess({ todo: response.data.todo }));
+        } else {
+          dispatch(updateTodoFailure({
+            error: { message: response.message || 'Failed to update todo' },
+          }));
+        }
+      } catch (err) {
+        dispatch(updateTodoFailure({
+          error: {
+            message: err instanceof Error ? err.message : 'Unknown error occurred',
+          },
+        }));
+      }
+    },
+    [dispatch]
+  );
+
+  /**
+   * Delete a todo
+   * @param id - Todo ID to delete
+   */
+  const deleteExistingTodo = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        dispatch(deleteTodo());
+        const response = await taskService.deleteTask(id);
+        
+        if (response.success) {
+          dispatch(deleteTodoSuccess({ id }));
+        } else {
+          dispatch(deleteTodoFailure({
+            error: { message: response.message || 'Failed to delete todo' },
+          }));
+        }
+      } catch (err) {
+        dispatch(deleteTodoFailure({
+          error: {
+            message: err instanceof Error ? err.message : 'Unknown error occurred',
+          },
+        }));
+      }
+    },
+    [dispatch]
+  );
+
+  /**
+   * Toggle todo completion status with optimistic update
+   * @param id - Todo ID to toggle
+   */
+  const toggleTodoStatus = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        // Optimistic update
+        dispatch(toggleTodoOptimistic({ id }));
+        
+        const todo = todos.find(t => t.id === id);
+        if (!todo) return;
+        
+        const response = await taskService.updateTask(id, {
+          completed: !todo.completed,
+        });
+        
+        if (response.success) {
+          dispatch(updateTodoSuccess({ todo: response.data.todo }));
+        } else {
+          // Revert optimistic update on failure
+          dispatch(toggleTodoOptimistic({ id }));
+          dispatch(updateTodoFailure({
+            error: { message: response.message || 'Failed to toggle todo' },
+          }));
+        }
+      } catch (err) {
+        // Revert optimistic update on error
+        dispatch(toggleTodoOptimistic({ id }));
+        dispatch(updateTodoFailure({
+          error: {
+            message: err instanceof Error ? err.message : 'Unknown error occurred',
+          },
+        }));
+      }
+    },
+    [dispatch, todos]
+  );
+
+  /**
+   * Mark a todo as completed
+   * @param id - Todo ID to mark as completed
+   */
+  const markTodoCompleted = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        const response = await taskService.markCompleted(id);
+        
+        if (response.success) {
+          dispatch(updateTodoSuccess({ todo: response.data.todo }));
+        } else {
+          dispatch(updateTodoFailure({
+            error: { message: response.message || 'Failed to mark todo as completed' },
+          }));
+        }
+      } catch (err) {
+        dispatch(updateTodoFailure({
+          error: {
+            message: err instanceof Error ? err.message : 'Unknown error occurred',
+          },
+        }));
+      }
+    },
+    [dispatch]
+  );
+
+  /**
+   * Update filters
+   * @param newFilters - Filters to update
+   */
+  const updateFilters = useCallback(
+    (newFilters: Partial<TodoFilters>): void => {
+      dispatch(setFilters({ filters: newFilters }));
+    },
+    [dispatch]
+  );
+
+  /**
+   * Reset all filters to default
+   */
+  const resetFilters = useCallback((): void => {
+    dispatch(clearFilters());
+  }, [dispatch]);
+
+  /**
+   * Set current todo item
+   * @param todo - Todo to set as current
+   */
+  const setCurrentTodoItem = useCallback(
+    (todo: Todo | null): void => {
+      dispatch(setCurrentTodo({ todo }));
+    },
+    [dispatch]
+  );
+
+  /**
+   * Get todo by ID using selector
+   * @param id - Todo ID
+   * @returns Todo or undefined
+   */
+  const getTodoById = useCallback(
+    (id: string): Todo | undefined => {
+      const result = selectTodoById({ todos: { todos, currentTodo, filters, isLoading, error, pagination } }, id);
+      return result || undefined;
+    },
+    [todos, currentTodo, filters, isLoading, error, pagination]
+  );
+
+  /**
+   * Clear todo error
+   */
+  const clearTodoError = useCallback((): void => {
+    dispatch(clearError());
+  }, [dispatch]);
+
+  // Auto-fetch todos on mount if none exist
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
-
-  // Memoized todos count to avoid recalculation on every render
-  const todosCount = useMemo(() => {
-    const total = todos.length;
-    const completed = todos.filter((todo) => todo.is_finished).length;
-    const pending = total - completed;
-    return { total, completed, pending };
-  }, [todos]);
-
-  // Memoized filtered todos based on current filter
-  const filteredTodos = useMemo(() => {
-    return todos.filter((todo) => {
-      if (filter === "completed") return todo.is_finished;
-      if (filter === "pending") return !todo.is_finished;
-      return true;
-    });
-  }, [todos, filter]);
-
-  // Action functions
-  const addTodo = (todoData: Omit<Todo, "id">) => {
-    const newTodo: Todo = {
-      ...todoData,
-      id: Math.max(0, ...todos.map((t) => t.id)) + 1,
-    };
-    setTodos((prev) => [...prev, newTodo]);
-  };
-
-  const updateTodo = (id: number, updates: Partial<Todo>) => {
-    setTodos((prev) =>
-      prev.map((todo) =>
-        todo.id === id ? { ...todo, ...updates, updated_at: new Date() } : todo
-      )
-    );
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodos((prev) => prev.filter((todo) => todo.id !== id));
-  };
-
-  const toggleTodo = (id: number) => {
-    updateTodo(id, {
-      is_finished: !todos.find((t) => t.id === id)?.is_finished,
-    });
-  };
+    if (todos.length === 0 && !isLoading) {
+      fetchTodosList();
+    }
+  }, [todos.length, isLoading, fetchTodosList]);
 
   return {
-    // State
-    filter,
-    setFilter,
+    // State from Redux
     todos,
+    currentTodo,
+    filters,
+    isLoading,
+    error,
+    pagination,
 
     // Computed values
     filteredTodos,
-    todosCount,
+    todosStats,
 
-    // Actions
-    addTodo,
-    updateTodo,
-    deleteTodo,
-    toggleTodo,
+    // CRUD Actions
+    fetchTodosList,
+    createNewTodo,
+    updateExistingTodo,
+    deleteExistingTodo,
+    toggleTodoStatus,
+    markTodoCompleted,
+
+    // Filter and pagination actions
+    updateFilters,
+    resetFilters,
+    setCurrentTodoItem,
+    getTodoById,
 
     // Utility functions
+    clearTodoError,
     formatDate,
   };
 };

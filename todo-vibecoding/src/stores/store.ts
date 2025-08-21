@@ -19,14 +19,14 @@ import { appConfig } from '@/config';
 
 // Import slices
 import authSlice from './slices/authSlice';
-// import todoSlice from './slices/todoSlice';
+import todoSlice from './slices/todoSlice';
 
 /**
  * Root reducer combining all slices
  */
 const rootReducer = combineReducers({
   auth: authSlice,
-  // todos: todoSlice,
+  todos: todoSlice,
   // Add more slices here as needed
 });
 
@@ -38,7 +38,7 @@ const persistConfig = {
   version: 1,
   storage,
   // Whitelist: specify which slices to persist
-  whitelist: ['auth'], // Only persist auth state
+  whitelist: ['auth', 'todos'], // Persist auth and todos state
   // Blacklist: specify which slices NOT to persist
   blacklist: [], // Don't blacklist anything for now
 };
