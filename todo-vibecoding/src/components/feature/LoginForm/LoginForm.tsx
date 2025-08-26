@@ -3,29 +3,29 @@
  * Modern login form with React Hook Form, Zod validation, and Tailwind CSS
  */
 
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
-import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card } from '@/components/ui/card';
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { Eye, EyeOff, User, Lock, Loader2 } from "lucide-react";
+import { z } from "zod";
+import { useNavigate } from "react-router";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card } from "@/components/ui/card";
+import { useAuth } from "@/hooks/useAuth";
+import type { LoginCredentials } from "@/types/auth";
 
 /**
  * Login form validation schema
  */
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'El email es requerido')
-    .email('Formato de email inválido'),
+  username: z.string().min(1, "El username es requerido"),
   password: z
     .string()
-    .min(1, 'La contraseña es requerida')
-    .min(6, 'La contraseña debe tener al menos 6 caracteres'),
+    .min(1, "La contraseña es requerida")
+    .min(6, "La contraseña debe tener al menos 6 caracteres"),
   rememberMe: z.boolean().optional(),
 });
 
@@ -35,10 +35,9 @@ export type LoginFormData = z.infer<typeof loginSchema>;
  * LoginForm component props
  */
 interface LoginFormProps {
-  onSubmit?: (data: LoginFormData) => void | Promise<void>;
-  isLoading?: boolean;
-  error?: string | null;
   className?: string;
+  onSuccess?: () => void;
+  onRegisterClick?: () => void;
 }
 
 /**
@@ -65,34 +64,68 @@ const itemVariants = {
  * LoginForm Component
  */
 export const LoginForm: React.FC<LoginFormProps> = ({
-  onSubmit,
-  isLoading = false,
-  error = null,
-  className = '',
+  className = "",
+  onSuccess,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const { login, isLoading, error, clearAuthError, isAuthenticated } =
+    useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      username: "",
+      password: "",
       rememberMe: false,
     },
   });
+
+  /**
+   * Handle successful authentication
+   */
+  useEffect(() => {
+    if (isAuthenticated) {
+      onSuccess?.();
+      navigate("/");
+    }
+  }, [isAuthenticated, onSuccess, navigate]);
+
+  /**
+   * Clear auth error when component unmounts or when starting new login
+   */
+  useEffect(() => {
+    return () => {
+      clearAuthError();
+    };
+  }, [clearAuthError]);
 
   /**
    * Handle form submission
    */
   const handleFormSubmit = async (data: LoginFormData) => {
     try {
-      await onSubmit?.(data);
+      // Clear any previous errors
+      clearAuthError();
+
+      // Convert form data to LoginCredentials
+      const credentials: LoginCredentials = {
+        username: data.username,
+        password: data.password,
+      };
+
+      const success = await login(credentials);
+
+      if (success) {
+        reset(); // Clear form on success
+      }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
     }
   };
 
@@ -118,9 +151,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Iniciar Sesión
           </h1>
-          <p className="text-gray-600">
-            Ingresa tus credenciales para acceder
-          </p>
+          <p className="text-gray-600">Ingresa tus credenciales para acceder</p>
         </motion.div>
 
         {/* Error Message */}
@@ -129,60 +160,66 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             variants={itemVariants}
             className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg"
           >
-            <p className="text-red-700 text-sm font-medium">{error}</p>
+            <p className="text-red-700 text-sm font-medium">{error.message}</p>
           </motion.div>
         )}
 
         {/* Form */}
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-          {/* Email Field */}
+          {/* Username Field */}
           <motion.div variants={itemVariants} className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email
+            <Label
+              htmlFor="username"
+              className="text-sm font-medium text-gray-700"
+            >
+              Usuario
             </Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
-                id="email"
-                type="email"
-                placeholder="tu@email.com"
+                id="username"
+                type="text"
+                placeholder="tu_usuario"
                 className={`pl-10 h-12 transition-all duration-200 ${
-                  errors.email
-                    ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                    : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'
+                  errors.username
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
                 }`}
-                {...register('email')}
+                {...register("username")}
                 disabled={isFormLoading}
               />
             </div>
-            {errors.email && (
+            {errors.username && (
               <motion.p
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-red-600 text-sm font-medium"
               >
-                {errors.email.message}
+                {errors.username.message}
               </motion.p>
             )}
           </motion.div>
 
           {/* Password Field */}
           <motion.div variants={itemVariants} className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
+            >
               Contraseña
             </Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
               <Input
                 id="password"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 className={`pl-10 pr-12 h-12 transition-all duration-200 ${
                   errors.password
-                    ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                    : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'
+                    ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
                 }`}
-                {...register('password')}
+                {...register("password")}
                 disabled={isFormLoading}
               />
               <button
@@ -215,7 +252,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               id="rememberMe"
               type="checkbox"
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-200"
-              {...register('rememberMe')}
+              {...register("rememberMe")}
               disabled={isFormLoading}
             />
             <Label
@@ -239,7 +276,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                   Iniciando sesión...
                 </>
               ) : (
-                'Iniciar Sesión'
+                "Iniciar Sesión"
               )}
             </Button>
           </motion.div>
@@ -259,7 +296,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         {/* Footer */}
         <motion.div variants={itemVariants} className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            ¿No tienes una cuenta?{' '}
+            ¿No tienes una cuenta?{" "}
             <button
               type="button"
               className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"

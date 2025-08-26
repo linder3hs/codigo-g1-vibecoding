@@ -11,7 +11,7 @@ export interface User {
   email: string;
   name: string;
   avatar?: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   createdAt: string;
   updatedAt: string;
 }
@@ -20,7 +20,7 @@ export interface User {
  * Login credentials interface
  */
 export interface LoginCredentials {
-  email: string;
+  username: string;
   password: string;
   rememberMe?: boolean;
 }

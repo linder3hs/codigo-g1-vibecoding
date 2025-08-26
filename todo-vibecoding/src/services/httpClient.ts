@@ -52,7 +52,7 @@ interface ApiResponseData {
  * HTTP Client configuration
  */
 const httpClientConfig: HttpClientConfig = {
-  baseURL: `${env.API_BASE_URL}/${env.API_VERSION}`,
+  baseURL: `${env.API_BASE_URL}`,
   timeout: 10000, // 10 seconds
   headers: {
     "Content-Type": "application/json",

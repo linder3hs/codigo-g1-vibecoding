@@ -369,11 +369,11 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Hook genérico para formularios
-- [ ] Integración con validaciones Zod
-- [ ] Manejo de estados apropiado
-- [ ] Reutilizable en diferentes formularios
-- [ ] Tipos TypeScript genéricos
+- [x] Hook genérico para formularios
+- [x] Integración con validaciones Zod
+- [x] Manejo de estados apropiado
+- [x] Reutilizable en diferentes formularios
+- [x] Tipos TypeScript genéricos
 
 ---
 

@@ -77,7 +77,7 @@ class AuthService {
 
       // Make API request
       const response = await httpClient.post<AuthResponse>(
-        "/auth/login",
+        "/auth/login/",
         credentials
       );
 

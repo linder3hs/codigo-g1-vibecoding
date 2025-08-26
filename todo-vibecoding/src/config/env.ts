@@ -20,11 +20,11 @@ interface EnvConfig {
  */
 function getEnvVar(key: string, defaultValue?: string): string {
   const value = import.meta.env[key] || defaultValue;
-  
+
   if (!value) {
     throw new Error(`Missing required environment variable: ${key}`);
   }
-  
+
   return value;
 }
 
@@ -33,10 +33,10 @@ function getEnvVar(key: string, defaultValue?: string): string {
  * All environment variables are centralized here for type safety
  */
 export const env: EnvConfig = {
-  API_BASE_URL: getEnvVar('VITE_API_BASE_URL', 'http://localhost:8000/api'),
-  API_VERSION: getEnvVar('VITE_API_VERSION', 'v1'),
-  APP_NAME: getEnvVar('VITE_APP_NAME', 'Todo VibeCoding'),
-  APP_VERSION: getEnvVar('VITE_APP_VERSION', '1.0.0'),
+  API_BASE_URL: getEnvVar("VITE_API_BASE_URL", "http://localhost:8000/api"),
+  API_VERSION: getEnvVar("VITE_API_VERSION", "v1"),
+  APP_NAME: getEnvVar("VITE_APP_NAME", "Todo VibeCoding"),
+  APP_VERSION: getEnvVar("VITE_APP_VERSION", "1.0.0"),
   IS_DEVELOPMENT: import.meta.env.DEV,
   IS_PRODUCTION: import.meta.env.PROD,
 };
@@ -47,8 +47,8 @@ export const env: EnvConfig = {
 export const apiEndpoints = {
   base: `${env.API_BASE_URL}/${env.API_VERSION}`,
   todos: {
-    list: '/todos',
-    create: '/todos',
+    list: "/todos",
+    create: "/todos",
     update: (id: string) => `/todos/${id}`,
     delete: (id: string) => `/todos/${id}`,
     toggle: (id: string) => `/todos/${id}/toggle`,
