@@ -3,8 +3,8 @@
  * Página de registro de usuario
  */
 
-import React from 'react';
-import { RegisterForm } from '../components/feature/RegisterForm';
+import React from "react";
+import { RegisterForm } from "../../components/feature/RegisterForm";
 
 /**
  * RegisterPage - Página principal de registro

@@ -21,6 +21,7 @@ import type {
   LoginCredentials,
   RegisterData,
   AuthResponse,
+  ApiAuthResponse,
   RefreshTokenResponse,
   AuthError,
 } from "../types/auth";
@@ -77,7 +78,7 @@ class AuthService {
       store.dispatch(loginStart());
 
       // Make API request
-      const response = await httpClient.post<AuthResponse>(
+      const response = await httpClient.post<ApiAuthResponse>(
         "/auth/login/",
         credentials
       );
@@ -86,7 +87,12 @@ class AuthService {
         throw new Error("No data received from server");
       }
 
-      const { user, token, refreshToken, expiresIn } = response.data;
+      // Map API response to expected format
+      const { user, tokens } = response.data;
+      const token = tokens.access;
+      const refreshToken = tokens.refresh;
+      // Default expiresIn to 1 hour if not provided by API
+      const expiresIn = response.data.expiresIn || 3600;
 
       // Store tokens and user data
       this.storeAuthData(user, token, refreshToken, expiresIn);
@@ -94,9 +100,17 @@ class AuthService {
       // Dispatch success action
       store.dispatch(loginSuccess({ user, token, refreshToken, expiresIn }));
 
+      // Return normalized AuthResponse
+      const normalizedResponse: AuthResponse = {
+        user,
+        token,
+        refreshToken,
+        expiresIn,
+      };
+
       return {
         success: true,
-        data: response.data,
+        data: normalizedResponse,
       };
     } catch (error) {
       const authError = this.handleAuthError(error);
@@ -127,7 +141,7 @@ class AuthService {
       store.dispatch(registerStart());
 
       // Make API request with all user data including password_confirm
-      const response = await httpClient.post<AuthResponse>(
+      const response = await httpClient.post<ApiAuthResponse>(
         "/auth/register/",
         userData
       );
@@ -136,7 +150,12 @@ class AuthService {
         throw new Error("No data received from server");
       }
 
-      const { user, token, refreshToken, expiresIn } = response.data;
+      // Map API response to expected format
+      const { user, tokens } = response.data;
+      const token = tokens.access;
+      const refreshToken = tokens.refresh;
+      // Default expiresIn to 1 hour if not provided by API
+      const expiresIn = response.data.expiresIn || 3600;
 
       // Store tokens and user data
       this.storeAuthData(user, token, refreshToken, expiresIn);
@@ -144,9 +163,17 @@ class AuthService {
       // Dispatch success action
       store.dispatch(registerSuccess({ user, token, refreshToken, expiresIn }));
 
+      // Return normalized AuthResponse
+      const normalizedResponse: AuthResponse = {
+        user,
+        token,
+        refreshToken,
+        expiresIn,
+      };
+
       return {
         success: true,
-        data: response.data,
+        data: normalizedResponse,
       };
     } catch (error) {
       const authError = this.handleAuthError(error);

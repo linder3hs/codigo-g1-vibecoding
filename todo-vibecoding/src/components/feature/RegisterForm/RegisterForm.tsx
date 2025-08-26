@@ -3,30 +3,14 @@
  * Formulario de registro de usuario con validación completa
  */
 
-import React, { useState, useEffect } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router";
+import React from "react";
+import { Controller } from "react-hook-form";
+import { Link } from "react-router";
 import { Eye, EyeOff, User, Mail, Lock, UserCheck, Shield } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-// Types and schemas
-import { registerSchema } from "../../../schemas/validationSchemas";
-import type { RegisterData } from "../../../types/auth";
-
-// Form type that matches the schema exactly
-type FormData = {
-  username: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  password: string;
-  password_confirm: string;
-  acceptTerms: boolean;
-  subscribeNewsletter?: boolean;
-};
-
-// Hooks
-import { useAuth } from "../../../hooks/useAuth";
+// Custom hook
+import { useRegisterForm } from "./hooks";
 
 // UI Components
 import { Button } from "../../ui/button";
@@ -43,137 +27,39 @@ import { Checkbox } from "../../ui/checkbox";
 import { Alert, AlertDescription } from "../../ui/alert";
 import { Progress } from "../../ui/progress";
 
-/**
- * Password strength calculation
- */
-const calculatePasswordStrength = (password: string): number => {
-  let strength = 0;
 
-  // Length check
-  if (password.length >= 8) strength += 25;
-
-  // Uppercase check
-  if (/[A-Z]/.test(password)) strength += 25;
-
-  // Lowercase check
-  if (/[a-z]/.test(password)) strength += 25;
-
-  // Number check
-  if (/\d/.test(password)) strength += 12.5;
-
-  // Special character check
-  if (/[@$!%*?&]/.test(password)) strength += 12.5;
-
-  return Math.min(strength, 100);
-};
-
-/**
- * Get password strength color and text
- */
-const getPasswordStrengthInfo = (strength: number) => {
-  if (strength < 25) return { color: "destructive", text: "Muy débil" };
-  if (strength < 50) return { color: "warning", text: "Débil" };
-  if (strength < 75) return { color: "warning", text: "Moderada" };
-  return { color: "success", text: "Fuerte" };
-};
 
 /**
  * RegisterForm component
  */
 export const RegisterForm: React.FC = () => {
-  const navigate = useNavigate();
   const {
-    register: registerUser,
-    isLoading,
-    error,
-    clearAuthError,
-  } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const {
+    // Form methods
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
-    watch,
-    reset,
-  } = useForm<FormData>({
-    resolver: zodResolver(registerSchema),
-    mode: "onChange",
-    defaultValues: {
-      username: "",
-      email: "",
-      first_name: "",
-      last_name: "",
-      password: "",
-      password_confirm: "",
-      subscribeNewsletter: false,
-      acceptTerms: false,
-    },
-  });
-
-  // Watch password for strength calculation
-  const password = watch("password") || "";
-  const passwordConfirm = watch("password_confirm") || "";
-  const passwordStrength = calculatePasswordStrength(password);
-  const strengthInfo = getPasswordStrengthInfo(passwordStrength);
-
-  // Clear auth errors when component mounts
-  useEffect(() => {
-    clearAuthError();
-  }, [clearAuthError]);
-
-  /**
-   * Check if passwords match
-   */
-  const passwordsMatch =
-    password && passwordConfirm && password === passwordConfirm;
-
-  /**
-   * Handle form submission
-   */
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    try {
-      // Extract subscribeNewsletter and acceptTerms from form data
-      const { subscribeNewsletter, acceptTerms, ...registerData } = data;
-
-      // Validate terms acceptance (additional check)
-      if (!acceptTerms) {
-        console.error("Terms must be accepted");
-        return;
-      }
-
-      // Transform to RegisterData type
-      const userData: RegisterData = {
-        username: registerData.username,
-        email: registerData.email,
-        first_name: registerData.first_name,
-        last_name: registerData.last_name,
-        password: registerData.password,
-        password_confirm: registerData.password_confirm,
-      };
-
-      // Register user
-      const success = await registerUser(userData);
-
-      if (success) {
-        // Reset form
-        reset();
-
-        // Handle newsletter subscription if needed
-        if (subscribeNewsletter) {
-          // TODO: Implement newsletter subscription logic
-          console.log("User subscribed to newsletter");
-        }
-
-        // Navigate to home page
-        navigate("/", { replace: true });
-      }
-    } catch (error) {
-      // Error handled by useAuth hook
-      console.error("Registration error:", error);
-    }
-  };
+    
+    // Form submission
+    onSubmit,
+    
+    // Password visibility state
+    showPassword,
+    setShowPassword,
+    showConfirmPassword,
+    setShowConfirmPassword,
+    
+    // Password validation
+    password,
+    passwordConfirm,
+    passwordStrength,
+    strengthInfo,
+    passwordsMatch,
+    
+    // Auth state
+    isLoading,
+    error,
+  } = useRegisterForm();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -188,7 +74,7 @@ export const RegisterForm: React.FC = () => {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
             {/* Error Alert */}
             {error && (
               <Alert variant="destructive">
@@ -201,121 +87,184 @@ export const RegisterForm: React.FC = () => {
             )}
 
             {/* Username Field */}
-            <div className="space-y-2">
-              <Label htmlFor="username">Nombre de usuario</Label>
+            <div className="space-y-1">
+              <Label htmlFor="username" className="text-sm font-medium">
+                Nombre de usuario
+              </Label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="username"
                   type="text"
                   placeholder="tu_usuario"
-                  className="pl-10"
+                  className="pl-10 h-12"
                   {...register("username")}
                   aria-invalid={errors.username ? "true" : "false"}
                 />
               </div>
-              {errors.username && (
-                <p className="text-sm text-red-600">
-                  {errors.username.message}
-                </p>
-              )}
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.username && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.username.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Email Field */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Correo electrónico</Label>
+            <div className="space-y-1">
+              <Label htmlFor="email" className="text-sm font-medium">
+                Correo electrónico
+              </Label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="tu@email.com"
-                  className="pl-10"
+                  className="pl-10 h-12"
                   {...register("email")}
                   aria-invalid={errors.email ? "true" : "false"}
                 />
               </div>
-              {errors.email && (
-                <p className="text-sm text-red-600">{errors.email.message}</p>
-              )}
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.email && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.email.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* First Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="first_name">Nombre</Label>
+            <div className="space-y-1">
+              <Label htmlFor="first_name" className="text-sm font-medium">
+                Nombre
+              </Label>
               <div className="relative">
-                <UserCheck className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <UserCheck className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="first_name"
                   type="text"
                   placeholder="Tu nombre"
-                  className="pl-10"
+                  className="pl-10 h-12"
                   {...register("first_name")}
                   aria-invalid={errors.first_name ? "true" : "false"}
                 />
               </div>
-              {errors.first_name && (
-                <p className="text-sm text-red-600">
-                  {errors.first_name.message}
-                </p>
-              )}
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.first_name && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.first_name.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Last Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="last_name">Apellido</Label>
+            <div className="space-y-1">
+              <Label htmlFor="last_name" className="text-sm font-medium">
+                Apellido
+              </Label>
               <div className="relative">
-                <UserCheck className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <UserCheck className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="last_name"
                   type="text"
                   placeholder="Tu apellido"
-                  className="pl-10"
+                  className="pl-10 h-12"
                   {...register("last_name")}
                   aria-invalid={errors.last_name ? "true" : "false"}
                 />
               </div>
-              {errors.last_name && (
-                <p className="text-sm text-red-600">
-                  {errors.last_name.message}
-                </p>
-              )}
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.last_name && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.last_name.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Password Field */}
-            <div className="space-y-2">
-              <Label htmlFor="password">Contraseña</Label>
+            <div className="space-y-1">
+              <Label htmlFor="password" className="text-sm font-medium">
+                Contraseña
+              </Label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="pl-10 pr-10"
+                  className="pl-10 pr-12 h-12"
                   {...register("password")}
                   aria-invalid={errors.password ? "true" : "false"}
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors"
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={
                     showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                   }
                 >
-                  {showPassword ? <EyeOff /> : <Eye />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-sm text-red-600">
-                  {errors.password.message}
-                </p>
-              )}
+
+              {/* Error message with fixed height */}
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.password && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.password.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
 
               {/* Password Strength Indicator */}
               {password && (
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs">
                     <span>Fortaleza de la contraseña:</span>
                     <span
                       className={`font-medium ${
@@ -338,28 +287,30 @@ export const RegisterForm: React.FC = () => {
                         | "warning"
                         | "destructive"
                     }
-                    className="h-2"
+                    className="h-1.5"
                   />
                 </div>
               )}
             </div>
 
             {/* Confirm Password Field */}
-            <div className="space-y-2">
-              <Label htmlFor="password_confirm">Confirmar contraseña</Label>
+            <div className="space-y-1">
+              <Label htmlFor="password_confirm" className="text-sm font-medium">
+                Confirmar contraseña
+              </Label>
               <div className="relative">
-                <Shield className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Shield className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   id="password_confirm"
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
-                  className="pl-10 pr-10"
+                  className="pl-10 pr-12 h-12"
                   {...register("password_confirm")}
                   aria-invalid={errors.password_confirm ? "true" : "false"}
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-3 h-4 w-4 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 hover:text-gray-600 transition-colors"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   aria-label={
                     showConfirmPassword
@@ -367,52 +318,87 @@ export const RegisterForm: React.FC = () => {
                       : "Mostrar contraseña"
                   }
                 >
-                  {showConfirmPassword ? <EyeOff /> : <Eye />}
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
+              </div>
+
+              {/* Error message with fixed height */}
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.password_confirm && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.password_confirm.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Password Match Indicator */}
               {password && passwordConfirm && (
-                <div
-                  className={`text-sm ${
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className={`text-xs font-medium mt-1 ${
                     passwordsMatch ? "text-green-600" : "text-red-600"
                   }`}
                 >
                   {passwordsMatch
                     ? "✓ Las contraseñas coinciden"
                     : "✗ Las contraseñas no coinciden"}
-                </div>
-              )}
-
-              {errors.password_confirm && (
-                <p className="text-sm text-red-600">
-                  {errors.password_confirm.message}
-                </p>
+                </motion.div>
               )}
             </div>
 
             {/* Terms and Conditions */}
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="acceptTerms"
-                {...register("acceptTerms")}
-                aria-invalid={errors.acceptTerms ? "true" : "false"}
-              />
-              <Label htmlFor="acceptTerms" className="text-sm">
-                Acepto los{" "}
-                <Link to="/terms" className="text-blue-600 hover:underline">
-                  términos y condiciones
-                </Link>
-              </Label>
+            <div className="space-y-1">
+              <div className="flex items-start space-x-2">
+                <Controller
+                  name="acceptTerms"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      id="acceptTerms"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      aria-invalid={errors.acceptTerms ? "true" : "false"}
+                      className="mt-0.5"
+                    />
+                  )}
+                />
+                <Label htmlFor="acceptTerms" className="text-sm leading-5">
+                  Acepto los{" "}
+                  <Link to="/terms" className="text-blue-600 hover:underline">
+                    términos y condiciones
+                  </Link>
+                </Label>
+              </div>
+              <div className="min-h-[16px]">
+                <AnimatePresence>
+                  {errors.acceptTerms && (
+                    <motion.p
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="text-xs text-red-600 mt-1"
+                    >
+                      {errors.acceptTerms.message}
+                    </motion.p>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
-            {errors.acceptTerms && (
-              <p className="text-sm text-red-600">
-                {errors.acceptTerms.message}
-              </p>
-            )}
 
             {/* Newsletter Subscription */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mt-2">
               <Checkbox
                 id="subscribeNewsletter"
                 {...register("subscribeNewsletter")}

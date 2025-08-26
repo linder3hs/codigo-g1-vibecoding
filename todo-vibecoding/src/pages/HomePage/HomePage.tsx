@@ -14,6 +14,8 @@ import {
 } from "../../components";
 import { Link } from "react-router";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import type { FilterType } from "../../types/filter";
+import type { TodoFilters } from "../../types/todo";
 
 /**
  * HomePage - Main page component for todo list management
@@ -21,19 +23,33 @@ import { ChevronDown, ChevronUp } from "lucide-react";
  */
 export const HomePage = () => {
   const {
-    filter,
-    setFilter,
+    filters,
+    updateFilters,
     filteredTodos,
-    todosCount,
-    toggleTodo,
-    deleteTodo,
+    todosStats,
+    toggleTodoStatus,
+    deleteExistingTodo,
   } = useTodo();
   const [isStatsCollapsed, setIsStatsCollapsed] = useState(true);
+
+  // Convert TodoFilters to FilterType for Sidebar compatibility
+  const currentFilter: FilterType = filters.status;
+
+  // Handle filter change from Sidebar
+  const handleFilterChange = (filter: FilterType) => {
+    const newFilters: Partial<TodoFilters> = {
+      status: filter,
+    };
+    updateFilters(newFilters);
+  };
 
   return (
     <div className="h-screen overflow-hidden lg:overflow-auto">
       {/* Sidebar Component */}
-      <Sidebar currentFilter={filter} onFilterChange={setFilter} />
+      <Sidebar
+        currentFilter={currentFilter}
+        onFilterChange={handleFilterChange}
+      />
 
       {/* Main content container with sidebar offset */}
       <div className="relative z-10 lg:ml-80 h-full lg:h-auto flex flex-col">
@@ -67,7 +83,7 @@ export const HomePage = () => {
                 isStatsCollapsed ? "hidden" : "block"
               }`}
             >
-              <StatsSection todosCount={todosCount} />
+              <StatsSection todosCount={todosStats} />
             </div>
           </div>
 
@@ -78,8 +94,8 @@ export const HomePage = () => {
                 <TodoList
                   todos={filteredTodos}
                   emptyMessage="No hay tareas para mostrar"
-                  onToggleTodo={(id) => toggleTodo(Number(id))}
-                  onDeleteTodo={(id) => deleteTodo(Number(id))}
+                  onToggleTodo={(id: number | string) => toggleTodoStatus(id)}
+                  onDeleteTodo={(id: number | string) => deleteExistingTodo(id)}
                 />
               </div>
             </div>

@@ -3,14 +3,14 @@
  * Handles empty states and renders TodoItem components
  */
 
-import type { Todo } from "../../../todos";
+import type { Todo } from "../../../types/todo";
 import { TodoItem } from "../TodoItem";
 
 interface TodoListProps {
   todos: Todo[];
   emptyMessage?: string;
-  onToggleTodo: (id: number) => void;
-  onDeleteTodo: (id: number) => void;
+  onToggleTodo: (id: number | string) => void;
+  onDeleteTodo: (id: number | string) => void;
 }
 
 export const TodoList = ({
@@ -40,7 +40,7 @@ export const TodoList = ({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}

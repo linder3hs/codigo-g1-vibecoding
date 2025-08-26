@@ -4,24 +4,86 @@
  */
 
 /**
+ * Task status from backend
+ */
+export type TaskStatus = "pendiente" | "en_progreso" | "completada";
+
+/**
  * Priority levels for todos
  */
 export type TodoPriority = "low" | "medium" | "high";
 
 /**
- * Todo item interface
+ * Task interface from backend API
+ */
+export interface Task {
+  /** Unique identifier for the task */
+  id: number;
+  /** Title of the task */
+  title: string;
+  /** Description of the task */
+  description: string;
+  /** Status of the task */
+  status: TaskStatus;
+  /** Human readable status */
+  status_display: string;
+  /** Username of the task owner */
+  user_username: string;
+  /** Whether the task is completed */
+  is_completed: boolean;
+  /** When the task was created */
+  created_at: string;
+  /** When the task was completed */
+  completed_at: string | null;
+}
+
+/**
+ * Paginated response from backend
+ */
+export interface TaskListResponse {
+  /** Total count of tasks */
+  count: number;
+  /** URL for next page */
+  next: string | null;
+  /** URL for previous page */
+  previous: string | null;
+  /** Array of tasks */
+  results: Task[];
+}
+
+/**
+ * Todo item interface (frontend representation)
+ * Aligned with backend Task structure
  */
 export interface Todo {
   /** Unique identifier for the todo */
-  id: string;
-  /** Text content of the todo */
-  text: string;
+  id: number;
+  /** Title of the todo */
+  title: string;
+  /** Description of the todo */
+  description: string;
+  /** Status of the todo */
+  status: TaskStatus;
+  /** Display name for the status */
+  status_display: string;
+  /** Username of the user who created the todo */
+  user_username: string;
   /** Whether the todo is completed */
-  completed: boolean;
-  /** When the todo was created */
-  createdAt: Date;
-  /** Priority level of the todo */
-  priority: TodoPriority;
+  is_completed: boolean;
+  /** When the todo was created (ISO string) */
+  created_at: string;
+  /** When the todo was completed (ISO string or null) */
+  completed_at: string | null;
+  
+  // Legacy fields for backward compatibility
+  /** @deprecated Use title instead */
+  text?: string;
+  /** @deprecated Use is_completed instead */
+  completed?: boolean;
+  /** @deprecated Use created_at instead */
+  createdAt?: Date;
+  /** @deprecated Priority is not used in current backend */
+  priority?: TodoPriority;
 }
 
 /**
@@ -37,12 +99,44 @@ export interface TodosCount {
 }
 
 /**
+ * Task creation input for backend API
+ */
+export interface CreateTaskInput {
+  /** Title of the task */
+  title: string;
+  /** Description of the task */
+  description: string;
+  /** Status of the task */
+  status?: TaskStatus;
+}
+
+/**
+ * Task update input for backend API
+ */
+export interface UpdateTaskInput {
+  /** Title of the task */
+  title?: string;
+  /** Description of the task */
+  description?: string;
+  /** Status of the task */
+  status?: TaskStatus;
+  /** Whether the task is completed */
+  is_completed?: boolean;
+}
+
+/**
  * Todo creation input (without id and createdAt)
  */
 export interface CreateTodoInput {
-  /** Text content of the todo */
-  text: string;
-  /** Priority level of the todo */
+  /** Title of the todo */
+  title: string;
+  /** Description of the todo */
+  description: string;
+  /** Status of the todo */
+  status?: TaskStatus;
+  /** @deprecated Use title instead */
+  text?: string;
+  /** @deprecated Priority is not used in current backend */
   priority?: TodoPriority;
 }
 
@@ -50,11 +144,19 @@ export interface CreateTodoInput {
  * Todo update input (partial todo without id)
  */
 export interface UpdateTodoInput {
-  /** Text content of the todo */
-  text?: string;
+  /** Title of the todo */
+  title?: string;
+  /** Description of the todo */
+  description?: string;
+  /** Status of the todo */
+  status?: TaskStatus;
   /** Whether the todo is completed */
+  is_completed?: boolean;
+  /** @deprecated Use title instead */
+  text?: string;
+  /** @deprecated Use is_completed instead */
   completed?: boolean;
-  /** Priority level of the todo */
+  /** @deprecated Priority is not used in current backend */
   priority?: TodoPriority;
 }
 
@@ -66,7 +168,7 @@ export type TodoFilterStatus = 'all' | 'completed' | 'pending';
 /**
  * Todo sort options
  */
-export type TodoSortBy = 'createdAt' | 'priority' | 'text';
+export type TodoSortBy = 'createdAt' | 'priority' | 'text' | 'title';
 export type TodoSortOrder = 'asc' | 'desc';
 
 /**

@@ -4,8 +4,7 @@
  */
 
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { HomePage, CreateTodoPage, RegisterPage } from "../pages";
-import { LoginPage } from "../pages/LoginPage";
+import { HomePage, CreateTodoPage, RegisterPage, LoginPage } from "../pages";
 import { ErrorPage } from "./ErrorPage";
 
 /**

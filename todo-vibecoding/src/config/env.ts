@@ -47,11 +47,11 @@ export const env: EnvConfig = {
 export const apiEndpoints = {
   base: `${env.API_BASE_URL}/${env.API_VERSION}`,
   todos: {
-    list: "/todos",
-    create: "/todos",
-    update: (id: string) => `/todos/${id}`,
-    delete: (id: string) => `/todos/${id}`,
-    toggle: (id: string) => `/todos/${id}/toggle`,
+    list: "/tasks",
+    create: "/tasks",
+    update: (id: string) => `/tasks/${id}/`,
+    delete: (id: string) => `/tasks/${id}/`,
+    toggle: (id: string) => `/tasks/${id}/toggle`,
   },
 } as const;
 

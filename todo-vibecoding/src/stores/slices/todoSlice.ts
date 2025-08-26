@@ -160,10 +160,10 @@ const todoSlice = createSlice({
       const deletedId = action.payload.id;
 
       // Remove from todos array
-      state.todos = state.todos.filter((todo) => todo.id !== deletedId);
+      state.todos = state.todos.filter((todo) => String(todo.id) === String(deletedId));
 
       // Clear currentTodo if it's the deleted todo
-      if (state.currentTodo?.id === deletedId) {
+      if (state.currentTodo && String(state.currentTodo.id) === String(deletedId)) {
         state.currentTodo = null;
       }
 
@@ -217,15 +217,24 @@ const todoSlice = createSlice({
     },
 
     // Optimistic updates for better UX
-    toggleTodoOptimistic: (state, action: PayloadAction<{ id: string }>) => {
-      const todo = state.todos.find((t) => t.id === action.payload.id);
+    toggleTodoOptimistic: (state, action: PayloadAction<{ id: string | number }>) => {
+      const todo = state.todos.find((t) => String(t.id) === String(action.payload.id));
       if (todo) {
-        todo.completed = !todo.completed;
+        // Use new field is_completed, fallback to completed for backward compatibility
+        if (todo.is_completed !== undefined) {
+          todo.is_completed = !todo.is_completed;
+        } else {
+          todo.completed = !todo.completed;
+        }
       }
 
       // Update currentTodo if it's the same todo
-      if (state.currentTodo?.id === action.payload.id) {
-        state.currentTodo.completed = !state.currentTodo.completed;
+      if (state.currentTodo && String(state.currentTodo.id) === String(action.payload.id)) {
+        if (state.currentTodo.is_completed !== undefined) {
+          state.currentTodo.is_completed = !state.currentTodo.is_completed;
+        } else {
+          state.currentTodo.completed = !state.currentTodo.completed;
+        }
       }
     },
 
@@ -280,9 +289,10 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
 
   // Filter by status
   if (filters.status !== "all") {
-    filtered = filtered.filter((todo) =>
-      filters.status === "completed" ? todo.completed : !todo.completed
-    );
+    filtered = filtered.filter((todo) => {
+      const isCompleted = todo.is_completed !== undefined ? todo.is_completed : todo.completed;
+      return filters.status === "completed" ? isCompleted : !isCompleted;
+    });
   }
 
   // Filter by priority
@@ -293,9 +303,10 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
   // Filter by search text
   if (filters.search) {
     const searchLower = filters.search.toLowerCase();
-    filtered = filtered.filter((todo) =>
-      todo.text.toLowerCase().includes(searchLower)
-    );
+    filtered = filtered.filter((todo) => {
+      const searchText = todo.title || todo.text || "";
+      return searchText.toLowerCase().includes(searchLower);
+    });
   }
 
   // Sort
@@ -304,18 +315,26 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
 
     switch (filters.sortBy) {
       case "text":
-        comparison = a.text.localeCompare(b.text);
+      case "title": {
+        const aText = a.title || a.text || "";
+        const bText = b.title || b.text || "";
+        comparison = aText.localeCompare(bText);
         break;
+      }
       case "priority": {
         const priorityOrder = { low: 1, medium: 2, high: 3 };
-        comparison = priorityOrder[a.priority] - priorityOrder[b.priority];
+        const aPriority = a.priority || "medium";
+        const bPriority = b.priority || "medium";
+        comparison = priorityOrder[aPriority as keyof typeof priorityOrder] - priorityOrder[bPriority as keyof typeof priorityOrder];
         break;
       }
       case "createdAt":
-      default:
-        comparison =
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      default: {
+        const aDate = a.created_at || a.createdAt || new Date().toISOString();
+        const bDate = b.created_at || b.createdAt || new Date().toISOString();
+        comparison = new Date(aDate).getTime() - new Date(bDate).getTime();
         break;
+      }
     }
 
     return filters.sortOrder === "desc" ? -comparison : comparison;
@@ -327,14 +346,16 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
 export const selectTodoStats = (state: { todos: TodoState }) => {
   const todos = state.todos.todos;
   const total = todos.length;
-  const completed = todos.filter((todo) => todo.completed).length;
+  const completed = todos.filter((todo) => {
+    return todo.is_completed !== undefined ? todo.is_completed : todo.completed;
+  }).length;
   const pending = total - completed;
 
   return { total, completed, pending };
 };
 
-export const selectTodoById = (state: { todos: TodoState }, id: string) => {
-  return state.todos.todos.find((todo) => todo.id === id) || null;
+export const selectTodoById = (state: { todos: TodoState }, id: string | number) => {
+  return state.todos.todos.find((todo) => String(todo.id) === String(id)) || null;
 };
 
 // Export reducer

@@ -65,18 +65,21 @@ export interface UseTodoReturn {
   };
 
   // CRUD Actions
-  fetchTodosList: (filters?: Partial<TodoFilters>, pagination?: Partial<Pick<TodoPagination, 'page' | 'limit'>>) => Promise<void>;
+  fetchTodosList: (
+    filters?: Partial<TodoFilters>,
+    pagination?: Partial<Pick<TodoPagination, "page" | "limit">>
+  ) => Promise<void>;
   createNewTodo: (todoData: CreateTodoInput) => Promise<void>;
-  updateExistingTodo: (id: string, updates: UpdateTodoInput) => Promise<void>;
-  deleteExistingTodo: (id: string) => Promise<void>;
-  toggleTodoStatus: (id: string) => Promise<void>;
-  markTodoCompleted: (id: string) => Promise<void>;
+  updateExistingTodo: (id: number | string, updates: UpdateTodoInput) => Promise<void>;
+  deleteExistingTodo: (id: number | string) => Promise<void>;
+  toggleTodoStatus: (id: number | string) => Promise<void>;
+  markTodoCompleted: (id: number | string) => Promise<void>;
 
   // Filter and pagination actions
   updateFilters: (filters: Partial<TodoFilters>) => void;
   resetFilters: () => void;
   setCurrentTodoItem: (todo: Todo | null) => void;
-  getTodoById: (id: string) => Todo | undefined;
+  getTodoById: (id: number | string) => Todo | undefined;
 
   // Utility functions
   clearTodoError: () => void;
@@ -110,28 +113,35 @@ export const useTodo = (): UseTodoReturn => {
   const fetchTodosList = useCallback(
     async (
       filters?: Partial<TodoFilters>,
-      pagination?: Partial<Pick<TodoPagination, 'page' | 'limit'>>
+      pagination?: Partial<Pick<TodoPagination, "page" | "limit">>
     ): Promise<void> => {
       try {
         dispatch(fetchTodos({ filters, pagination }));
         const response = await taskService.getTasks(filters, pagination);
-        
+
         if (response.success) {
-          dispatch(fetchTodosSuccess({
-            todos: response.data.todos,
-            pagination: response.data.pagination,
-          }));
+          dispatch(
+            fetchTodosSuccess({
+              todos: response.data.todos,
+              pagination: response.data.pagination,
+            })
+          );
         } else {
-          dispatch(fetchTodosFailure({
-            error: { message: response.message || 'Failed to fetch todos' },
-          }));
+          dispatch(
+            fetchTodosFailure({
+              error: { message: response.message || "Failed to fetch todos" },
+            })
+          );
         }
       } catch (err) {
-        dispatch(fetchTodosFailure({
-          error: {
-            message: err instanceof Error ? err.message : 'Unknown error occurred',
-          },
-        }));
+        dispatch(
+          fetchTodosFailure({
+            error: {
+              message:
+                err instanceof Error ? err.message : "Unknown error occurred",
+            },
+          })
+        );
       }
     },
     [dispatch]
@@ -146,20 +156,25 @@ export const useTodo = (): UseTodoReturn => {
       try {
         dispatch(createTodo());
         const response = await taskService.createTask(todoData);
-        
+
         if (response.success) {
           dispatch(createTodoSuccess({ todo: response.data.todo }));
         } else {
-          dispatch(createTodoFailure({
-            error: { message: response.message || 'Failed to create todo' },
-          }));
+          dispatch(
+            createTodoFailure({
+              error: { message: response.message || "Failed to create todo" },
+            })
+          );
         }
       } catch (err) {
-        dispatch(createTodoFailure({
-          error: {
-            message: err instanceof Error ? err.message : 'Unknown error occurred',
-          },
-        }));
+        dispatch(
+          createTodoFailure({
+            error: {
+              message:
+                err instanceof Error ? err.message : "Unknown error occurred",
+            },
+          })
+        );
       }
     },
     [dispatch]
@@ -171,24 +186,29 @@ export const useTodo = (): UseTodoReturn => {
    * @param updates - Updates to apply
    */
   const updateExistingTodo = useCallback(
-    async (id: string, updates: UpdateTodoInput): Promise<void> => {
+    async (id: number | string, updates: UpdateTodoInput): Promise<void> => {
       try {
         dispatch(updateTodo());
-        const response = await taskService.updateTask(id, updates);
-        
+        const response = await taskService.updateTask(String(id), updates);
+
         if (response.success) {
           dispatch(updateTodoSuccess({ todo: response.data.todo }));
         } else {
-          dispatch(updateTodoFailure({
-            error: { message: response.message || 'Failed to update todo' },
-          }));
+          dispatch(
+            updateTodoFailure({
+              error: { message: response.message || "Failed to update todo" },
+            })
+          );
         }
       } catch (err) {
-        dispatch(updateTodoFailure({
-          error: {
-            message: err instanceof Error ? err.message : 'Unknown error occurred',
-          },
-        }));
+        dispatch(
+          updateTodoFailure({
+            error: {
+              message:
+                err instanceof Error ? err.message : "Unknown error occurred",
+            },
+          })
+        );
       }
     },
     [dispatch]
@@ -199,24 +219,29 @@ export const useTodo = (): UseTodoReturn => {
    * @param id - Todo ID to delete
    */
   const deleteExistingTodo = useCallback(
-    async (id: string): Promise<void> => {
+    async (id: number | string): Promise<void> => {
       try {
         dispatch(deleteTodo());
-        const response = await taskService.deleteTask(id);
-        
+        const response = await taskService.deleteTask(String(id));
+
         if (response.success) {
-          dispatch(deleteTodoSuccess({ id }));
+          dispatch(deleteTodoSuccess({ id: String(id) }));
         } else {
-          dispatch(deleteTodoFailure({
-            error: { message: response.message || 'Failed to delete todo' },
-          }));
+          dispatch(
+            deleteTodoFailure({
+              error: { message: response.message || "Failed to delete todo" },
+            })
+          );
         }
       } catch (err) {
-        dispatch(deleteTodoFailure({
-          error: {
-            message: err instanceof Error ? err.message : 'Unknown error occurred',
-          },
-        }));
+        dispatch(
+          deleteTodoFailure({
+            error: {
+              message:
+                err instanceof Error ? err.message : "Unknown error occurred",
+            },
+          })
+        );
       }
     },
     [dispatch]
@@ -227,35 +252,40 @@ export const useTodo = (): UseTodoReturn => {
    * @param id - Todo ID to toggle
    */
   const toggleTodoStatus = useCallback(
-    async (id: string): Promise<void> => {
+    async (id: number | string): Promise<void> => {
       try {
         // Optimistic update
-        dispatch(toggleTodoOptimistic({ id }));
-        
-        const todo = todos.find(t => t.id === id);
+        dispatch(toggleTodoOptimistic({ id: String(id) }));
+
+        const todo = todos.find((t) => t.id === Number(id));
         if (!todo) return;
-        
-        const response = await taskService.updateTask(id, {
-          completed: !todo.completed,
+
+        const response = await taskService.updateTask(String(id), {
+          is_completed: !todo.is_completed,
         });
-        
+
         if (response.success) {
           dispatch(updateTodoSuccess({ todo: response.data.todo }));
         } else {
           // Revert optimistic update on failure
-          dispatch(toggleTodoOptimistic({ id }));
-          dispatch(updateTodoFailure({
-            error: { message: response.message || 'Failed to toggle todo' },
-          }));
+          dispatch(toggleTodoOptimistic({ id: String(id) }));
+          dispatch(
+            updateTodoFailure({
+              error: { message: response.message || "Failed to toggle todo" },
+            })
+          );
         }
       } catch (err) {
         // Revert optimistic update on error
-        dispatch(toggleTodoOptimistic({ id }));
-        dispatch(updateTodoFailure({
-          error: {
-            message: err instanceof Error ? err.message : 'Unknown error occurred',
-          },
-        }));
+        dispatch(toggleTodoOptimistic({ id: String(id) }));
+        dispatch(
+          updateTodoFailure({
+            error: {
+              message:
+                err instanceof Error ? err.message : "Unknown error occurred",
+            },
+          })
+        );
       }
     },
     [dispatch, todos]
@@ -266,23 +296,30 @@ export const useTodo = (): UseTodoReturn => {
    * @param id - Todo ID to mark as completed
    */
   const markTodoCompleted = useCallback(
-    async (id: string): Promise<void> => {
+    async (id: number | string): Promise<void> => {
       try {
-        const response = await taskService.markCompleted(id);
-        
+        const response = await taskService.markCompleted(String(id));
+
         if (response.success) {
           dispatch(updateTodoSuccess({ todo: response.data.todo }));
         } else {
-          dispatch(updateTodoFailure({
-            error: { message: response.message || 'Failed to mark todo as completed' },
-          }));
+          dispatch(
+            updateTodoFailure({
+              error: {
+                message: response.message || "Failed to mark todo as completed",
+              },
+            })
+          );
         }
       } catch (err) {
-        dispatch(updateTodoFailure({
-          error: {
-            message: err instanceof Error ? err.message : 'Unknown error occurred',
-          },
-        }));
+        dispatch(
+          updateTodoFailure({
+            error: {
+              message:
+                err instanceof Error ? err.message : "Unknown error occurred",
+            },
+          })
+        );
       }
     },
     [dispatch]
@@ -323,8 +360,13 @@ export const useTodo = (): UseTodoReturn => {
    * @returns Todo or undefined
    */
   const getTodoById = useCallback(
-    (id: string): Todo | undefined => {
-      const result = selectTodoById({ todos: { todos, currentTodo, filters, isLoading, error, pagination } }, id);
+    (id: number | string): Todo | undefined => {
+      const result = selectTodoById(
+        {
+          todos: { todos, currentTodo, filters, isLoading, error, pagination },
+        },
+        String(id)
+      );
       return result || undefined;
     },
     [todos, currentTodo, filters, isLoading, error, pagination]
@@ -339,10 +381,8 @@ export const useTodo = (): UseTodoReturn => {
 
   // Auto-fetch todos on mount if none exist
   useEffect(() => {
-    if (todos.length === 0 && !isLoading) {
-      fetchTodosList();
-    }
-  }, [todos.length, isLoading, fetchTodosList]);
+    fetchTodosList();
+  }, [fetchTodosList]);
 
   return {
     // State from Redux

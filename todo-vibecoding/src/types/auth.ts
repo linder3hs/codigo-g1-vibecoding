@@ -40,7 +40,20 @@ export interface RegisterData {
 }
 
 /**
- * Authentication response from API
+ * Authentication response from API (actual backend format)
+ */
+export interface ApiAuthResponse {
+  message: string;
+  user: User;
+  tokens: {
+    access: string;
+    refresh: string;
+  };
+  expiresIn?: number;
+}
+
+/**
+ * Authentication response from API (normalized format)
  */
 export interface AuthResponse {
   user: User;
