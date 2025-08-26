@@ -54,31 +54,38 @@ export const loginSchema = z.object({
  */
 export const registerSchema = z
   .object({
+    username: z
+      .string({ message: errorMessages.required })
+      .min(3, 'El nombre de usuario debe tener al menos 3 caracteres')
+      .max(30, 'El nombre de usuario no puede exceder 30 caracteres')
+      .regex(/^[a-zA-Z0-9_]+$/, 'El nombre de usuario solo puede contener letras, números y guiones bajos')
+      .trim(),
+    
     email: z
       .string({ message: errorMessages.required })
       .min(1, errorMessages.required)
       .regex(emailRegex, errorMessages.email),
+    
+    first_name: z
+      .string({ message: errorMessages.required })
+      .min(2, errorMessages.name.min)
+      .max(50, errorMessages.name.max)
+      .trim(),
+    
+    last_name: z
+      .string({ message: errorMessages.required })
+      .min(2, errorMessages.name.min)
+      .max(50, errorMessages.name.max)
+      .trim(),
     
     password: z
       .string({ message: errorMessages.required })
       .min(8, errorMessages.password.min)
       .regex(passwordRegex, errorMessages.password.pattern),
     
-    confirmPassword: z
+    password_confirm: z
       .string({ message: errorMessages.required })
       .min(1, errorMessages.required),
-    
-    firstName: z
-      .string({ message: errorMessages.required })
-      .min(2, errorMessages.name.min)
-      .max(50, errorMessages.name.max)
-      .trim(),
-    
-    lastName: z
-      .string({ message: errorMessages.required })
-      .min(2, errorMessages.name.min)
-      .max(50, errorMessages.name.max)
-      .trim(),
     
     acceptTerms: z
       .boolean({ message: errorMessages.terms })
@@ -88,9 +95,9 @@ export const registerSchema = z
     
     subscribeNewsletter: z.boolean().optional().default(false),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirm, {
     message: errorMessages.confirmPassword,
-    path: ['confirmPassword'],
+    path: ['password_confirm'],
   });
 
 /**

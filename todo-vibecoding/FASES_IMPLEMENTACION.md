@@ -400,7 +400,7 @@ VITE_APP_VERSION=1.0.0
 - [x] Validación completa con Zod
 - [x] Estados de loading y error manejados
 - [x] UI responsive y accesible
-- [ ] Integración con useAuth hook
+- [x] Integración con useAuth hook
 
 ### 6.2 Componente RegisterForm
 
@@ -419,12 +419,12 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Formulario de registro implementado
-- [ ] Validación completa con Zod
-- [ ] Indicador de fortaleza de password
-- [ ] Confirmación visual de passwords coincidentes
-- [ ] Manejo de estados de loading y error
-- [ ] Navegación después del registro exitoso
+- [x] Formulario de registro implementado
+- [x] Validación completa con Zod
+- [x] Indicador de fortaleza de password
+- [x] Confirmación visual de passwords coincidentes
+- [x] Manejo de estados de loading y error
+- [x] Navegación después del registro exitoso
 
 ### 6.3 Componente TaskForm
 

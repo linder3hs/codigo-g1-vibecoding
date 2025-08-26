@@ -38,7 +38,8 @@ export interface ServiceResponse<T> {
  * User profile update data
  */
 export interface UpdateProfileData {
-  name?: string;
+  first_name?: string;
+  last_name?: string;
   avatar?: string;
 }
 
@@ -48,7 +49,7 @@ export interface UpdateProfileData {
 export interface ChangePasswordData {
   currentPassword: string;
   newPassword: string;
-  confirmPassword: string;
+  password_confirm: string;
 }
 
 /**
@@ -118,21 +119,17 @@ class AuthService {
   ): Promise<ServiceResponse<AuthResponse>> {
     try {
       // Validate password confirmation
-      if (userData.password !== userData.confirmPassword) {
+      if (userData.password !== userData.password_confirm) {
         throw new Error("Las contraseñas no coinciden");
       }
 
       // Dispatch register start action
       store.dispatch(registerStart());
 
-      // Prepare data for API (exclude confirmPassword)
-      const { confirmPassword, ...registerPayload } = userData;
-      void confirmPassword; // Explicitly mark as intentionally unused
-
-      // Make API request
+      // Make API request with all user data including password_confirm
       const response = await httpClient.post<AuthResponse>(
-        "/auth/register",
-        registerPayload
+        "/auth/register/",
+        userData
       );
 
       if (!response.data) {
@@ -373,15 +370,12 @@ class AuthService {
   ): Promise<ServiceResponse<void>> {
     try {
       // Validate password confirmation
-      if (passwordData.newPassword !== passwordData.confirmPassword) {
+      if (passwordData.newPassword !== passwordData.password_confirm) {
         throw new Error("Las contraseñas no coinciden");
       }
 
-      // Prepare data for API (exclude confirmPassword)
-      const { confirmPassword, ...changePayload } = passwordData;
-      void confirmPassword; // Explicitly mark as intentionally unused
-
-      await httpClient.put("/auth/change-password", changePayload);
+      // Make API request with all password data including password_confirm
+      await httpClient.put("/auth/change-password", passwordData);
 
       return {
         success: true,

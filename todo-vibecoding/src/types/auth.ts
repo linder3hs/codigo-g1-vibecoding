@@ -8,8 +8,10 @@
  */
 export interface User {
   id: string;
+  username: string;
   email: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   avatar?: string;
   role: "user" | "admin";
   createdAt: string;
@@ -29,10 +31,12 @@ export interface LoginCredentials {
  * Registration data interface
  */
 export interface RegisterData {
-  name: string;
+  username: string;
   email: string;
+  first_name: string;
+  last_name: string;
   password: string;
-  confirmPassword: string;
+  password_confirm: string;
 }
 
 /**

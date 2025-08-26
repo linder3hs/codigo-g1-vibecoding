@@ -299,6 +299,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             ¿No tienes una cuenta?{" "}
             <button
               type="button"
+              onClick={() => navigate("/register")}
               className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
               disabled={isFormLoading}
             >
