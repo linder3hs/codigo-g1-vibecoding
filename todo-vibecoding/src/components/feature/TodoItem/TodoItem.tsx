@@ -18,7 +18,8 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
   const isCompleted = todo.is_completed ?? todo.completed ?? false;
   const title = todo.title || todo.text || "";
   const createdAt =
-    todo.created_at || (todo.createdAt ? todo.createdAt.toISOString() : "");
+    todo.created_at ||
+    (todo.createdAt ? new Date(todo.createdAt).toISOString() : "");
 
   const handleToggle = () => {
     onToggle?.(todo.id);

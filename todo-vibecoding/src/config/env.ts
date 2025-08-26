@@ -48,7 +48,7 @@ export const apiEndpoints = {
   base: `${env.API_BASE_URL}/${env.API_VERSION}`,
   todos: {
     list: "/tasks",
-    create: "/tasks",
+    create: "/tasks/",
     update: (id: string) => `/tasks/${id}/`,
     delete: (id: string) => `/tasks/${id}/`,
     toggle: (id: string) => `/tasks/${id}/toggle`,
