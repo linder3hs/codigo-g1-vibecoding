@@ -5,13 +5,7 @@
 
 import { useState } from "react";
 import { useTodo } from "../../hooks/useTodo";
-import {
-  Header,
-  Footer,
-  StatsSection,
-  TodoList,
-  Sidebar,
-} from "../../components";
+import { Header, StatsSection, TodoList, Filter } from "../../components";
 import { Link } from "react-router";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import type { FilterType } from "../../types/filter";
@@ -44,53 +38,52 @@ export const HomePage = () => {
   };
 
   return (
-    <div className="h-screen overflow-hidden lg:overflow-auto">
-      {/* Sidebar Component */}
-      <Sidebar
-        currentFilter={currentFilter}
-        onFilterChange={handleFilterChange}
-      />
-
-      {/* Main content container with sidebar offset */}
-      <div className="relative z-10 lg:ml-80 h-full lg:h-auto flex flex-col">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 max-w-6xl flex-1 flex flex-col lg:block min-h-0">
-          {/* Header Section */}
+    <div className="min-h-screen ">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 max-w-6xl">
+        {/* Header Section */}
+        <div className="mb-6 lg:mb-8">
+          <Header
+            title="Lista de Tareas"
+            subtitle="Gestiona tus tareas de manera eficiente con estilo"
+          />
+        </div>
+        <div className="flex justify-center gap-10">
+          {/* Filter Section */}
           <div className="mb-6 lg:mb-8">
-            <Header
-              title="Lista de Tareas"
-              subtitle="Gestiona tus tareas de manera eficiente con estilo"
+            <Filter
+              currentFilter={currentFilter}
+              onFilterChange={handleFilterChange}
             />
           </div>
+          <div>
+            {/* Stats Section with enhanced glassmorphism */}
+            <div className="mb-6 lg:mb-8">
+              {/* Stats Toggle Button - Always visible */}
+              <button
+                onClick={() => setIsStatsCollapsed(!isStatsCollapsed)}
+                className="w-full mb-4 flex items-center justify-between p-3  bg-slate-800 rounded-xl border border-slate-700/40 text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200"
+              >
+                <span className="text-sm font-medium">Ver estadísticas</span>
+                {isStatsCollapsed ? (
+                  <ChevronDown className="w-4 h-4" />
+                ) : (
+                  <ChevronUp className="w-4 h-4" />
+                )}
+              </button>
 
-          {/* Stats Section with enhanced glassmorphism */}
-          <div className="mb-6 lg:mb-8">
-            {/* Stats Toggle Button - Always visible */}
-            <button
-              onClick={() => setIsStatsCollapsed(!isStatsCollapsed)}
-              className="w-full mb-4 flex items-center justify-between p-3 backdrop-blur-sm bg-slate-800/30 rounded-xl border border-slate-700/40 text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all duration-200"
-            >
-              <span className="text-sm font-medium">Ver estadísticas</span>
-              {isStatsCollapsed ? (
-                <ChevronDown className="w-4 h-4" />
-              ) : (
-                <ChevronUp className="w-4 h-4" />
-              )}
-            </button>
-
-            {/* Stats Content */}
-            <div
-              className={`backdrop-blur-md bg-slate-800/40 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 ${
-                isStatsCollapsed ? "hidden" : "block"
-              }`}
-            >
-              <StatsSection todosCount={todosStats} />
+              {/* Stats Content */}
+              <div
+                className={`backdrop-blur-md bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 ${
+                  isStatsCollapsed ? "hidden" : "block"
+                }`}
+              >
+                <StatsSection todosCount={todosStats} />
+              </div>
             </div>
-          </div>
 
-          {/* Todo List Section with modern styling */}
-          <div className="flex-1 flex flex-col lg:mb-8 lg:block min-h-0">
-            <div className="backdrop-blur-md bg-slate-800/35 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-slate-700/25 hover:border-slate-600/45 transition-all duration-300 flex-1 flex flex-col lg:block min-h-0">
-              <div className="flex-1 overflow-y-auto lg:overflow-visible pb-20 lg:pb-0 min-h-0">
+            {/* Todo List Section with modern styling */}
+            <div className="mb-8">
+              <div className="backdrop-blur-md bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-slate-700/25 hover:border-slate-600/45 transition-all duration-300">
                 <TodoList
                   todos={filteredTodos}
                   emptyMessage="No hay tareas para mostrar"
@@ -100,18 +93,14 @@ export const HomePage = () => {
               </div>
             </div>
           </div>
-
-          {/* Footer */}
-          <div className="hidden lg:block">
-            <Footer />
-          </div>
         </div>
       </div>
+
       {/* Mobile FAB - Create Task */}
       <div className="lg:hidden fixed bottom-6 right-6 z-[9999]">
         <Link
           to="/crear-todo"
-          className="group flex items-center justify-center w-14 h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-full shadow-2xl hover:shadow-blue-500/40 transition-all duration-300 transform hover:scale-110 active:scale-95"
+          className="group flex items-center justify-center w-14 h-14 bg-gradient-to-r from-charcoal-600 to-persian_green-600 hover:from-charcoal-700 hover:to-persian_green-700 text-white rounded-full shadow-2xl hover:shadow-charcoal-500/40 transition-all duration-300 transform hover:scale-110 active:scale-95"
           aria-label="Crear nueva tarea"
         >
           <svg

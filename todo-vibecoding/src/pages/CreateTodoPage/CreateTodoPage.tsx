@@ -23,9 +23,9 @@ export const CreateTodoPage = () => {
         <div className="mb-8">
           <Link
             to="/"
-            className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-all duration-300 font-medium group"
+            className="inline-flex items-center text-charcoal-400 hover:text-charcoal-300 transition-all duration-300 font-medium group"
           >
-            <div className="p-1 rounded-lg group-hover:bg-blue-500/10 transition-colors duration-300 mr-2">
+            <div className="p-1 rounded-lg group-hover:bg-charcoal-500/10 transition-colors duration-300 mr-2">
               <svg
                 className="w-5 h-5"
                 fill="none"

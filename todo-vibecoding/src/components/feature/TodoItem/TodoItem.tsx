@@ -35,8 +35,8 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
       group relative p-5 rounded-xl border transition-all duration-200 hover:shadow-lg hover:shadow-slate-900/20
       ${
         isCompleted
-          ? "bg-slate-800/20 border-slate-700/30 opacity-75"
-          : "bg-slate-800/40 border-slate-700/50 hover:border-slate-600/60 hover:bg-slate-800/60"
+          ? "bg-slate-800 border-slate-700/30 opacity-75"
+          : "bg-slate-800 border-slate-700/50 hover:border-slate-600/60 hover:bg-slate-800/60"
       }
     `}
     >
@@ -50,8 +50,8 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
             flex items-center justify-center mt-0.5
             ${
               isCompleted
-                ? "bg-emerald-500 border-emerald-500"
-                : "border-slate-500 hover:border-emerald-400"
+                ? "bg-persian_green-500 border-persian_green-500"
+                : "border-slate-500 hover:border-persian_green-400"
             }
           `}
           aria-label={
@@ -97,8 +97,8 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
                 px-2 py-1 rounded-full font-medium text-xs
                 ${
                   isCompleted
-                    ? "text-emerald-400 bg-emerald-500/10"
-                    : "text-amber-400 bg-amber-500/10"
+                    ? "text-persian_green-400 bg-persian_green-500/10"
+                    : "text-saffron-400 bg-saffron-500/10"
                 }
               `}
             >
@@ -119,7 +119,7 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
         {/* Delete Button */}
         <button
           onClick={handleDelete}
-          className="flex-shrink-0 p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all duration-200"
+          className="flex-shrink-0 p-1.5 text-slate-500 hover:text-burnt_sienna-400 hover:bg-burnt_sienna-500/10 rounded-lg transition-all duration-200"
           aria-label="Eliminar tarea"
         >
           <Trash2 className="w-4 h-4" strokeWidth={2} />

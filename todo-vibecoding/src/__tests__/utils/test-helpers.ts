@@ -228,8 +228,8 @@ export const TEST_CONSTANTS = {
   },
 
   CSS_CLASSES: {
-    BUTTON_PRIMARY: ["bg-blue-600", "text-white", "hover:bg-blue-700"],
-    BUTTON_SECONDARY: ["bg-gray-100", "text-gray-700", "hover:bg-gray-200"],
+    BUTTON_PRIMARY: ["bg-charcoal-600", "text-white", "hover:bg-charcoal-700"],
+  BUTTON_SECONDARY: ["bg-slate-100", "text-slate-700", "hover:bg-slate-200"],
     INPUT_BASE: ["border", "rounded", "px-3", "py-2"],
     CARD_BASE: ["bg-white", "rounded-lg", "shadow", "p-4"],
   },

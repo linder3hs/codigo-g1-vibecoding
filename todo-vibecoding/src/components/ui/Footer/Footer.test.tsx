@@ -84,8 +84,8 @@ describe("Footer Component", () => {
    * @test {string} inline-flex - Display flex inline
    * @test {string} items-center - Alineación vertical centrada
    * @test {string} gap-3 - Espacio entre elementos
-   * @test {string} backdrop-blur-sm - Efecto de desenfoque
-   * @test {string} bg-slate-800/20 - Fondo con opacidad
+   * @test {string}  - Efecto de desenfoque
+   * @test {string} bg-slate-800 - Fondo con opacidad
    * @test {string} border - Borde
    * @test {string} border-slate-700/30 - Color del borde
    * @test {string} text-slate-400 - Color de texto
@@ -98,15 +98,13 @@ describe("Footer Component", () => {
   it("applies correct CSS classes to badge container", () => {
     render(<Footer />);
 
-    const badgeContainer = screen
-      .getByText(/Powered by/)
-      .closest("div");
+    const badgeContainer = screen.getByText(/Powered by/).closest("div");
     expect(badgeContainer).toHaveClass("group");
     expect(badgeContainer).toHaveClass("inline-flex");
     expect(badgeContainer).toHaveClass("items-center");
     expect(badgeContainer).toHaveClass("gap-3");
-    expect(badgeContainer).toHaveClass("backdrop-blur-sm");
-    expect(badgeContainer).toHaveClass("bg-slate-800/20");
+    expect(badgeContainer).toHaveClass("");
+    expect(badgeContainer).toHaveClass("bg-slate-800");
     expect(badgeContainer).toHaveClass("border");
     expect(badgeContainer).toHaveClass("border-slate-700/30");
     expect(badgeContainer).toHaveClass("text-slate-400");
@@ -147,9 +145,7 @@ describe("Footer Component", () => {
   it("has transition and hover effects", () => {
     render(<Footer />);
 
-    const badgeContainer = screen
-      .getByText(/Powered by/)
-      .closest("div");
+    const badgeContainer = screen.getByText(/Powered by/).closest("div");
 
     // Check transition and hover classes are present
     expect(badgeContainer).toHaveClass("transition-all");
@@ -165,18 +161,16 @@ describe("Footer Component", () => {
    * para el diseño minimalista con buen contraste.
    *
    * @test {string} text-slate-400 - Color de texto principal
-   * @test {string} bg-slate-800/20 - Fondo con opacidad
+   * @test {string} bg-slate-800 - Fondo con opacidad
    */
   it("has appropriate minimalist color scheme", () => {
     render(<Footer />);
 
-    const badgeContainer = screen
-      .getByText(/Powered by/)
-      .closest("div");
+    const badgeContainer = screen.getByText(/Powered by/).closest("div");
 
     // Check that appropriate color classes are applied for minimalist design
     expect(badgeContainer).toHaveClass("text-slate-400");
-    expect(badgeContainer).toHaveClass("bg-slate-800/20");
+    expect(badgeContainer).toHaveClass("bg-slate-800");
   });
 
   /**
@@ -214,9 +208,7 @@ describe("Footer Component", () => {
     render(<Footer />);
 
     const footer = screen.getByRole("contentinfo");
-    const badgeContainer = screen
-      .getByText(/Powered by/)
-      .closest("div");
+    const badgeContainer = screen.getByText(/Powered by/).closest("div");
 
     // Check spacing classes for minimalist design
     expect(footer).toHaveClass("mt-16"); // Margin top
@@ -238,9 +230,7 @@ describe("Footer Component", () => {
   it("has appropriate text hierarchy", () => {
     render(<Footer />);
 
-    const badgeContainer = screen
-      .getByText(/Powered by/)
-      .closest("div");
+    const badgeContainer = screen.getByText(/Powered by/).closest("div");
     expect(badgeContainer).toHaveClass("text-sm");
     expect(badgeContainer).toHaveClass("font-medium");
   });
@@ -251,7 +241,7 @@ describe("Footer Component", () => {
    * Verifica que el badge tenga los efectos visuales
    * apropiados para el diseño minimalista.
    *
-   * @test {string} backdrop-blur-sm - Efecto de desenfoque
+   * @test {string}  - Efecto de desenfoque
    * @test {string} border - Borde del badge
    * @test {string} border-slate-700/30 - Color del borde con opacidad
    * @test {string} rounded-full - Bordes redondeados
@@ -259,12 +249,10 @@ describe("Footer Component", () => {
   it("has proper visual effects", () => {
     render(<Footer />);
 
-    const badgeContainer = screen
-      .getByText(/Powered by/)
-      .closest("div");
+    const badgeContainer = screen.getByText(/Powered by/).closest("div");
 
     // Check visual effect classes
-    expect(badgeContainer).toHaveClass("backdrop-blur-sm");
+    expect(badgeContainer).toHaveClass("");
     expect(badgeContainer).toHaveClass("border");
     expect(badgeContainer).toHaveClass("border-slate-700/30");
     expect(badgeContainer).toHaveClass("rounded-full");

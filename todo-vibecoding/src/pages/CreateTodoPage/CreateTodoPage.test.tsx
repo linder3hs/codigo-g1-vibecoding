@@ -214,7 +214,7 @@ describe("CreateTodoPage", () => {
 
     expect(submitButton.disabled).toBe(true);
     expect(submitButton).toHaveClass(
-      "disabled:from-slate-600", 
+      "disabled:from-slate-600",
       "disabled:to-slate-600",
       "disabled:cursor-not-allowed",
       "disabled:hover:scale-100"
@@ -273,10 +273,10 @@ describe("CreateTodoPage", () => {
     );
 
     expect(cancelLink).toHaveClass(
-      "px-6", 
-      "py-3", 
-      "bg-slate-700/50", 
-      "text-slate-300", 
+      "px-6",
+      "py-3",
+      "bg-slate-700/50",
+      "text-slate-300",
       "rounded-xl"
     );
   });
@@ -285,12 +285,14 @@ describe("CreateTodoPage", () => {
     renderWithRouter(<CreateTodoPage />);
 
     // Check main container
-    const mainContainer = document.querySelector('.min-h-screen.relative');
+    const mainContainer = document.querySelector(".min-h-screen.relative");
     expect(mainContainer).toBeInTheDocument();
     expect(mainContainer).toHaveClass("min-h-screen", "relative");
-    
+
     // Check inner container
-    const innerContainer = document.querySelector('.container.mx-auto.px-4.py-8.max-w-2xl.relative.z-10');
+    const innerContainer = document.querySelector(
+      ".container.mx-auto.px-4.py-8.max-w-2xl.relative.z-10"
+    );
     expect(innerContainer).toBeInTheDocument();
     expect(innerContainer).toHaveClass(
       "container",
@@ -301,13 +303,13 @@ describe("CreateTodoPage", () => {
       "relative",
       "z-10"
     );
-    
+
     // Check form container with glassmorphism
-    const formContainer = document.querySelector('.backdrop-blur-md');
+    const formContainer = document.querySelector(".backdrop-blur-md");
     expect(formContainer).toBeInTheDocument();
     expect(formContainer).toHaveClass(
       "backdrop-blur-md",
-      "bg-slate-800/40",
+      "bg-slate-800",
       "rounded-2xl",
       "shadow-2xl",
       "p-8",
@@ -326,7 +328,7 @@ describe("CreateTodoPage", () => {
     expect(label).toBeInTheDocument();
     expect(label).toHaveAttribute("for", "todoText");
     expect(input).toHaveAttribute("id", "todoText");
-    
+
     // Verify label styling
     expect(label).toHaveClass(
       "block",
@@ -335,7 +337,7 @@ describe("CreateTodoPage", () => {
       "text-slate-300",
       "mb-3"
     );
-    
+
     // Verify input has autofocus
     expect(input).toHaveFocus();
   });

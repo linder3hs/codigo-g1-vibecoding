@@ -16,15 +16,15 @@
  * @interface StatsCardProps
  * @property {number} value - Valor numérico a mostrar en la tarjeta
  * @property {string} label - Etiqueta descriptiva del valor
- * @property {"blue" | "green" | "orange"} color - Variante de color para el valor
+ * @property {"charcoal" | "persian-green" | "saffron"} color - Variante de color para el valor
  */
 interface StatsCardProps {
   /** Valor numérico a mostrar (ej: cantidad de todos) */
   value: number;
   /** Etiqueta descriptiva del valor (ej: "Total", "Completadas") */
   label: string;
-  /** Variante de color: azul para total, verde para completadas, naranja para pendientes */
-  color: "blue" | "green" | "orange";
+  /** Variante de color: charcoal para total, persian-green para completadas, saffron para pendientes */
+  color: "charcoal" | "persian-green" | "saffron";
 }
 
 /**
@@ -34,28 +34,29 @@ interface StatsCardProps {
  * incluyendo gradientes sutiles y efectos hover premium.
  *
  * @constant {Object} colorClasses
- * @property {Object} blue - Clases para variante azul (total)
- * @property {Object} green - Clases para variante verde (completadas)
- * @property {Object} orange - Clases para variante naranja (pendientes)
+ * @property {Object} charcoal - Clases para variante charcoal (total)
+ * @property {Object} persian-green - Clases para variante persian-green (completadas)
+ * @property {Object} saffron - Clases para variante saffron (pendientes)
  */
 const colorClasses = {
-  /** Azul para estadísticas totales */
-  blue: {
-    text: "text-blue-400 group-hover:text-blue-300",
-    accent: "bg-blue-500/10 group-hover:bg-blue-500/20",
-    border: "border-blue-500/20 group-hover:border-blue-500/30",
+  /** Charcoal para estadísticas totales */
+  charcoal: {
+    text: "text-charcoal-600 group-hover:text-charcoal-700",
+    accent: "bg-charcoal-500/10 group-hover:bg-charcoal-500/20",
+    border: "border-charcoal-500/20 group-hover:border-charcoal-500/30",
   },
-  /** Verde para tareas completadas */
-  green: {
-    text: "text-emerald-400 group-hover:text-emerald-300",
-    accent: "bg-emerald-500/10 group-hover:bg-emerald-500/20",
-    border: "border-emerald-500/20 group-hover:border-emerald-500/30",
+  /** Persian Green para tareas completadas */
+  "persian-green": {
+    text: "text-persian-green-400 group-hover:text-persian-green-300",
+    accent: "bg-persian-green-500/10 group-hover:bg-persian-green-500/20",
+    border:
+      "border-persian-green-500/20 group-hover:border-persian-green-500/30",
   },
-  /** Naranja para tareas pendientes */
-  orange: {
-    text: "text-amber-400 group-hover:text-amber-300",
-    accent: "bg-amber-500/10 group-hover:bg-amber-500/20",
-    border: "border-amber-500/20 group-hover:border-amber-500/30",
+  /** Saffron para tareas pendientes */
+  saffron: {
+    text: "text-saffron-400 group-hover:text-saffron-300",
+    accent: "bg-saffron-500/10 group-hover:bg-saffron-500/20",
+    border: "border-saffron-500/20 group-hover:border-saffron-500/30",
   },
 };
 
@@ -70,19 +71,19 @@ const colorClasses = {
  * @param {StatsCardProps} props - Propiedades del componente
  * @param {number} props.value - Valor numérico a mostrar
  * @param {string} props.label - Etiqueta descriptiva
- * @param {"blue" | "green" | "orange"} props.color - Variante de color
+ * @param {"charcoal" | "persian-green" | "saffron"} props.color - Variante de color
  * @returns {JSX.Element} Elemento JSX de la tarjeta de estadísticas
  *
  * @example
  * ```tsx
  * // Tarjeta para total de todos
- * <StatsCard value={10} label="Total" color="blue" />
+ * <StatsCard value={10} label="Total" color="charcoal" />
  *
  * // Tarjeta para todos completados
- * <StatsCard value={7} label="Completadas" color="green" />
+ * <StatsCard value={7} label="Completadas" color="persian-green" />
  *
  * // Tarjeta para todos pendientes
- * <StatsCard value={3} label="Pendientes" color="orange" />
+ * <StatsCard value={3} label="Pendientes" color="saffron" />
  * ```
  *
  * @accessibility
@@ -106,7 +107,7 @@ export const StatsCard = ({ value, label, color }: StatsCardProps) => {
 
   return (
     <div
-      className={`group relative backdrop-blur-md bg-slate-800/40 rounded-2xl p-4 shadow-2xl hover:shadow-3xl border transition-all duration-500 hover:scale-105 hover:-translate-y-1 cursor-default ${colorConfig.border}`}
+      className={`group relative backdrop-blur-md bg-slate-800 rounded-2xl p-4 shadow-2xl hover:shadow-3xl border transition-all duration-500 hover:scale-105 hover:-translate-y-1 cursor-default ${colorConfig.border}`}
     >
       {/* Decorative accent background */}
       <div

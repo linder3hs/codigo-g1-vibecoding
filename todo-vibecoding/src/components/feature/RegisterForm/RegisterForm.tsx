@@ -109,7 +109,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.username.message}
                     </motion.p>
@@ -141,7 +141,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.email.message}
                     </motion.p>
@@ -173,7 +173,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.first_name.message}
                     </motion.p>
@@ -205,7 +205,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.last_name.message}
                     </motion.p>
@@ -253,7 +253,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.password.message}
                     </motion.p>
@@ -272,7 +272,7 @@ export const RegisterForm: React.FC = () => {
                           ? "text-green-600"
                           : strengthInfo.color === "warning"
                           ? "text-yellow-600"
-                          : "text-red-600"
+                          : "text-burnt_sienna-600"
                       }`}
                     >
                       {strengthInfo.text}
@@ -334,7 +334,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.password_confirm.message}
                     </motion.p>
@@ -348,7 +348,7 @@ export const RegisterForm: React.FC = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className={`text-xs font-medium mt-1 ${
-                    passwordsMatch ? "text-green-600" : "text-red-600"
+                    passwordsMatch ? "text-persian_green-600" : "text-burnt_sienna-600"
                   }`}
                 >
                   {passwordsMatch
@@ -376,7 +376,7 @@ export const RegisterForm: React.FC = () => {
                 />
                 <Label htmlFor="acceptTerms" className="text-sm leading-5">
                   Acepto los{" "}
-                  <Link to="/terms" className="text-blue-600 hover:underline">
+                  <Link to="/terms" className="text-charcoal-600 hover:underline">
                     términos y condiciones
                   </Link>
                 </Label>
@@ -388,7 +388,7 @@ export const RegisterForm: React.FC = () => {
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -5 }}
-                      className="text-xs text-red-600 mt-1"
+                      className="text-xs text-burnt_sienna-600 mt-1"
                     >
                       {errors.acceptTerms.message}
                     </motion.p>
@@ -424,7 +424,7 @@ export const RegisterForm: React.FC = () => {
               ¿Ya tienes una cuenta?{" "}
               <Link
                 to="/login"
-                className="text-blue-600 hover:underline font-medium"
+                className="text-charcoal-600 hover:underline font-medium"
               >
                 Inicia sesión
               </Link>

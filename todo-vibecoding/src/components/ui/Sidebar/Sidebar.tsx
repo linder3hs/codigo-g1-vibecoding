@@ -38,7 +38,7 @@ export const Sidebar = ({ currentFilter, onFilterChange }: SidebarProps) => {
           <div className="p-6">
             <Link
               to="/crear-todo"
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-charcoal-600 hover:bg-charcoal-700 text-white rounded-lg transition-colors duration-200 text-sm font-medium"
             >
               <svg
                 className="w-4 h-4"
@@ -59,7 +59,9 @@ export const Sidebar = ({ currentFilter, onFilterChange }: SidebarProps) => {
 
           {/* Filters Section - Desktop */}
           <div className="flex-1 p-6">
-            <h3 className="text-sm font-medium text-slate-400 mb-3 uppercase tracking-wide">Filtros</h3>
+            <h3 className="text-sm font-medium text-slate-400 mb-3 uppercase tracking-wide">
+              Filtros
+            </h3>
             <div className="space-y-2">
               <FilterButtons
                 currentFilter={currentFilter}
@@ -107,7 +109,7 @@ export const Sidebar = ({ currentFilter, onFilterChange }: SidebarProps) => {
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[9990]"
+          className="lg:hidden fixed inset-0 bg-black/50  z-[9990]"
           onClick={toggleMobileMenu}
         />
       )}

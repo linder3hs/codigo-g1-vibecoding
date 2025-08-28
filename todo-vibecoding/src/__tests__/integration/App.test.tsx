@@ -81,7 +81,7 @@ describe("App Component - Minimalist UI Integration", () => {
    * @test {HTMLElement[]} completedLabels - Elementos que muestran "Completadas"
    * @test {HTMLElement[]} pendingLabels - Elementos que muestran "Pendientes"
    * @test {string} backdrop-blur-md - Clase CSS para efecto glassmorphism
-   * @test {string} bg-slate-800/40 - Clase CSS para fondo translúcido
+   * @test {string} bg-slate-800 - Clase CSS para fondo translúcido
    */
   it("displays statistics section with glassmorphism design", () => {
     render(<App />);
@@ -123,8 +123,12 @@ describe("App Component - Minimalist UI Integration", () => {
 
     // Use getAllByLabelText since FilterButtons appears in both desktop and mobile sidebar
     const allButtons = screen.getAllByLabelText("Mostrar todas las tareas");
-    const pendingButtons = screen.getAllByLabelText("Mostrar tareas pendientes");
-    const completedButtons = screen.getAllByLabelText("Mostrar tareas completadas");
+    const pendingButtons = screen.getAllByLabelText(
+      "Mostrar tareas pendientes"
+    );
+    const completedButtons = screen.getAllByLabelText(
+      "Mostrar tareas completadas"
+    );
 
     // Test first button (desktop version)
     expect(allButtons[0]).toBeInTheDocument();
@@ -152,9 +156,9 @@ describe("App Component - Minimalist UI Integration", () => {
    * para indicar el estado activo con efectos glassmorphism.
    *
    * @test {Function} user.click - Simula clics del usuario
-   * @test {string} bg-amber-600 - Clase CSS para filtro pendientes activo
-   * @test {string} bg-emerald-600 - Clase CSS para filtro completadas activo
-   * @test {string} bg-blue-600 - Clase CSS para filtro todas activo
+   * @test {string} bg-saffron-600 - Clase CSS para filtro pendientes activo
+   * @test {string} bg-persian_green-600 - Clase CSS para filtro completadas activo
+   * @test {string} bg-charcoal-600 - Clase CSS para filtro todas activo
    * @test {string} text-white - Clase CSS para texto activo
    */
   it("handles filter interactions with minimalist design", async () => {
@@ -162,23 +166,27 @@ describe("App Component - Minimalist UI Integration", () => {
     render(<App />);
 
     // Use getAllByLabelText since FilterButtons appears in both desktop and mobile sidebar
-    const pendingButtons = screen.getAllByLabelText("Mostrar tareas pendientes");
-    const completedButtons = screen.getAllByLabelText("Mostrar tareas completadas");
+    const pendingButtons = screen.getAllByLabelText(
+      "Mostrar tareas pendientes"
+    );
+    const completedButtons = screen.getAllByLabelText(
+      "Mostrar tareas completadas"
+    );
     const allButtons = screen.getAllByLabelText("Mostrar todas las tareas");
 
     // Click pending filter (use first button - desktop version)
     await user.click(pendingButtons[0]);
-    expect(pendingButtons[0]).toHaveClass("bg-amber-600");
+    expect(pendingButtons[0]).toHaveClass("bg-saffron-600");
     expect(pendingButtons[0]).toHaveClass("text-white");
 
     // Click completed filter
     await user.click(completedButtons[0]);
-    expect(completedButtons[0]).toHaveClass("bg-emerald-600");
+    expect(completedButtons[0]).toHaveClass("bg-persian_green-600");
     expect(completedButtons[0]).toHaveClass("text-white");
 
     // Click all filter
     await user.click(allButtons[0]);
-    expect(allButtons[0]).toHaveClass("bg-blue-600");
+    expect(allButtons[0]).toHaveClass("bg-charcoal-600");
     expect(allButtons[0]).toHaveClass("text-white");
   });
 
@@ -192,7 +200,7 @@ describe("App Component - Minimalist UI Integration", () => {
    * @test {HTMLElement} header - Elemento con role="banner"
    * @test {HTMLElement} heading - Elemento h1 para jerarquía
    * @test {HTMLElement} footer - Elemento con role="contentinfo"
-   * @test {string} backdrop-blur-sm - Clase CSS para glassmorphism en header
+   * @test {string}  - Clase CSS para glassmorphism en header
    */
   it("has proper semantic structure with minimalist design", () => {
     render(<App />);
@@ -242,7 +250,7 @@ describe("App Component - Minimalist UI Integration", () => {
    * el nuevo diseño minimalista y glassmorphism.
    *
    * @test {HTMLElement} todoItem - Elemento de tarea específica
-   * @test {string} bg-slate-800/40 - Clase CSS para fondo translúcido
+   * @test {string} bg-slate-800 - Clase CSS para fondo translúcido
    * @test {string} border-slate-700/50 - Clase CSS para borde translúcido
    */
   it("renders todo list with existing todos and minimalist design", () => {
@@ -255,7 +263,7 @@ describe("App Component - Minimalist UI Integration", () => {
 
     // Check for glassmorphism classes on todo items - find the correct container
     const todoContainer = todoItem.closest(".group");
-    expect(todoContainer).toHaveClass("bg-slate-800/40");
+    expect(todoContainer).toHaveClass("bg-slate-800");
     expect(todoContainer).toHaveClass("border-slate-700/50");
   });
 });

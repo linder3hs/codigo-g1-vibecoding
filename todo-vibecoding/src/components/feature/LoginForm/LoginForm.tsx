@@ -145,7 +145,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       animate="visible"
       className={`w-full max-w-md mx-auto ${className}`}
     >
-      <Card className="p-8 shadow-2xl border-0 bg-white/95 backdrop-blur-sm">
+      <Card className="p-8 shadow-2xl border-0 bg-white/95 ">
         {/* Header */}
         <motion.div variants={itemVariants} className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -182,8 +182,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                 placeholder="tu_usuario"
                 className={`pl-10 h-12 transition-all duration-200 ${
                   errors.username
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
+                    ? "border-burnt_sienna-300 focus:border-burnt_sienna-500 focus:ring-burnt_sienna-200"
+                    : "border-gray-300 focus:border-charcoal-500 focus:ring-charcoal-200"
                 }`}
                 {...register("username")}
                 disabled={isFormLoading}
@@ -193,7 +193,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               <motion.p
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-600 text-sm font-medium"
+                className="text-burnt_sienna-600 text-sm font-medium"
               >
                 {errors.username.message}
               </motion.p>
@@ -216,8 +216,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                 placeholder="••••••••"
                 className={`pl-10 pr-12 h-12 transition-all duration-200 ${
                   errors.password
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-200"
+                    ? "border-burnt_sienna-300 focus:border-burnt_sienna-500 focus:ring-burnt_sienna-200"
+                    : "border-gray-300 focus:border-charcoal-500 focus:ring-charcoal-200"
                 }`}
                 {...register("password")}
                 disabled={isFormLoading}
@@ -239,7 +239,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               <motion.p
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-red-600 text-sm font-medium"
+                className="text-burnt_sienna-600 text-sm font-medium"
               >
                 {errors.password.message}
               </motion.p>
@@ -251,7 +251,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             <input
               id="rememberMe"
               type="checkbox"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors duration-200"
+              className="h-4 w-4 text-charcoal-600 focus:ring-charcoal-500 border-gray-300 rounded transition-colors duration-200"
               {...register("rememberMe")}
               disabled={isFormLoading}
             />
@@ -268,7 +268,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             <Button
               type="submit"
               disabled={isFormLoading}
-              className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full h-12 bg-gradient-to-r from-charcoal-600 to-charcoal-700 hover:from-charcoal-700 hover:to-charcoal-800 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {isFormLoading ? (
                 <>
@@ -285,7 +285,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <motion.div variants={itemVariants} className="text-center">
             <button
               type="button"
-              className="text-sm text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
+              className="text-sm text-charcoal-600 hover:text-charcoal-800 font-medium transition-colors duration-200"
               disabled={isFormLoading}
             >
               ¿Olvidaste tu contraseña?
@@ -300,7 +300,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
             <button
               type="button"
               onClick={() => navigate("/register")}
-              className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
+              className="text-charcoal-600 hover:text-charcoal-800 font-medium transition-colors duration-200"
               disabled={isFormLoading}
             >
               Regístrate aquí

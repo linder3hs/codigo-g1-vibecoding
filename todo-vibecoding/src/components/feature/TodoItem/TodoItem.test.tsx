@@ -74,10 +74,10 @@ describe("TodoItem Component", () => {
    */
   it("renders completed todo correctly", () => {
     render(
-      <TodoItem 
-        todo={completedTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={completedTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
@@ -87,7 +87,9 @@ describe("TodoItem Component", () => {
     ).toBeInTheDocument();
 
     // Verifica el checkbox completado
-    const checkbox = screen.getByRole("button", { name: /marcar como pendiente/i });
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como pendiente/i,
+    });
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).toHaveClass("bg-emerald-500", "border-emerald-500");
 
@@ -96,7 +98,9 @@ describe("TodoItem Component", () => {
     expect(todoText).toHaveClass("text-slate-400", "line-through");
 
     // Verifica el botón de eliminar
-    const deleteButton = screen.getByRole("button", { name: /eliminar tarea/i });
+    const deleteButton = screen.getByRole("button", {
+      name: /eliminar tarea/i,
+    });
     expect(deleteButton).toBeInTheDocument();
   });
 
@@ -115,10 +119,10 @@ describe("TodoItem Component", () => {
    */
   it("renders pending todo correctly", () => {
     render(
-      <TodoItem 
-        todo={pendingTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={pendingTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
@@ -128,7 +132,9 @@ describe("TodoItem Component", () => {
     ).toBeInTheDocument();
 
     // Verifica el checkbox pendiente
-    const checkbox = screen.getByRole("button", { name: /marcar como completada/i });
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como completada/i,
+    });
     expect(checkbox).toBeInTheDocument();
     expect(checkbox).toHaveClass("border-slate-500");
     expect(checkbox).not.toHaveClass("bg-emerald-500");
@@ -139,7 +145,9 @@ describe("TodoItem Component", () => {
     expect(todoText).not.toHaveClass("line-through");
 
     // Verifica el botón de eliminar
-    const deleteButton = screen.getByRole("button", { name: /eliminar tarea/i });
+    const deleteButton = screen.getByRole("button", {
+      name: /eliminar tarea/i,
+    });
     expect(deleteButton).toBeInTheDocument();
   });
 
@@ -157,23 +165,25 @@ describe("TodoItem Component", () => {
    */
   it("applies correct CSS classes for completed todo", () => {
     const { container } = render(
-      <TodoItem 
-        todo={completedTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={completedTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
     // Verifica el contenedor principal
     const mainContainer = container.firstChild as HTMLElement;
     expect(mainContainer).toHaveClass(
-      "bg-slate-800/20",
+      "bg-slate-800",
       "border-slate-700/30",
       "opacity-75"
     );
 
     // Verifica el checkbox
-    const checkbox = screen.getByRole("button", { name: /marcar como pendiente/i });
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como pendiente/i,
+    });
     expect(checkbox).toHaveClass("bg-emerald-500", "border-emerald-500");
 
     // Verifica el texto
@@ -195,23 +205,22 @@ describe("TodoItem Component", () => {
    */
   it("applies correct CSS classes for pending todo", () => {
     const { container } = render(
-      <TodoItem 
-        todo={pendingTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={pendingTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
     // Verifica el contenedor principal
     const mainContainer = container.firstChild as HTMLElement;
-    expect(mainContainer).toHaveClass(
-      "bg-slate-800/40",
-      "border-slate-700/50"
-    );
+    expect(mainContainer).toHaveClass("bg-slate-800", "border-slate-700/50");
     expect(mainContainer).not.toHaveClass("opacity-75");
 
     // Verifica el checkbox
-    const checkbox = screen.getByRole("button", { name: /marcar como completada/i });
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como completada/i,
+    });
     expect(checkbox).toHaveClass("border-slate-500");
     expect(checkbox).not.toHaveClass("bg-emerald-500");
 
@@ -231,14 +240,16 @@ describe("TodoItem Component", () => {
    */
   it("calls onToggle when checkbox is clicked", () => {
     render(
-      <TodoItem 
-        todo={completedTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={completedTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
-    const checkbox = screen.getByRole("button", { name: /marcar como pendiente/i });
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como pendiente/i,
+    });
     fireEvent.click(checkbox);
 
     expect(mockOnToggle).toHaveBeenCalledTimes(1);
@@ -255,14 +266,16 @@ describe("TodoItem Component", () => {
    */
   it("calls onDelete when delete button is clicked", () => {
     render(
-      <TodoItem 
-        todo={pendingTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={pendingTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
-    const deleteButton = screen.getByRole("button", { name: /eliminar tarea/i });
+    const deleteButton = screen.getByRole("button", {
+      name: /eliminar tarea/i,
+    });
     fireEvent.click(deleteButton);
 
     expect(mockOnDelete).toHaveBeenCalledTimes(1);
@@ -282,10 +295,10 @@ describe("TodoItem Component", () => {
    */
   it("has proper semantic structure", () => {
     const { container } = render(
-      <TodoItem 
-        todo={completedTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={completedTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
@@ -294,9 +307,13 @@ describe("TodoItem Component", () => {
     expect(mainContainer).toHaveClass("rounded-xl", "border", "transition-all");
 
     // Verifica que los botones tengan aria-labels
-    const checkbox = screen.getByRole("button", { name: /marcar como pendiente/i });
-    const deleteButton = screen.getByRole("button", { name: /eliminar tarea/i });
-    
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como pendiente/i,
+    });
+    const deleteButton = screen.getByRole("button", {
+      name: /eliminar tarea/i,
+    });
+
     expect(checkbox).toHaveAttribute("aria-label");
     expect(deleteButton).toHaveAttribute("aria-label");
   });
@@ -318,9 +335,13 @@ describe("TodoItem Component", () => {
     ).toBeInTheDocument();
 
     // Verifica que los botones estén presentes
-    const checkbox = screen.getByRole("button", { name: /marcar como pendiente/i });
-    const deleteButton = screen.getByRole("button", { name: /eliminar tarea/i });
-    
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como pendiente/i,
+    });
+    const deleteButton = screen.getByRole("button", {
+      name: /eliminar tarea/i,
+    });
+
     expect(checkbox).toBeInTheDocument();
     expect(deleteButton).toBeInTheDocument();
   });
@@ -335,16 +356,16 @@ describe("TodoItem Component", () => {
    */
   it("has hover and transition classes", () => {
     const { container } = render(
-      <TodoItem 
-        todo={pendingTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={pendingTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
     const mainContainer = container.firstChild as HTMLElement;
     expect(mainContainer).toHaveClass("transition-all", "duration-200");
-    
+
     // Para todos pendientes, verifica clases de hover
     expect(mainContainer).toHaveClass("hover:border-slate-600/60");
   });
@@ -359,14 +380,16 @@ describe("TodoItem Component", () => {
    */
   it("has proper accessibility attributes for checkbox", () => {
     render(
-      <TodoItem 
-        todo={pendingTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={pendingTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
-    const checkbox = screen.getByRole("button", { name: /marcar como completada/i });
+    const checkbox = screen.getByRole("button", {
+      name: /marcar como completada/i,
+    });
     expect(checkbox).toHaveAttribute("aria-label", "Marcar como completada");
   });
 
@@ -380,18 +403,16 @@ describe("TodoItem Component", () => {
    */
   it("has proper accessibility attributes for delete button", () => {
     render(
-      <TodoItem 
-        todo={pendingTodo} 
-        onToggle={mockOnToggle} 
-        onDelete={mockOnDelete} 
+      <TodoItem
+        todo={pendingTodo}
+        onToggle={mockOnToggle}
+        onDelete={mockOnDelete}
       />
     );
 
-    const deleteButton = screen.getByRole("button", { name: /eliminar tarea/i });
+    const deleteButton = screen.getByRole("button", {
+      name: /eliminar tarea/i,
+    });
     expect(deleteButton).toHaveAttribute("aria-label", "Eliminar tarea");
   });
-
-
-
-
 });

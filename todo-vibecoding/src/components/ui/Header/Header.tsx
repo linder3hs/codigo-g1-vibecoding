@@ -61,14 +61,12 @@ export const Header = ({ title, subtitle }: HeaderProps) => {
     <header className="text-center mb-5 relative">
       {/* Decorative background element */}
       <div className="absolute inset-0 -z-10 opacity-20">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-32 bg-gradient-to-r from-slate-600/10 to-blue-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-32 bg-gradient-to-r from-slate-600/10 to-charcoal-600/10 rounded-full blur-3xl" />
       </div>
       <h1 className="text-4xl font-extrabold tracking-tight mb-6 group cursor-default">
-        <span className="bg-gradient-to-r from-slate-200 via-blue-200 to-slate-300 bg-clip-text text-transparent transition-all duration-500 group-hover:from-blue-300 group-hover:via-slate-200 group-hover:to-blue-300 group-hover:scale-105 inline-block">
-          {title}
-        </span>
+        <span className="text-slate-900 inline-block">{title}</span>
       </h1>
-      <p className="text-slate-400 hover:text-slate-300 text-lg font-medium tracking-wide transition-all duration-300 max-w-2xl mx-auto leading-relaxed">
+      <p className="max-w-2xl mx-auto leading-relaxed text-slate-900">
         {subtitle}
       </p>{" "}
     </header>

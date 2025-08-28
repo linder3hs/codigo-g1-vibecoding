@@ -63,9 +63,9 @@ const STATUS_OPTIONS: {
   label: string;
   color: string;
 }[] = [
-  { value: "pendiente", label: "Pendiente", color: "bg-gray-500" },
-  { value: "en_progreso", label: "En Progreso", color: "bg-blue-500" },
-  { value: "completada", label: "Completada", color: "bg-green-500" },
+  { value: "pendiente", label: "Pendiente", color: "bg-saffron-500" },
+  { value: "en_progreso", label: "En Progreso", color: "bg-charcoal-500" },
+  { value: "completada", label: "Completada", color: "bg-persian_green-500" },
 ];
 
 /**
@@ -196,13 +196,13 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                   {...field}
                   id="title"
                   placeholder="Ingresa el título de la tarea..."
-                  className={errors.title ? "border-red-500" : ""}
+                  className={errors.title ? "border-burnt_sienna-500" : ""}
                   autoFocus
                 />
               )}
             />
             {errors.title && (
-              <p className="text-sm text-red-500">{errors.title.message}</p>
+              <p className="text-sm text-burnt_sienna-500">{errors.title.message}</p>
             )}
           </div>
 
@@ -219,12 +219,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                   {...field}
                   id="description"
                   placeholder="Ingresa la descripción de la tarea..."
-                  className={errors.description ? "border-red-500" : ""}
+                  className={errors.description ? "border-burnt_sienna-500" : ""}
                 />
               )}
             />
             {errors.description && (
-              <p className="text-sm text-red-500">{errors.description.message}</p>
+              <p className="text-sm text-burnt_sienna-500">{errors.description.message}</p>
             )}
           </div>
 
@@ -239,7 +239,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               render={({ field }) => (
                 <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger
-                    className={errors.status ? "border-red-500" : ""}
+                    className={errors.status ? "border-burnt_sienna-500" : ""}
                   >
                     <SelectValue placeholder="Selecciona un estado" />
                   </SelectTrigger>
@@ -259,7 +259,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               )}
             />
             {errors.status && (
-              <p className="text-sm text-red-500">{errors.status.message}</p>
+              <p className="text-sm text-burnt_sienna-500">{errors.status.message}</p>
             )}
           </div>
 
