@@ -70,7 +70,10 @@ export interface UseTodoReturn {
     pagination?: Partial<Pick<TodoPagination, "page" | "limit">>
   ) => Promise<void>;
   createNewTodo: (todoData: CreateTodoInput) => Promise<void>;
-  updateExistingTodo: (id: number | string, updates: UpdateTodoInput) => Promise<void>;
+  updateExistingTodo: (
+    id: number | string,
+    updates: UpdateTodoInput
+  ) => Promise<void>;
   deleteExistingTodo: (id: number | string) => Promise<void>;
   toggleTodoStatus: (id: number | string) => Promise<void>;
   markTodoCompleted: (id: number | string) => Promise<void>;

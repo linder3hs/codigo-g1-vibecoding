@@ -41,22 +41,21 @@ interface StatsCardProps {
 const colorClasses = {
   /** Charcoal para estadísticas totales */
   charcoal: {
-    text: "text-charcoal-600 group-hover:text-charcoal-700",
-    accent: "bg-charcoal-500/10 group-hover:bg-charcoal-500/20",
-    border: "border-charcoal-500/20 group-hover:border-charcoal-500/30",
+    text: "text-gray-700 group-hover:text-gray-800",
+    accent: "bg-gray-50 group-hover:bg-gray-100",
+    border: "border-gray-200 group-hover:border-gray-300",
   },
   /** Persian Green para tareas completadas */
   "persian-green": {
-    text: "text-persian-green-400 group-hover:text-persian-green-300",
-    accent: "bg-persian-green-500/10 group-hover:bg-persian-green-500/20",
-    border:
-      "border-persian-green-500/20 group-hover:border-persian-green-500/30",
+    text: "text-green-600 group-hover:text-green-700",
+    accent: "bg-green-50 group-hover:bg-green-100",
+    border: "border-green-200 group-hover:border-green-300",
   },
   /** Saffron para tareas pendientes */
   saffron: {
-    text: "text-saffron-400 group-hover:text-saffron-300",
-    accent: "bg-saffron-500/10 group-hover:bg-saffron-500/20",
-    border: "border-saffron-500/20 group-hover:border-saffron-500/30",
+    text: "text-yellow-600 group-hover:text-yellow-700",
+    accent: "bg-yellow-50 group-hover:bg-yellow-100",
+    border: "border-yellow-200 group-hover:border-yellow-300",
   },
 };
 
@@ -107,7 +106,7 @@ export const StatsCard = ({ value, label, color }: StatsCardProps) => {
 
   return (
     <div
-      className={`group relative backdrop-blur-md bg-slate-800 rounded-2xl p-4 shadow-2xl hover:shadow-3xl border transition-all duration-500 hover:scale-105 hover:-translate-y-1 cursor-default ${colorConfig.border}`}
+      className={`group relative bg-white rounded-2xl p-4 shadow-sm hover:shadow-md border transition-all duration-300 hover:scale-105 hover:-translate-y-1 cursor-default ${colorConfig.border}`}
     >
       {/* Decorative accent background */}
       <div
@@ -124,7 +123,7 @@ export const StatsCard = ({ value, label, color }: StatsCardProps) => {
         </div>
 
         {/* Label with improved styling */}
-        <div className="text-sm font-medium text-slate-400 group-hover:text-slate-300 transition-colors duration-300 tracking-wide uppercase">
+        <div className="text-sm font-medium text-gray-600 group-hover:text-gray-700 transition-colors duration-300 tracking-wide uppercase">
           {label}
         </div>
       </div>

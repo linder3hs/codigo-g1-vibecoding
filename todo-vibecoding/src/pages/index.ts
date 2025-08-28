@@ -7,3 +7,4 @@ export { HomePage } from "./HomePage";
 export { CreateTodoPage } from "./CreateTodoPage";
 export { RegisterPage } from "./RegisterPage";
 export { LoginPage } from "./LoginPage";
+export { TodoPage } from "./TodoPage";

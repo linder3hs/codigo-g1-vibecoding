@@ -4,7 +4,7 @@
  */
 
 import { Link } from "react-router";
-import { Header, Footer, TaskForm } from "../../components";
+import { Header, TaskForm } from "../../components";
 
 /**
  * CreateTodoPage - Form page for creating new todos
@@ -45,8 +45,6 @@ export const CreateTodoPage = () => {
         </div>
 
         <TaskForm />
-
-        <Footer />
       </div>
     </div>
   );

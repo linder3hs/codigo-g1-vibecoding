@@ -32,11 +32,11 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
   return (
     <div
       className={`
-      group relative p-5 rounded-xl border transition-all duration-200 hover:shadow-lg hover:shadow-slate-900/20
+      group relative p-5 rounded-xl border transition-all duration-200 hover:shadow-md
       ${
         isCompleted
-          ? "bg-slate-800 border-slate-700/30 opacity-75"
-          : "bg-slate-800 border-slate-700/50 hover:border-slate-600/60 hover:bg-slate-800/60"
+          ? "bg-white border-gray-200 opacity-75"
+          : "bg-white border-gray-200 hover:border-gray-300 hover:shadow-lg"
       }
     `}
     >
@@ -50,8 +50,8 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
             flex items-center justify-center mt-0.5
             ${
               isCompleted
-                ? "bg-persian_green-500 border-persian_green-500"
-                : "border-slate-500 hover:border-persian_green-400"
+                ? "bg-green-500 border-green-500"
+                : "border-gray-400 hover:border-green-500"
             }
           `}
           aria-label={
@@ -69,7 +69,7 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
           <h3
             className={`
             text-base font-semibold transition-all duration-200 mb-1
-            ${isCompleted ? "text-slate-400 line-through" : "text-slate-100"}
+            ${isCompleted ? "text-gray-500 line-through" : "text-gray-900"}
           `}
           >
             {title}
@@ -80,9 +80,7 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
             <p
               className={`
                 text-sm leading-relaxed mb-3 transition-all duration-200
-                ${
-                  isCompleted ? "text-slate-500 line-through" : "text-slate-300"
-                }
+                ${isCompleted ? "text-gray-500 line-through" : "text-gray-700"}
               `}
             >
               {todo.description}
@@ -97,8 +95,8 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
                 px-2 py-1 rounded-full font-medium text-xs
                 ${
                   isCompleted
-                    ? "text-persian_green-400 bg-persian_green-500/10"
-                    : "text-saffron-400 bg-saffron-500/10"
+                    ? "text-green-600 bg-green-100"
+                    : "text-yellow-600 bg-yellow-100"
                 }
               `}
             >
@@ -108,7 +106,7 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
 
             {/* Creation Date */}
             {createdAt && (
-              <div className="flex items-center gap-1 text-slate-400">
+              <div className="flex items-center gap-1 text-gray-500">
                 <Calendar className="w-3 h-3" />
                 <span>{formatDate(new Date(createdAt))}</span>
               </div>
@@ -119,7 +117,7 @@ export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) => {
         {/* Delete Button */}
         <button
           onClick={handleDelete}
-          className="flex-shrink-0 p-1.5 text-slate-500 hover:text-burnt_sienna-400 hover:bg-burnt_sienna-500/10 rounded-lg transition-all duration-200"
+          className="flex-shrink-0 p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded-lg transition-all duration-200"
           aria-label="Eliminar tarea"
         >
           <Trash2 className="w-4 h-4" strokeWidth={2} />

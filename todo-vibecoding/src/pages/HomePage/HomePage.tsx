@@ -1,122 +1,150 @@
 /**
- * HomePage component - Modern minimalist todo list view
- * Features a clean, responsive design with glassmorphism effects and smooth animations
+ * HomePage component - Dashboard de estadísticas de tareas
+ * Vista exclusiva para visualización de métricas y análisis de datos
+ * Diseño optimizado para mostrar estadísticas de manera clara y efectiva
  */
 
-import { useState } from "react";
 import { useTodo } from "../../hooks/useTodo";
-import { Header, StatsSection, TodoList, Filter } from "../../components";
-import { Link } from "react-router";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import type { FilterType } from "../../types/filter";
-import type { TodoFilters } from "../../types/todo";
+import { Header, StatsSection, StatsChart } from "../../components";
+import { useNavigate } from "react-router";
+import { BarChart3, TrendingUp, Activity } from "lucide-react";
+import { Button } from "../../components/ui/button";
 
 /**
- * HomePage - Main page component for todo list management
- * Modern minimalist design with glassmorphism, smooth animations and full responsiveness
+ * HomePage - Dashboard principal de estadísticas de tareas
+ * Vista centrada en métricas, análisis y visualización de datos
  */
 export const HomePage = () => {
-  const {
-    filters,
-    updateFilters,
-    filteredTodos,
-    todosStats,
-    toggleTodoStatus,
-    deleteExistingTodo,
-  } = useTodo();
-  const [isStatsCollapsed, setIsStatsCollapsed] = useState(true);
+  const { todosStats } = useTodo();
+  const navigate = useNavigate();
 
-  // Convert TodoFilters to FilterType for Sidebar compatibility
-  const currentFilter: FilterType = filters.status;
+  // Navigate to tasks list
+  const handleViewTasks = () => {
+    navigate("/tasks");
+  };
 
-  // Handle filter change from Sidebar
-  const handleFilterChange = (filter: FilterType) => {
-    const newFilters: Partial<TodoFilters> = {
-      status: filter,
-    };
-    updateFilters(newFilters);
+  // Navigate to create new task
+  const handleCreateNew = () => {
+    navigate("/crear-todo");
   };
 
   return (
-    <div className="min-h-screen ">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 max-w-6xl">
+    <div className="min-h-screen bg-white">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl">
         {/* Header Section */}
-        <div className="mb-6 lg:mb-8">
+        <div className="mb-8 lg:mb-12">
           <Header
-            title="Lista de Tareas"
-            subtitle="Gestiona tus tareas de manera eficiente con estilo"
+            title="Dashboard de Estadísticas"
+            subtitle="Análisis completo del rendimiento y progreso de tus tareas"
           />
         </div>
-        <div className="flex justify-center gap-10">
-          {/* Filter Section */}
-          <div className="mb-6 lg:mb-8">
-            <Filter
-              currentFilter={currentFilter}
-              onFilterChange={handleFilterChange}
-            />
-          </div>
-          <div>
-            {/* Stats Section with enhanced glassmorphism */}
-            <div className="mb-6 lg:mb-8">
-              {/* Stats Toggle Button - Always visible */}
-              <button
-                onClick={() => setIsStatsCollapsed(!isStatsCollapsed)}
-                className="w-full mb-4 flex items-center justify-between p-3  bg-slate-800 rounded-xl border border-slate-700/40 text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200"
-              >
-                <span className="text-sm font-medium">Ver estadísticas</span>
-                {isStatsCollapsed ? (
-                  <ChevronDown className="w-4 h-4" />
-                ) : (
-                  <ChevronUp className="w-4 h-4" />
-                )}
-              </button>
 
-              {/* Stats Content */}
-              <div
-                className={`backdrop-blur-md bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-700/30 hover:border-slate-600/50 transition-all duration-300 ${
-                  isStatsCollapsed ? "hidden" : "block"
-                }`}
-              >
-                <StatsSection todosCount={todosStats} />
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-4">
+            <Button
+              onClick={handleViewTasks}
+              variant="outline"
+              className="flex items-center gap-2 hover:bg-gray-50"
+            >
+              <Activity className="w-4 h-4" />
+              Ver Lista de Tareas
+            </Button>
+            <Button
+              onClick={handleCreateNew}
+              className="flex items-center gap-2 bg-gradient-to-r from-gray-600 to-green-600 hover:from-gray-700 hover:to-green-700"
+            >
+              <TrendingUp className="w-4 h-4" />
+              Crear Nueva Tarea
+            </Button>
+          </div>
+        </div>
+
+        {/* Main Statistics Grid */}
+        <div className="space-y-8">
+          {/* Primary Stats Cards */}
+          <div className="w-full">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+              <BarChart3 className="w-5 h-5" />
+              Métricas Principales
+            </h2>
+            <StatsSection todosCount={todosStats} />
+          </div>
+
+          {/* Interactive Chart Section */}
+          <div className="w-full">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5" />
+              Distribución Visual
+            </h2>
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <StatsChart
+                stats={{
+                  total: todosStats.total,
+                  completed: todosStats.completed,
+                  pending: todosStats.pending,
+                }}
+                title="Análisis de Progreso"
+                height={400}
+                showTitle={true}
+                onSegmentClick={(data) => {
+                  console.log("Segmento seleccionado:", data);
+                  // Implementar navegación basada en filtros
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Additional Insights */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-green-600 text-sm font-medium">
+                    Tasa de Completado
+                  </p>
+                  <p className="text-2xl font-bold text-green-800">
+                    {todosStats.total > 0
+                      ? Math.round(
+                          (todosStats.completed / todosStats.total) * 100
+                        )
+                      : 0}
+                    %
+                  </p>
+                </div>
+                <TrendingUp className="w-8 h-8 text-green-600" />
               </div>
             </div>
 
-            {/* Todo List Section with modern styling */}
-            <div className="mb-8">
-              <div className="backdrop-blur-md bg-slate-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 shadow-2xl border border-slate-700/25 hover:border-slate-600/45 transition-all duration-300">
-                <TodoList
-                  todos={filteredTodos}
-                  emptyMessage="No hay tareas para mostrar"
-                  onToggleTodo={(id: number | string) => toggleTodoStatus(id)}
-                  onDeleteTodo={(id: number | string) => deleteExistingTodo(id)}
-                />
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg p-6 border border-yellow-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-yellow-600 text-sm font-medium">
+                    Tareas Pendientes
+                  </p>
+                  <p className="text-2xl font-bold text-yellow-800">
+                    {todosStats.pending}
+                  </p>
+                </div>
+                <Activity className="w-8 h-8 text-yellow-600" />
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-blue-600 text-sm font-medium">
+                    Total de Tareas
+                  </p>
+                  <p className="text-2xl font-bold text-blue-800">
+                    {todosStats.total}
+                  </p>
+                </div>
+                <BarChart3 className="w-8 h-8 text-blue-600" />
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Mobile FAB - Create Task */}
-      <div className="lg:hidden fixed bottom-6 right-6 z-[9999]">
-        <Link
-          to="/crear-todo"
-          className="group flex items-center justify-center w-14 h-14 bg-gradient-to-r from-charcoal-600 to-persian_green-600 hover:from-charcoal-700 hover:to-persian_green-700 text-white rounded-full shadow-2xl hover:shadow-charcoal-500/40 transition-all duration-300 transform hover:scale-110 active:scale-95"
-          aria-label="Crear nueva tarea"
-        >
-          <svg
-            className="w-6 h-6 transition-transform duration-300 group-hover:rotate-90"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2.5}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-        </Link>
       </div>
     </div>
   );

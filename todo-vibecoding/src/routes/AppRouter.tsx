@@ -5,7 +5,13 @@
  */
 
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { HomePage, CreateTodoPage, RegisterPage, LoginPage } from "../pages";
+import {
+  HomePage,
+  CreateTodoPage,
+  TodoPage,
+  RegisterPage,
+  LoginPage,
+} from "../pages";
 import { ErrorPage } from "./ErrorPage";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { DashboardLayout } from "../components/feature/Layout/Layout";
@@ -53,11 +59,11 @@ const router = createBrowserRouter([
 
   // Additional protected routes can be added here
   {
-    path: "/todos",
+    path: "/tasks",
     element: (
       <ProtectedRoute>
         <DashboardLayout>
-          <HomePage />
+          <TodoPage />
         </DashboardLayout>
       </ProtectedRoute>
     ),

@@ -9,6 +9,13 @@ module.exports = {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
       "jest-transform-stub",
     "^.+\\.svg$": "jest-transform-stub",
+    "^@/schemas/validationSchemas$": "<rootDir>/src/__tests__/mocks/validationSchemas.mock.ts",
+    "^@/lib/utils$": "<rootDir>/src/__tests__/mocks/utils.mock.ts",
+    "^@/config$": "<rootDir>/src/__tests__/mocks/config.mock.ts",
+    "^@/config/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
+    "^../config/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
+    "^../../config/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
+    "^.*\\/config\\/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
   },
   transform: {
     "^.+\\.(ts|tsx)$": [

@@ -23,13 +23,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
 import { Alert, AlertDescription } from "../../ui/alert";
 import type { Todo, TaskStatus } from "../../../types/todo";
-
-// Task form schema with only title, description and status
-const taskFormSchema = z.object({
-  title: z.string().min(1, "El título es requerido"),
-  description: z.string().default(""),
-  status: z.enum(["pendiente", "en_progreso", "completada"]).default("pendiente"),
-});
+import { taskFormSchema } from "@/schemas/validationSchemas";
 
 type TaskFormData = z.infer<typeof taskFormSchema>;
 
@@ -65,7 +59,7 @@ const STATUS_OPTIONS: {
 }[] = [
   { value: "pendiente", label: "Pendiente", color: "bg-saffron-500" },
   { value: "en_progreso", label: "En Progreso", color: "bg-charcoal-500" },
-  { value: "completada", label: "Completada", color: "bg-persian_green-500" },
+  { value: "completada", label: "Completada", color: "bg-green-700" },
 ];
 
 /**
@@ -81,11 +75,9 @@ const STATUS_OPTIONS: {
 export const TaskForm: React.FC<TaskFormProps> = ({
   todo,
   onSubmit,
-  onCancel,
   isLoading = false,
   mode = "create",
   submitText,
-  showCancel = true,
   className = "",
 }) => {
   const { createNewTodo, updateExistingTodo, error, clearTodoError } =
@@ -202,7 +194,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               )}
             />
             {errors.title && (
-              <p className="text-sm text-burnt_sienna-500">{errors.title.message}</p>
+              <p className="text-sm text-burnt_sienna-500">
+                {errors.title.message}
+              </p>
             )}
           </div>
 
@@ -219,12 +213,16 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                   {...field}
                   id="description"
                   placeholder="Ingresa la descripción de la tarea..."
-                  className={errors.description ? "border-burnt_sienna-500" : ""}
+                  className={
+                    errors.description ? "border-burnt_sienna-500" : ""
+                  }
                 />
               )}
             />
             {errors.description && (
-              <p className="text-sm text-burnt_sienna-500">{errors.description.message}</p>
+              <p className="text-sm text-burnt_sienna-500">
+                {errors.description.message}
+              </p>
             )}
           </div>
 
@@ -259,7 +257,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               )}
             />
             {errors.status && (
-              <p className="text-sm text-burnt_sienna-500">{errors.status.message}</p>
+              <p className="text-sm text-burnt_sienna-500">
+                {errors.status.message}
+              </p>
             )}
           </div>
 
@@ -280,17 +280,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                 (mode === "edit" ? "Actualizar Tarea" : "Crear Tarea")
               )}
             </Button>
-
-            {showCancel && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onCancel}
-                disabled={isSubmitting || isLoading}
-              >
-                Cancelar
-              </Button>
-            )}
           </div>
         </form>
       </CardContent>

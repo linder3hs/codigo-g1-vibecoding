@@ -99,7 +99,10 @@ const todoSlice = createSlice({
       action: PayloadAction<CreateTodoSuccessPayload>
     ) => {
       state.isLoading = false;
-      state.todos.unshift(action.payload.todo); // Add to beginning
+      state.todos.unshift({
+        ...action.payload.todo,
+        created_at: new Date().toISOString(),
+      }); // Add to beginning
       state.pagination.total += 1;
       state.error = null;
     },
@@ -160,10 +163,15 @@ const todoSlice = createSlice({
       const deletedId = action.payload.id;
 
       // Remove from todos array
-      state.todos = state.todos.filter((todo) => String(todo.id) === String(deletedId));
+      state.todos = state.todos.filter(
+        (todo) => String(todo.id) === String(deletedId)
+      );
 
       // Clear currentTodo if it's the deleted todo
-      if (state.currentTodo && String(state.currentTodo.id) === String(deletedId)) {
+      if (
+        state.currentTodo &&
+        String(state.currentTodo.id) === String(deletedId)
+      ) {
         state.currentTodo = null;
       }
 
@@ -217,8 +225,13 @@ const todoSlice = createSlice({
     },
 
     // Optimistic updates for better UX
-    toggleTodoOptimistic: (state, action: PayloadAction<{ id: string | number }>) => {
-      const todo = state.todos.find((t) => String(t.id) === String(action.payload.id));
+    toggleTodoOptimistic: (
+      state,
+      action: PayloadAction<{ id: string | number }>
+    ) => {
+      const todo = state.todos.find(
+        (t) => String(t.id) === String(action.payload.id)
+      );
       if (todo) {
         // Use new field is_completed, fallback to completed for backward compatibility
         if (todo.is_completed !== undefined) {
@@ -229,7 +242,10 @@ const todoSlice = createSlice({
       }
 
       // Update currentTodo if it's the same todo
-      if (state.currentTodo && String(state.currentTodo.id) === String(action.payload.id)) {
+      if (
+        state.currentTodo &&
+        String(state.currentTodo.id) === String(action.payload.id)
+      ) {
         if (state.currentTodo.is_completed !== undefined) {
           state.currentTodo.is_completed = !state.currentTodo.is_completed;
         } else {
@@ -290,7 +306,8 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
   // Filter by status
   if (filters.status !== "all") {
     filtered = filtered.filter((todo) => {
-      const isCompleted = todo.is_completed !== undefined ? todo.is_completed : todo.completed;
+      const isCompleted =
+        todo.is_completed !== undefined ? todo.is_completed : todo.completed;
       return filters.status === "completed" ? isCompleted : !isCompleted;
     });
   }
@@ -325,7 +342,9 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
         const priorityOrder = { low: 1, medium: 2, high: 3 };
         const aPriority = a.priority || "medium";
         const bPriority = b.priority || "medium";
-        comparison = priorityOrder[aPriority as keyof typeof priorityOrder] - priorityOrder[bPriority as keyof typeof priorityOrder];
+        comparison =
+          priorityOrder[aPriority as keyof typeof priorityOrder] -
+          priorityOrder[bPriority as keyof typeof priorityOrder];
         break;
       }
       case "createdAt":
@@ -354,8 +373,13 @@ export const selectTodoStats = (state: { todos: TodoState }) => {
   return { total, completed, pending };
 };
 
-export const selectTodoById = (state: { todos: TodoState }, id: string | number) => {
-  return state.todos.todos.find((todo) => String(todo.id) === String(id)) || null;
+export const selectTodoById = (
+  state: { todos: TodoState },
+  id: string | number
+) => {
+  return (
+    state.todos.todos.find((todo) => String(todo.id) === String(id)) || null
+  );
 };
 
 // Export reducer

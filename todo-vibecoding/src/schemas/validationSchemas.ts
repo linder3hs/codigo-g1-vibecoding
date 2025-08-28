@@ -39,16 +39,17 @@ const errorMessages = {
  * Login form validation schema
  */
 export const loginSchema = z.object({
-  email: z
+  username: z
     .string({ message: errorMessages.required })
     .min(1, errorMessages.required)
     .regex(emailRegex, errorMessages.email),
 
   password: z
     .string({ message: errorMessages.required })
-    .min(1, errorMessages.required),
+    .min(1, "La contraseña es requerida")
+    .min(6, "La contraseña debe tener al menos 6 caracteres"),
 
-  rememberMe: z.boolean().optional().default(false),
+  rememberMe: z.boolean().optional(),
 });
 
 /**
@@ -480,6 +481,15 @@ export const getFirstZodError = (error: z.ZodError): string => {
   }, error.issues[0].message);
 };
 
+// Task form schema with only title, description and status
+export const taskFormSchema = z.object({
+  title: z.string().min(1, "El título es requerido"),
+  description: z.string().default(""),
+  status: z
+    .enum(["pendiente", "en_progreso", "completada"])
+    .default("pendiente"),
+});
+
 /**
  * Default export with all schemas
  */
@@ -495,4 +505,5 @@ export default {
   passwordResetConfirmSchema,
   paginationSchema,
   searchSchema,
+  taskFormSchema,
 };

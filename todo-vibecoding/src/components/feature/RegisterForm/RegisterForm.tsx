@@ -27,8 +27,6 @@ import { Checkbox } from "../../ui/checkbox";
 import { Alert, AlertDescription } from "../../ui/alert";
 import { Progress } from "../../ui/progress";
 
-
-
 /**
  * RegisterForm component
  */
@@ -39,23 +37,23 @@ export const RegisterForm: React.FC = () => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-    
+
     // Form submission
     onSubmit,
-    
+
     // Password visibility state
     showPassword,
     setShowPassword,
     showConfirmPassword,
     setShowConfirmPassword,
-    
+
     // Password validation
     password,
     passwordConfirm,
     passwordStrength,
     strengthInfo,
     passwordsMatch,
-    
+
     // Auth state
     isLoading,
     error,
@@ -348,7 +346,9 @@ export const RegisterForm: React.FC = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className={`text-xs font-medium mt-1 ${
-                    passwordsMatch ? "text-persian_green-600" : "text-burnt_sienna-600"
+                    passwordsMatch
+                      ? "text-persian_green-600"
+                      : "text-burnt_sienna-600"
                   }`}
                 >
                   {passwordsMatch
@@ -376,7 +376,10 @@ export const RegisterForm: React.FC = () => {
                 />
                 <Label htmlFor="acceptTerms" className="text-sm leading-5">
                   Acepto los{" "}
-                  <Link to="/terms" className="text-charcoal-600 hover:underline">
+                  <Link
+                    to="/terms"
+                    className="text-charcoal-600 hover:underline"
+                  >
                     términos y condiciones
                   </Link>
                 </Label>

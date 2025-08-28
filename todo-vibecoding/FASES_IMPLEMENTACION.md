@@ -443,12 +443,12 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Formulario reutilizable para crear y editar
-- [ ] Validación con Zod
-- [ ] Campos para todos los atributos de tarea
-- [ ] Selector de fecha con validación
-- [ ] Sistema de etiquetas dinámico
-- [ ] UI intuitiva y responsive
+- [x] Formulario reutilizable para crear y editar
+- [x] Validación con Zod
+- [x] Campos para todos los atributos de tarea
+- [x] Selector de fecha con validación
+- [x] Sistema de etiquetas dinámico
+- [x] UI intuitiva y responsive
 
 ---
 
@@ -470,11 +470,11 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Verificación de autenticación
-- [ ] Redirección a login si no autenticado
-- [ ] Preservación de ruta intentada
-- [ ] Loading state durante verificación
-- [ ] Integración con useAuth hook
+- [x] Verificación de autenticación
+- [x] Redirección a login si no autenticado
+- [x] Preservación de ruta intentada
+- [x] Loading state durante verificación
+- [x] Integración con useAuth hook
 
 ### 7.2 Componente Navigation
 
@@ -492,11 +492,11 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Navegación responsive implementada
-- [ ] Menú móvil funcional
-- [ ] Indicadores de estado de usuario
-- [ ] Breadcrumbs dinámicos
-- [ ] Accesibilidad implementada
+- [x] Navegación responsive implementada
+- [x] Menú móvil funcional
+- [x] Indicadores de estado de usuario
+- [x] Breadcrumbs dinámicos
+- [x] Accesibilidad implementada
 
 ### 7.3 Componente Layout
 
@@ -514,11 +514,11 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Layout responsive implementado
-- [ ] Header y footer consistentes
-- [ ] Área de contenido flexible
-- [ ] Sistema de notificaciones integrado
-- [ ] Compatibilidad con todas las páginas
+- [x] Layout responsive implementado
+- [x] Header y footer consistentes
+- [x] Área de contenido flexible
+- [x] Sistema de notificaciones integrado
+- [x] Compatibilidad con todas las páginas
 
 ---
 
@@ -540,12 +540,12 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Mostrar toda la información de la tarea
-- [ ] Botones de acción funcionales
-- [ ] Indicadores visuales de prioridad y estado
-- [ ] Animaciones de transición
-- [ ] Responsive design
-- [ ] Accesibilidad implementada
+- [x] Mostrar toda la información de la tarea
+- [x] Botones de acción funcionales
+- [x] Indicadores visuales de prioridad y estado
+- [x] Animaciones de transición
+- [x] Responsive design
+- [x] Accesibilidad implementada
 
 ### 8.2 Componente TaskList
 
@@ -563,12 +563,12 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Renderizado eficiente de lista de tareas
-- [ ] Paginación integrada
-- [ ] Estados de loading y empty
-- [ ] Selección múltiple para acciones en lote
-- [ ] Ordenamiento funcional
-- [ ] Performance optimizado
+- [x] Renderizado eficiente de lista de tareas
+- [x] Paginación integrada
+- [x] Estados de loading y empty
+- [x] Selección múltiple para acciones en lote
+- [x] Ordenamiento funcional
+- [x] Performance optimizado
 
 ### 8.3 Componente TaskFilters
 
@@ -586,12 +586,12 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Filtros por estado, prioridad, fecha
-- [ ] Búsqueda por texto funcional
-- [ ] Filtro por etiquetas
-- [ ] Botón para limpiar filtros
-- [ ] Persistencia de filtros en URL
-- [ ] UI intuitiva y responsive
+- [x] Filtros por estado, prioridad, fecha
+- [x] Búsqueda por texto funcional
+- [x] Filtro por etiquetas
+- [x] Botón para limpiar filtros
+- [x] Persistencia de filtros en URL
+- [x] UI intuitiva y responsive
 
 ---
 
@@ -612,11 +612,11 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Todas las rutas configuradas
-- [ ] Rutas protegidas funcionando
-- [ ] Lazy loading implementado
-- [ ] Manejo de errores 404
-- [ ] Breadcrumbs de navegación
+- [x] Todas las rutas configuradas
+- [x] Rutas protegidas funcionando
+- [x] Lazy loading implementado
+- [x] Manejo de errores 404
+- [x] Breadcrumbs de navegación
 
 ### 9.2 Página de Login
 
@@ -633,10 +633,10 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Página implementada con LoginForm
-- [ ] Layout responsive y centrado
-- [ ] Navegación a registro
-- [ ] Redirección post-login funcional
+- [x] Página implementada con LoginForm
+- [x] Layout responsive y centrado
+- [x] Navegación a registro
+- [x] Redirección post-login funcional
 
 ### 9.3 Página de Registro
 
@@ -653,24 +653,105 @@ VITE_APP_VERSION=1.0.0
 
 **Criterios de aceptación:**
 
-- [ ] Página implementada con RegisterForm
-- [ ] Layout responsive y centrado
-- [ ] Navegación a login
-- [ ] Redirección post-registro funcional
+- [x] Página implementada con RegisterForm
+- [x] Layout responsive y centrado
+- [x] Navegación a login
+- [x] Redirección post-registro funcional
 
 ### 9.4 Página Principal de Tareas
 
 **Tarea:** Crear página principal de gestión de tareas
 
-**Archivo a crear:** `src/pages/TasksPage/TasksPage.tsx`
+**Archivo a crear:** `src/pages/HomePage/HomePage.tsx`
 
 **Funcionalidades requeridas:**
 
-- Integración con TaskList y TaskFilters
 - Botón para crear nueva tarea
-- Estadísticas básicas
-- Paginación
+- Estadísticas con ECharts usando Pie Nightingale Chart ejemplo de como se usa
+- Cards con información de tareas
 - Estados de loading y error
+
+Documentación de echarts-for-react
+https://git.hust.cc/echarts-for-react/examples/event
+
+```ts
+import React, { useState } from "react";
+import ReactECharts from "echarts-for-react";
+
+const Page: React.FC = () => {
+  const option = {
+    title: {
+      text: "某站点用户访问来源",
+      subtext: "纯属虚构",
+      x: "center",
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
+    },
+    legend: {
+      orient: "vertical",
+      left: "left",
+      data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
+    },
+    series: [
+      {
+        name: "访问来源",
+        type: "pie",
+        radius: "55%",
+        center: ["50%", "60%"],
+        data: [
+          { value: 335, name: "直接访问" },
+          { value: 310, name: "邮件营销" },
+          { value: 234, name: "联盟广告" },
+          { value: 135, name: "视频广告" },
+          { value: 1548, name: "搜索引擎" },
+        ],
+        itemStyle: {
+          emphasis: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+      },
+    ],
+  };
+
+  const [count, setCount] = useState(0);
+
+  function onChartReady(echarts) {
+    console.log("echarts is ready", echarts);
+  }
+
+  function onChartClick(param, echarts) {
+    console.log(param, echarts);
+    setCount(count + 1);
+  }
+
+  function onChartLegendselectchanged(param, echarts) {
+    console.log(param, echarts);
+  }
+
+  return (
+    <>
+      <ReactECharts
+        option={option}
+        style={{ height: 400 }}
+        onChartReady={onChartReady}
+        onEvents={{
+          click: onChartClick,
+          legendselectchanged: onChartLegendselectchanged,
+        }}
+      />
+      <div>Click Count: {count}</div>
+      <div>Open console, see the log detail.</div>
+    </>
+  );
+};
+
+export default Page;
+```
 
 **Criterios de aceptación:**
 

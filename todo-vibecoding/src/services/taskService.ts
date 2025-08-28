@@ -19,6 +19,7 @@ import type {
   TodoFilterStatus,
 } from "../types/todo";
 import type { AxiosResponse } from "axios";
+import { toast } from "sonner";
 
 /**
  * API response interfaces for task operations
@@ -182,6 +183,8 @@ class TaskService {
 
       // Convert backend Task to frontend Todo
       const todo = this.convertTaskToTodo(response.data);
+
+      toast.success("Tarea creada con éxito");
 
       return {
         success: true,

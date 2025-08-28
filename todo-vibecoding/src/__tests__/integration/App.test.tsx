@@ -16,10 +16,14 @@
  * @version 2.0.0 - Minimalist UI with Glassmorphism
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { MemoryRouter } from 'react-router';
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import App from "../../App";
+import TodoPage from '../../pages/TodoPage/TodoPage';
+import todoReducer from '../../stores/slices/todoSlice';
 
 /**
  * Suite de Tests de Integración: App Component
@@ -28,6 +32,23 @@ import App from "../../App";
  * con diseño minimalista y glassmorphism, incluyendo renderizado,
  * interacciones, accesibilidad y nueva experiencia de usuario.
  */
+const renderTodoPage = (preloadedState = {}) => {
+  const store = configureStore({
+    reducer: {
+      todos: todoReducer,
+    },
+    preloadedState,
+  });
+
+  return render(
+     <Provider store={store}>
+       <MemoryRouter>
+         <TodoPage />
+       </MemoryRouter>
+     </Provider>
+   );
+};
+
 describe("App Component - Minimalist UI Integration", () => {
   /**
    * Test: Renderizado del título principal con diseño minimalista
@@ -40,69 +61,81 @@ describe("App Component - Minimalist UI Integration", () => {
    * @test {string} font-extrabold - Clase CSS para peso de fuente
    */
   it("renders main title with minimalist design", () => {
-    render(<App />);
+    renderTodoPage();
 
     const title = screen.getByRole("heading", { level: 1 });
     expect(title).toBeInTheDocument();
     expect(title).toHaveTextContent("Lista de Tareas");
-    expect(title).toHaveClass("text-4xl");
-    expect(title).toHaveClass("font-extrabold");
+
+    // Check for minimalist design classes
+    expect(title).toHaveClass("text-4xl", "font-extrabold", "tracking-tight");
+
+    // Check for text color classes (no gradient in current implementation)
+    const titleSpan = title.querySelector("span");
+    expect(titleSpan).toHaveClass("text-slate-900");
   });
 
   /**
-   * Test: Renderizado del subtítulo con glassmorphism
+   * Test: Renderizado del subtítulo con diseño minimalista
    *
    * Verifica que el subtítulo descriptivo se muestre correctamente
-   * con las clases CSS del diseño glassmorphism y minimalista.
+   * con las clases CSS del diseño minimalista.
    *
    * @test {HTMLElement} subtitle - Elemento con el subtítulo
-   * @test {string} text-slate-400 - Clase CSS para color de texto
-   * @test {string} text-lg - Clase CSS para tamaño de fuente
+   * @test {string} max-w-2xl - Clase CSS para ancho máximo
+   * @test {string} mx-auto - Clase CSS para centrado horizontal
+   * @test {string} leading-relaxed - Clase CSS para espaciado de línea
+   * @test {string} text-slate-900 - Clase CSS para color de texto
    */
-  it("renders subtitle with glassmorphism design", () => {
-    render(<App />);
+  it("renders subtitle with minimalist design", () => {
+    renderTodoPage();
 
     const subtitle = screen.getByText(
       "Gestiona tus tareas de manera eficiente con estilo"
     );
     expect(subtitle).toBeInTheDocument();
-    expect(subtitle).toHaveClass("text-slate-400");
-    expect(subtitle).toHaveClass("text-lg");
+
+    // Check for minimalist design classes
+    expect(subtitle).toHaveClass(
+      "max-w-2xl",
+      "mx-auto",
+      "leading-relaxed",
+      "text-slate-900"
+    );
   });
 
   /**
-   * Test: Sección de estadísticas con glassmorphism
+   * Test: Sección de estadísticas con diseño moderno
    *
    * Verifica que las tarjetas de estadísticas se rendericen correctamente
-   * con el nuevo diseño glassmorphism, mostrando los contadores de Total,
+   * con el nuevo diseño, mostrando los contadores de Total,
    * Completadas y Pendientes con efectos visuales mejorados.
    *
-   * @test {HTMLElement[]} totalLabels - Elementos que muestran "Total"
-   * @test {HTMLElement[]} completedLabels - Elementos que muestran "Completadas"
-   * @test {HTMLElement[]} pendingLabels - Elementos que muestran "Pendientes"
-   * @test {string} backdrop-blur-md - Clase CSS para efecto glassmorphism
-   * @test {string} bg-slate-800 - Clase CSS para fondo translúcido
+   * @test {HTMLElement} statsTitle - Elemento que muestra "Estadísticas"
+   * @test {HTMLElement} totalStats - Elemento que muestra "Total"
+   * @test {HTMLElement} completedStats - Elemento que muestra "Completadas"
+   * @test {HTMLElement} pendingStats - Elemento que muestra "Pendientes"
+   * @test {HTMLElement} completionRate - Elemento que muestra el porcentaje completado
    */
-  it("displays statistics section with glassmorphism design", () => {
-    render(<App />);
+  it("displays statistics section with modern design", () => {
+    renderTodoPage();
 
-    // Check for stats cards - there should be multiple elements with these texts
-    const totalLabels = screen.getAllByText("Total");
-    const completedLabels = screen.getAllByText("Completadas");
-    const pendingLabels = screen.getAllByText("Pendientes");
+    // Check for stats section header
+    const statsTitle = screen.getByText("Estadísticas");
+    expect(statsTitle).toBeInTheDocument();
 
-    expect(totalLabels.length).toBeGreaterThan(0);
-    expect(completedLabels.length).toBeGreaterThan(0);
-    expect(pendingLabels.length).toBeGreaterThan(0);
+    // Check for stats cards - there should be elements with these texts
+    const totalStats = screen.getByText("Total");
+    const completedStats = screen.getByText("Completadas");
+    const pendingStats = screen.getByText("Pendientes");
 
-    // Check for glassmorphism classes on statistics container
-    const statsContainer = screen.getByText("Total").closest("div");
-    expect(statsContainer).toHaveClass(
-      "text-sm font-medium text-slate-400 group-hover:text-slate-300 transition-colors duration-300 tracking-wide uppercase"
-    );
-    expect(statsContainer).toHaveClass(
-      "text-sm font-medium text-slate-400 group-hover:text-slate-300 transition-colors duration-300 tracking-wide uppercase"
-    );
+    expect(totalStats).toBeInTheDocument();
+    expect(completedStats).toBeInTheDocument();
+    expect(pendingStats).toBeInTheDocument();
+
+    // Check for completion rate display
+    const completionRate = screen.getByText(/% completado/);
+    expect(completionRate).toBeInTheDocument();
   });
 
   /**
@@ -119,7 +152,7 @@ describe("App Component - Minimalist UI Integration", () => {
    * @test {string} duration-200 - Clase CSS para duración de transición
    */
   it("renders filter buttons with minimalist design", () => {
-    render(<App />);
+    renderTodoPage();
 
     // Use getAllByLabelText since FilterButtons appears in both desktop and mobile sidebar
     const allButtons = screen.getAllByLabelText("Mostrar todas las tareas");
@@ -139,13 +172,33 @@ describe("App Component - Minimalist UI Integration", () => {
     expect(pendingButtons[0]).toHaveTextContent("Pendientes");
     expect(completedButtons[0]).toHaveTextContent("Completadas");
 
-    // Check for transition classes
-    expect(allButtons[0]).toHaveClass("transition-colors");
-    expect(allButtons[0]).toHaveClass("duration-200");
-    expect(pendingButtons[0]).toHaveClass("transition-colors");
-    expect(pendingButtons[0]).toHaveClass("duration-200");
-    expect(completedButtons[0]).toHaveClass("transition-colors");
-    expect(completedButtons[0]).toHaveClass("duration-200");
+    // Check for minimalist design classes
+    expect(allButtons[0]).toHaveClass(
+      "px-4",
+      "py-2",
+      "rounded-lg",
+      "font-medium",
+      "text-sm",
+      "transition-colors",
+      "duration-200"
+    );
+
+    // Check for active state classes ("all" should be active by default)
+    expect(allButtons[0]).toHaveClass("bg-charcoal-600", "text-white");
+
+    // Check for inactive state classes
+    expect(pendingButtons[0]).toHaveClass(
+      "bg-white",
+      "text-gray-800",
+      "border",
+      "border-slate-700"
+    );
+    expect(completedButtons[0]).toHaveClass(
+      "bg-white",
+      "text-gray-800",
+      "border",
+      "border-slate-700"
+    );
   });
 
   /**
@@ -163,7 +216,7 @@ describe("App Component - Minimalist UI Integration", () => {
    */
   it("handles filter interactions with minimalist design", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    renderTodoPage();
 
     // Use getAllByLabelText since FilterButtons appears in both desktop and mobile sidebar
     const pendingButtons = screen.getAllByLabelText(
@@ -191,79 +244,153 @@ describe("App Component - Minimalist UI Integration", () => {
   });
 
   /**
+   * Test: Funcionalidad de filtros interactivos correcta
+   *
+   * Verifica que los filtros cambien correctamente cuando se hace clic
+   * en los botones y que los estados activos e inactivos se apliquen
+   * correctamente con las clases CSS apropiadas.
+   */
+  it("handles filter interactions correctly", async () => {
+    renderTodoPage();
+
+    // Get filter buttons by their role and accessible name
+    const allButton = screen.getByRole("button", { name: /Mostrar todas las tareas/i });
+    const pendingButton = screen.getByRole("button", { name: /Mostrar tareas pendientes/i });
+    const completedButton = screen.getByRole("button", { name: /Mostrar tareas completadas/i });
+
+    // Initially, "all" should be active
+    expect(allButton).toHaveClass("bg-gray-800", "text-white");
+    expect(pendingButton).toHaveClass(
+      "bg-white",
+      "text-gray-800",
+      "border",
+      "border-slate-700"
+    );
+
+    // Click on pending filter
+    fireEvent.click(pendingButton);
+
+    await waitFor(() => {
+      expect(pendingButton).toHaveClass("bg-gray-800", "text-white");
+      expect(allButton).toHaveClass(
+        "bg-white",
+        "text-gray-800",
+        "border",
+        "border-slate-700"
+      );
+    });
+
+    // Click on completed filter
+    fireEvent.click(completedButton);
+
+    await waitFor(() => {
+      expect(completedButton).toHaveClass("bg-gray-800", "text-white");
+      expect(pendingButton).toHaveClass(
+        "bg-white",
+        "text-gray-800",
+        "border",
+        "border-slate-700"
+      );
+    });
+  });
+
+  /**
    * Test: Estructura semántica HTML con diseño minimalista
    *
    * Verifica que la aplicación tenga una estructura semántica correcta
    * con elementos header, main y footer apropiados para accesibilidad,
    * manteniendo la compatibilidad con el nuevo diseño minimalista.
    *
-   * @test {HTMLElement} header - Elemento con role="banner"
+   * @test {HTMLElement} main - Elemento con role="main"
    * @test {HTMLElement} heading - Elemento h1 para jerarquía
-   * @test {HTMLElement} footer - Elemento con role="contentinfo"
-   * @test {string}  - Clase CSS para glassmorphism en header
+   * @test {HTMLElement} statsHeading - Elemento heading para estadísticas
+   * @test {string} bg-gray-50 - Clase CSS para fondo minimalista
    */
-  it("has proper semantic structure with minimalist design", () => {
-    render(<App />);
+  it("has proper semantic HTML structure with minimalist design", () => {
+    renderTodoPage();
 
-    // Check for header element
-    const header = screen.getByRole("banner");
-    expect(header).toBeInTheDocument();
-    expect(header).toHaveClass("text-center");
-    expect(header).toHaveClass("mb-5");
+    // Check for main content area
+    const main = screen.getByRole("main");
+    expect(main).toBeInTheDocument();
+    expect(main).toHaveClass("min-h-screen", "bg-gray-50");
 
-    // Check for heading hierarchy
-    const heading = screen.getByRole("heading", { level: 1 });
-    expect(heading).toBeInTheDocument();
+    // Check for header section with title and subtitle
+    const titleHeading = screen.getByRole("heading", { name: /Lista de Tareas/i });
+    expect(titleHeading).toBeInTheDocument();
+
+    // Check for statistics section
+    const statsHeading = screen.getByRole("heading", { name: /Estadísticas/i });
+    expect(statsHeading).toBeInTheDocument();
+
+    // Check for content sections
+    const headings = screen.getAllByRole("heading");
+    expect(headings.length).toBeGreaterThanOrEqual(2); // At least title and stats
+
+    // Verify minimalist design classes on main container
+    expect(main).toHaveClass("bg-gray-50");
   });
 
   /**
-   * Test: Clases CSS de fondo degradado minimalista
+   * Test: Clases CSS de fondo minimalista
    *
    * Verifica que el contenedor principal tenga las clases CSS
-   * correctas para el nuevo fondo degradado minimalista con
-   * colores slate y altura mínima de pantalla.
+   * correctas para el nuevo fondo minimalista con
+   * colores gray y altura mínima de pantalla.
    *
-   * @test {HTMLElement} rootDiv - Elemento raíz del componente
+   * @test {HTMLElement} main - Elemento main del componente
    * @test {string} min-h-screen - Clase para altura mínima
-   * @test {string} bg-gradient-to-br - Clase para degradado
-   * @test {string} from-slate-950 - Clase para color inicial del degradado
-   * @test {string} via-slate-900 - Clase para color intermedio del degradado
-   * @test {string} to-indigo-950 - Clase para color final del degradado
+   * @test {string} bg-gray-50 - Clase para fondo gris claro
+   * @test {string} container - Clase para contenedor
+   * @test {string} mx-auto - Clase para centrado horizontal
+   * @test {string} px-4 - Clase para padding horizontal
    */
-  it("applies correct minimalist gradient background classes", () => {
-    const { container } = render(<App />);
+  it("applies correct background classes with minimalist design", () => {
+    renderTodoPage();
 
-    // Check the root div has the gradient classes
-    const rootDiv = container.firstChild as HTMLElement;
-    expect(rootDiv).toHaveClass("min-h-screen");
-    expect(rootDiv).toHaveClass("bg-gradient-to-br");
-    expect(rootDiv).toHaveClass("from-slate-950");
-    expect(rootDiv).toHaveClass("via-slate-900");
-    expect(rootDiv).toHaveClass("to-indigo-950");
+    // Check for main container background
+    const main = screen.getByRole("main");
+    expect(main).toHaveClass("min-h-screen", "bg-gray-50");
+
+    // Check for container with proper spacing
+    const container = main.querySelector(".container");
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveClass("mx-auto", "px-4");
+
+    // Check for section spacing
+    const sections = main.querySelectorAll(".space-y-8");
+    expect(sections.length).toBeGreaterThan(0);
+
+    // Verify minimalist color scheme
+    expect(main).toHaveClass("bg-gray-50");
   });
 
   /**
-   * Test: Lista de tareas con datos existentes y diseño minimalista
+   * Test: Lista de tareas renderizada correctamente
    *
    * Verifica que la lista de tareas se renderice correctamente
-   * mostrando las tareas existentes del dataset de prueba con
-   * el nuevo diseño minimalista y glassmorphism.
+   * mostrando el estado vacío con el mensaje "¡Comienza tu productividad!"
+   * y la estructura con Card cuando no hay tareas.
    *
-   * @test {HTMLElement} todoItem - Elemento de tarea específica
-   * @test {string} bg-slate-800 - Clase CSS para fondo translúcido
-   * @test {string} border-slate-700/50 - Clase CSS para borde translúcido
+   * @test {HTMLElement} emptyStateHeading - Elemento del título del estado vacío
+   * @test {HTMLElement} emptyMessage - Elemento del mensaje vacío
+   * @test {string} text-xl - Clase CSS para tamaño de fuente del título
+   * @test {string} font-semibold - Clase CSS para peso de fuente
+   * @test {string} text-gray-900 - Clase CSS para color del título
+   * @test {string} text-gray-600 - Clase CSS para color del mensaje
+   * @test {string} leading-relaxed - Clase CSS para espaciado de línea
    */
-  it("renders todo list with existing todos and minimalist design", () => {
-    render(<App />);
+  it("renders todo list correctly", () => {
+    renderTodoPage();
 
-    // Since we have todos in the data, we should see todo items
-    // Look for todo names from our test data
-    const todoItem = screen.getByText("Implementar autenticación de usuarios");
-    expect(todoItem).toBeInTheDocument();
+    // Check for empty state content
+    expect(screen.getByText("¡Comienza tu productividad!")).toBeInTheDocument();
+    expect(screen.getByText("No hay tareas para mostrar")).toBeInTheDocument();
 
-    // Check for glassmorphism classes on todo items - find the correct container
-    const todoContainer = todoItem.closest(".group");
-    expect(todoContainer).toHaveClass("bg-slate-800");
-    expect(todoContainer).toHaveClass("border-slate-700/50");
+    // Verify the empty state structure
+    const emptyStateHeading = screen.getByText("¡Comienza tu productividad!");
+    expect(emptyStateHeading).toHaveClass("text-xl", "font-semibold", "text-gray-900");
+    
+    const emptyMessage = screen.getByText("No hay tareas para mostrar");
+    expect(emptyMessage).toHaveClass("text-gray-600", "leading-relaxed");
   });
 });

@@ -16,18 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import type { LoginCredentials } from "@/types/auth";
-
-/**
- * Login form validation schema
- */
-const loginSchema = z.object({
-  username: z.string().min(1, "El username es requerido"),
-  password: z
-    .string()
-    .min(1, "La contraseña es requerida")
-    .min(6, "La contraseña debe tener al menos 6 caracteres"),
-  rememberMe: z.boolean().optional(),
-});
+import { loginSchema } from "@/schemas";
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 

@@ -8,7 +8,7 @@ import type { FilterType } from "../../../types/filter";
 interface FilterButtonsProps {
   currentFilter: FilterType;
   onFilterChange: (filter: FilterType) => void;
-  layout?: 'horizontal' | 'vertical';
+  layout?: "horizontal" | "vertical";
 }
 
 interface FilterOption {
@@ -25,43 +25,45 @@ const filterOptions: FilterOption[] = [
     key: "all",
     label: "Todas",
     ariaLabel: "Mostrar todas las tareas",
-    activeClasses: "bg-charcoal-600 text-white",
-    hoverClasses: "hover:bg-charcoal-700 hover:text-white",
+    activeClasses: "bg-gray-800 text-white",
+    hoverClasses: "hover:bg-gray-950 hover:text-white",
     focusRing: "focus:ring-charcoal-500/50",
   },
   {
     key: "pending",
     label: "Pendientes",
     ariaLabel: "Mostrar tareas pendientes",
-    activeClasses: "bg-saffron-600 text-white",
-    hoverClasses: "hover:bg-saffron-700 hover:text-white",
+    activeClasses: "bg-gray-800 text-white",
+    hoverClasses: "hover:bg-gray-950 hover:text-white",
     focusRing: "focus:ring-saffron-500/50",
   },
   {
     key: "completed",
     label: "Completadas",
     ariaLabel: "Mostrar tareas completadas",
-    activeClasses: "bg-persian_green-600 text-white",
-    hoverClasses: "hover:bg-persian_green-700 hover:text-white",
+    activeClasses: "bg-gray-800 text-white",
+    hoverClasses: "hover:bg-gray-950 hover:text-white",
     focusRing: "focus:ring-persian_green-500/50",
   },
 ];
 
-const baseClasses = "bg-slate-800 text-slate-300 border border-slate-700";
+const baseClasses = "bg-white text-gray-800 border border-slate-700";
 const transitionClasses = "transition-colors duration-200";
 
 export const FilterButtons = ({
   currentFilter,
   onFilterChange,
-  layout = 'horizontal',
+  layout = "horizontal",
 }: FilterButtonsProps) => {
-  const containerClasses = layout === 'vertical' 
-    ? "flex flex-col gap-3" 
-    : "flex flex-wrap justify-center gap-3";
-    
-  const buttonClasses = layout === 'vertical'
-    ? "w-full justify-start px-3 py-2 rounded-lg text-left"
-    : "px-4 py-2 rounded-lg";
+  const containerClasses =
+    layout === "vertical"
+      ? "flex flex-col gap-3"
+      : "flex flex-wrap justify-center gap-3";
+
+  const buttonClasses =
+    layout === "vertical"
+      ? "w-full justify-start px-3 py-2 rounded-lg text-left"
+      : "px-4 py-2 rounded-lg";
 
   return (
     <div className={containerClasses}>

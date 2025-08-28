@@ -3,6 +3,25 @@ import { TextEncoder } from "text-encoding";
 // Polyfills for Node.js environment
 global.TextEncoder = TextEncoder;
 
+// Mock import.meta.env for Vite environment variables
+Object.defineProperty(globalThis, 'import', {
+  value: {
+    meta: {
+      env: {
+        VITE_API_BASE_URL: "http://localhost:8000/api",
+        VITE_API_VERSION: "v1",
+        VITE_APP_NAME: "Todo VibeCoding",
+        VITE_APP_VERSION: "1.0.0",
+        DEV: true,
+        PROD: false,
+        MODE: "test"
+      }
+    }
+  },
+  writable: true,
+  configurable: true
+});
+
 // Types for Request mock
 interface MockRequestInit {
   method?: string;
