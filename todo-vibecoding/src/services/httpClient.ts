@@ -130,7 +130,7 @@ httpClient.interceptors.response.use(
         if (refreshToken) {
           // Attempt to refresh token
           const refreshResponse = await axios.post(
-            `${env.API_BASE_URL}/${env.API_VERSION}/auth/refresh`,
+            `${env.API_BASE_URL}/auth/refresh`,
             { refreshToken },
             {
               headers: {

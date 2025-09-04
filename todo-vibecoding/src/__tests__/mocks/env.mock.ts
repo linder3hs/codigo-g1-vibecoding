@@ -5,7 +5,6 @@
 
 interface EnvConfig {
   API_BASE_URL: string;
-  API_VERSION: string;
   APP_NAME: string;
   APP_VERSION: string;
   IS_DEVELOPMENT: boolean;
@@ -17,7 +16,6 @@ interface EnvConfig {
  */
 export const env: EnvConfig = {
   API_BASE_URL: "http://localhost:8000/api",
-  API_VERSION: "v1",
   APP_NAME: "Todo VibeCoding",
   APP_VERSION: "1.0.0",
   IS_DEVELOPMENT: true,
@@ -28,7 +26,7 @@ export const env: EnvConfig = {
  * Mock API endpoints configuration
  */
 export const apiEndpoints = {
-  base: `${env.API_BASE_URL}/${env.API_VERSION}`,
+  base: `${env.API_BASE_URL}`,
   todos: {
     list: "/tasks",
     create: "/tasks/",

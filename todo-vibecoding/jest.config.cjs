@@ -2,8 +2,7 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  setupFiles: ["<rootDir>/src/__tests__/utils/setupFiles.ts"],
-  setupFilesAfterEnv: ["<rootDir>/src/__tests__/utils/setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/src/__tests__/setup.ts"],
   moduleNameMapper: {
     "\\.(css|less|scss|sass)$": "identity-obj-proxy",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
@@ -16,6 +15,7 @@ module.exports = {
     "^../config/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
     "^../../config/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
     "^.*\\/config\\/env$": "<rootDir>/src/__tests__/mocks/env.mock.ts",
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
   transform: {
     "^.+\\.(ts|tsx)$": [
@@ -41,7 +41,7 @@ module.exports = {
     "!src/**/*.d.ts",
     "!src/main.tsx",
     "!src/vite-env.d.ts",
-    "!src/__tests__/utils/setup.ts",
+    "!src/__tests__/setup.ts",
     "!src/__tests__/utils/test-helpers.ts",
   ],
   coverageDirectory: "coverage",
@@ -49,7 +49,7 @@ module.exports = {
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
     "<rootDir>/dist/",
-    "<rootDir>/src/__tests__/utils/setup.ts",
+    "<rootDir>/src/__tests__/setup.ts",
     "<rootDir>/src/__tests__/utils/test-helpers.ts",
   ],
   transformIgnorePatterns: ["node_modules/(?!(.*\\.mjs$))"],

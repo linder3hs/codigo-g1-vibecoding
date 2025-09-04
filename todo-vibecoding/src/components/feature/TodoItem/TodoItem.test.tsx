@@ -16,7 +16,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { TodoItem } from "./TodoItem";
-import type { Todo } from "../../../todos";
+import type { Task } from "../../../types/todo";
 
 /**
  * Suite de tests para el componente TodoItem
@@ -36,27 +36,35 @@ describe("TodoItem Component", () => {
   /**
    * Todo de prueba en estado completado
    *
-   * @constant {Todo} completedTodo - Todo marcado como finalizado
+   * @constant {Task} completedTodo - Todo marcado como finalizado
    */
-  const completedTodo: Todo = {
+  const completedTodo: Task = {
     id: 1,
-    name: "Implementar autenticación de usuarios",
-    is_finished: true,
-    created_at: new Date("2024-01-15T09:00:00Z"),
-    updated_at: new Date("2024-01-16T10:15:00Z"),
+    title: "Implementar autenticación de usuarios",
+    is_completed: true,
+    created_at: "2023-01-01T00:00:00Z",
+    completed_at: "2023-01-02T00:00:00Z",
+    description: "Crear sistema de login y registro con JWT",
+    status: "completada",
+    status_display: "Completada",
+    user_username: "user1",
   };
 
   /**
    * Todo de prueba en estado pendiente
    *
-   * @constant {Todo} pendingTodo - Todo marcado como no finalizado
+   * @constant {Task} pendingTodo - Todo marcado como no finalizado
    */
-  const pendingTodo: Todo = {
+  const pendingTodo: Task = {
     id: 2,
-    name: "Crear componentes reutilizables",
-    is_finished: false,
-    created_at: new Date("2024-01-16T08:15:00Z"),
-    updated_at: new Date("2024-01-16T08:15:00Z"),
+    title: "Crear componentes reutilizables",
+    is_completed: false,
+    created_at: "2023-01-01T00:00:00Z",
+    completed_at: null,
+    description: "Desarrollar biblioteca de componentes UI",
+    status: "pendiente",
+    status_display: "Pendiente",
+    user_username: "user1",
   };
 
   /**
@@ -91,11 +99,11 @@ describe("TodoItem Component", () => {
       name: /marcar como pendiente/i,
     });
     expect(checkbox).toBeInTheDocument();
-    expect(checkbox).toHaveClass("bg-emerald-500", "border-emerald-500");
+    expect(checkbox).toHaveClass("bg-green-500");
 
     // Verifica que el texto tenga estilo tachado
     const todoText = screen.getByText("Implementar autenticación de usuarios");
-    expect(todoText).toHaveClass("text-slate-400", "line-through");
+    expect(todoText).toHaveClass("text-gray-500", "line-through");
 
     // Verifica el botón de eliminar
     const deleteButton = screen.getByRole("button", {
@@ -136,12 +144,12 @@ describe("TodoItem Component", () => {
       name: /marcar como completada/i,
     });
     expect(checkbox).toBeInTheDocument();
-    expect(checkbox).toHaveClass("border-slate-500");
-    expect(checkbox).not.toHaveClass("bg-emerald-500");
+    expect(checkbox).toHaveClass("border-gray-400");
+    expect(checkbox).not.toHaveClass("bg-green-500");
 
     // Verifica que el texto no tenga estilo tachado
     const todoText = screen.getByText("Crear componentes reutilizables");
-    expect(todoText).toHaveClass("text-slate-200");
+    expect(todoText).toHaveClass("text-gray-900");
     expect(todoText).not.toHaveClass("line-through");
 
     // Verifica el botón de eliminar
@@ -175,8 +183,8 @@ describe("TodoItem Component", () => {
     // Verifica el contenedor principal
     const mainContainer = container.firstChild as HTMLElement;
     expect(mainContainer).toHaveClass(
-      "bg-slate-800",
-      "border-slate-700/30",
+      "bg-white",
+      "border-gray-200",
       "opacity-75"
     );
 
@@ -184,11 +192,11 @@ describe("TodoItem Component", () => {
     const checkbox = screen.getByRole("button", {
       name: /marcar como pendiente/i,
     });
-    expect(checkbox).toHaveClass("bg-emerald-500", "border-emerald-500");
+    expect(checkbox).toHaveClass("bg-green-500");
 
     // Verifica el texto
     const todoText = screen.getByText("Implementar autenticación de usuarios");
-    expect(todoText).toHaveClass("text-slate-400", "line-through");
+    expect(todoText).toHaveClass("text-gray-500", "line-through");
   });
 
   /**
@@ -214,19 +222,19 @@ describe("TodoItem Component", () => {
 
     // Verifica el contenedor principal
     const mainContainer = container.firstChild as HTMLElement;
-    expect(mainContainer).toHaveClass("bg-slate-800", "border-slate-700/50");
+    expect(mainContainer).toHaveClass("bg-white", "border-gray-200");
     expect(mainContainer).not.toHaveClass("opacity-75");
 
     // Verifica el checkbox
     const checkbox = screen.getByRole("button", {
       name: /marcar como completada/i,
     });
-    expect(checkbox).toHaveClass("border-slate-500");
-    expect(checkbox).not.toHaveClass("bg-emerald-500");
+    expect(checkbox).toHaveClass("border-gray-400");
+    expect(checkbox).not.toHaveClass("bg-green-500");
 
     // Verifica el texto
     const todoText = screen.getByText("Crear componentes reutilizables");
-    expect(todoText).toHaveClass("text-slate-200");
+    expect(todoText).toHaveClass("text-gray-900");
     expect(todoText).not.toHaveClass("line-through");
   });
 
@@ -367,7 +375,9 @@ describe("TodoItem Component", () => {
     expect(mainContainer).toHaveClass("transition-all", "duration-200");
 
     // Para todos pendientes, verifica clases de hover
-    expect(mainContainer).toHaveClass("hover:border-slate-600/60");
+    expect(mainContainer).toHaveClass(
+      "hover:shadow-md", "hover:border-gray-300"
+    );
   });
 
   /**

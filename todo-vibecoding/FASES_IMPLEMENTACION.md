@@ -66,7 +66,6 @@ npm install lucide-react
 
 ```
 VITE_API_BASE_URL=http://localhost:8000/api
-VITE_API_VERSION=v1
 VITE_APP_NAME=Todo VibeCoding
 VITE_APP_VERSION=1.0.0
 ```

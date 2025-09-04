@@ -41,9 +41,7 @@ const errorMessages = {
 export const loginSchema = z.object({
   username: z
     .string({ message: errorMessages.required })
-    .min(1, errorMessages.required)
-    .regex(emailRegex, errorMessages.email),
-
+    .min(1, errorMessages.required),
   password: z
     .string({ message: errorMessages.required })
     .min(1, "La contraseña es requerida")

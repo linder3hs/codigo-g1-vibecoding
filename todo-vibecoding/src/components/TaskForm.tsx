@@ -55,6 +55,7 @@ interface TaskFormProps {
 export const TaskForm: React.FC<TaskFormProps> = ({
   initialData,
   onSuccess,
+  onCancel,
   isEditing = false,
 }) => {
   const { createNewTodo, updateExistingTodo, isLoading } = useTodo();
@@ -184,6 +185,16 @@ export const TaskForm: React.FC<TaskFormProps> = ({
                 ? "Actualizar Tarea"
                 : "Crear Tarea"}
             </Button>
+            {onCancel && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onCancel}
+                disabled={isLoading}
+              >
+                Cancelar
+              </Button>
+            )}
           </div>
         </form>
       </Form>

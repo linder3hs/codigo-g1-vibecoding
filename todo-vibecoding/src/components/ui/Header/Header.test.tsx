@@ -35,245 +35,287 @@ describe("Header Component", () => {
     subtitle: "Gestiona tus tareas de manera eficiente",
   };
 
-  /**
-   * Test: Renderizado correcto del título
-   *
-   * Verifica que el título se renderice como un heading h1
-   * con el contenido de texto correcto.
-   *
-   * @test {HTMLElement} title - Elemento h1 con el título
-   * @test {string} textContent - Contenido "Lista de Tareas"
-   */
-  it("renders the title correctly", () => {
-    render(<Header {...defaultProps} />);
-
-    const title = screen.getByRole("heading", { level: 1 });
-    expect(title).toBeInTheDocument();
-    expect(title).toHaveTextContent("Lista de Tareas");
+  afterEach(() => {
+    // Clean up after each test
   });
 
-  /**
-   * Test: Renderizado correcto del subtítulo
-   *
-   * Verifica que el subtítulo se renderice correctamente
-   * con el texto descriptivo proporcionado.
-   *
-   * @test {HTMLElement} subtitle - Elemento con el subtítulo
-   */
-  it("renders the subtitle correctly", () => {
-    render(<Header {...defaultProps} />);
+  describe("Rendering", () => {
+    /**
+     * Test: Renderizado correcto del título
+     *
+     * Verifica que el título se renderice como un heading h1
+     * con el contenido de texto correcto.
+     */
+    it("should render the title correctly", () => {
+      render(<Header {...defaultProps} />);
 
-    const subtitle = screen.getByText(
-      "Gestiona tus tareas de manera eficiente"
-    );
-    expect(subtitle).toBeInTheDocument();
+      const title = screen.getByRole("heading", { level: 1 });
+      expect(title).toBeInTheDocument();
+      expect(title).toHaveTextContent("Lista de Tareas");
+    });
+
+    /**
+     * Test: Renderizado correcto del subtítulo
+     *
+     * Verifica que el subtítulo se renderice correctamente
+     * con el texto descriptivo proporcionado.
+     */
+    it("should render the subtitle correctly", () => {
+      render(<Header {...defaultProps} />);
+
+      const subtitle = screen.getByText(
+        "Gestiona tus tareas de manera eficiente"
+      );
+      expect(subtitle).toBeInTheDocument();
+    });
+
+    /**
+     * Test: Estructura semántica del header
+     *
+     * Verifica que el componente use el elemento semántico header
+     * con las clases de layout apropiadas.
+     */
+    it("should have proper semantic structure with header element", () => {
+      render(<Header {...defaultProps} />);
+
+      const header = screen.getByRole("banner");
+      expect(header).toBeInTheDocument();
+      expect(header).toHaveClass("text-center", "mb-5", "relative");
+    });
+
+    /**
+     * Test: Elemento decorativo de fondo
+     *
+     * Verifica que el elemento decorativo de fondo esté presente
+     * con las clases CSS correctas.
+     */
+    it("should render decorative background element", () => {
+      const { container } = render(<Header {...defaultProps} />);
+
+      const decorativeElement = container.querySelector(
+        ".absolute.inset-0.-z-10.opacity-20"
+      );
+      expect(decorativeElement).toBeInTheDocument();
+    });
   });
 
-  /**
-   * Test: Clases CSS del título
-   *
-   * Verifica que el título tenga todas las clases CSS necesarias
-   * para el diseño responsivo y el efecto de gradiente.
-   *
-   * @test {string} text-4xl - Tamaño base del texto
-   * @test {string} md:text-5xl - Tamaño responsivo para pantallas medianas
-   * @test {string} font-bold - Peso de fuente en negrita
-   * @test {string} bg-gradient-to-r - Gradiente horizontal
-   * @test {string} from-blue-600 - Color inicial del gradiente
-   * @test {string} to-purple-600 - Color final del gradiente
-   * @test {string} bg-clip-text - Recorte del fondo al texto
-   * @test {string} text-transparent - Texto transparente para mostrar gradiente
-   */
-  it("applies correct CSS classes for title styling", () => {
-    render(<Header {...defaultProps} />);
+  describe("Styling", () => {
+    /**
+     * Test: Clases CSS del título
+     *
+     * Verifica que el título tenga todas las clases CSS necesarias
+     * para el diseño responsivo y tipografía.
+     */
+    it("should apply correct CSS classes for title styling", () => {
+      render(<Header {...defaultProps} />);
 
-    const title = screen.getByRole("heading", { level: 1 });
-    expect(title).toHaveClass("text-4xl");
-    expect(title).toHaveClass(
-      "text-4xl font-extrabold tracking-tight mb-6 group cursor-default"
-    );
+      const title = screen.getByRole("heading", { level: 1 });
+      expect(title).toHaveClass(
+        "text-4xl",
+        "font-extrabold",
+        "tracking-tight",
+        "mb-6",
+        "group",
+        "cursor-default"
+      );
+    });
+
+    /**
+     * Test: Clases CSS del span interno del título
+     *
+     * Verifica que el span interno del título tenga las clases correctas.
+     */
+    it("should apply correct CSS classes for title span", () => {
+      const { container } = render(<Header {...defaultProps} />);
+
+      const titleSpan = container.querySelector(
+        "h1 span.text-slate-900.inline-block"
+      );
+      expect(titleSpan).toBeInTheDocument();
+      expect(titleSpan).toHaveClass("text-slate-900", "inline-block");
+    });
+
+    /**
+     * Test: Clases CSS del subtítulo
+     *
+     * Verifica que el subtítulo tenga las clases CSS correctas
+     * para el layout y tipografía.
+     */
+    it("should apply correct CSS classes for subtitle styling", () => {
+      render(<Header {...defaultProps} />);
+
+      const subtitle = screen.getByText(
+        "Gestiona tus tareas de manera eficiente"
+      );
+      expect(subtitle).toHaveClass(
+        "max-w-2xl",
+        "mx-auto",
+        "leading-relaxed",
+        "text-slate-900"
+      );
+    });
   });
 
-  /**
-   * Test: Clases CSS del subtítulo
-   *
-   * Verifica que el subtítulo tenga las clases CSS correctas
-   * para el color y tamaño, incluyendo soporte para modo oscuro.
-   *
-   * @test {string} text-gray-600 - Color gris para modo claro
-   * @test {string} dark:text-gray-300 - Color gris claro para modo oscuro
-   * @test {string} text-lg - Tamaño de texto grande
-   */
-  it("applies correct CSS classes for subtitle styling", () => {
-    render(<Header {...defaultProps} />);
+  describe("Props Handling", () => {
+    /**
+     * Test: Props personalizadas
+     *
+     * Verifica que el componente acepte y renderice correctamente
+     * props personalizadas para título y subtítulo.
+     */
+    it("should render with custom title and subtitle", () => {
+      const customProps = {
+        title: "Mi Aplicación Custom",
+        subtitle: "Descripción personalizada",
+      };
 
-    const subtitle = screen.getByText(
-      "Gestiona tus tareas de manera eficiente"
-    );
-    expect(subtitle).toHaveClass(
-      "text-slate-400 hover:text-slate-300 text-lg font-medium tracking-wide transition-all duration-300 max-w-2xl mx-auto leading-relaxed"
-    );
-    expect(subtitle).toHaveClass(
-      "text-slate-400 hover:text-slate-300 text-lg font-medium tracking-wide transition-all duration-300 max-w-2xl mx-auto leading-relaxed"
-    );
-    expect(subtitle).toHaveClass("text-lg");
+      render(<Header {...customProps} />);
+
+      const title = screen.getByRole("heading", { level: 1 });
+      const subtitle = screen.getByText("Descripción personalizada");
+
+      expect(title).toHaveTextContent("Mi Aplicación Custom");
+      expect(subtitle).toBeInTheDocument();
+    });
+
+    /**
+     * Test: Manejo de strings vacíos
+     *
+     * Verifica que el componente maneje correctamente props vacías
+     * sin romper la estructura o causar errores.
+     */
+    it("should render correctly with empty strings", () => {
+      const emptyProps = {
+        title: "",
+        subtitle: "",
+      };
+
+      render(<Header {...emptyProps} />);
+
+      const header = screen.getByRole("banner");
+      const title = screen.getByRole("heading", { level: 1 });
+
+      expect(header).toBeInTheDocument();
+      expect(title).toBeInTheDocument();
+      expect(title).toHaveTextContent("");
+    });
+
+    /**
+     * Test: Manejo de texto largo
+     *
+     * Verifica que el componente maneje correctamente contenido de texto
+     * largo sin romper el layout o la legibilidad.
+     */
+    it("should handle long text content properly", () => {
+      const longTextProps = {
+        title:
+          "Este es un título muy largo que debería manejarse correctamente en diferentes tamaños de pantalla",
+        subtitle:
+          "Esta es una descripción muy larga que también debería manejarse correctamente y mantener la legibilidad en diferentes dispositivos y tamaños de pantalla",
+      };
+
+      render(<Header {...longTextProps} />);
+
+      const title = screen.getByRole("heading", { level: 1 });
+      const subtitle = screen.getByText(longTextProps.subtitle);
+
+      expect(title).toHaveTextContent(longTextProps.title);
+      expect(subtitle).toBeInTheDocument();
+    });
   });
 
-  /**
-   * Test: Estructura semántica del header
-   *
-   * Verifica que el componente use el elemento semántico header
-   * con las clases de layout apropiadas.
-   *
-   * @test {HTMLElement} header - Elemento con role="banner"
-   * @test {string} text-center - Alineación centrada del texto
-   * @test {string} mb-12 - Margen inferior para espaciado
-   */
-  it("has proper semantic structure with header element", () => {
-    render(<Header {...defaultProps} />);
+  describe("Accessibility", () => {
+    /**
+     * Test: Jerarquía de headings
+     *
+     * Verifica que el componente mantenga la jerarquía semántica
+     * correcta usando un elemento H1.
+     */
+    it("should maintain proper heading hierarchy", () => {
+      render(<Header {...defaultProps} />);
 
-    const header = screen.getByRole("banner");
-    expect(header).toBeInTheDocument();
-    expect(header).toHaveClass("text-center");
-    expect(header).toHaveClass("text-center mb-5 relative");
+      const heading = screen.getByRole("heading", { level: 1 });
+      expect(heading.tagName).toBe("H1");
+    });
+
+    /**
+     * Test: Contenido de texto accesible
+     *
+     * Verifica que el contenido de texto sea accesible y no esté vacío,
+     * importante para lectores de pantalla y SEO.
+     */
+    it("should have accessible text content", () => {
+      render(<Header {...defaultProps} />);
+
+      const title = screen.getByRole("heading", { level: 1 });
+      const subtitle = screen.getByText(
+        "Gestiona tus tareas de manera eficiente"
+      );
+
+      // Check that text is accessible and not empty
+      expect(title.textContent).toBeTruthy();
+      expect(subtitle.textContent).toBeTruthy();
+      expect(title.textContent?.trim()).not.toBe("");
+      expect(subtitle.textContent?.trim()).not.toBe("");
+    });
+
+    /**
+     * Test: Elementos semánticos correctos
+     *
+     * Verifica que se usen los elementos HTML semánticos apropiados.
+     */
+    it("should use correct semantic elements", () => {
+      render(<Header {...defaultProps} />);
+
+      const header = screen.getByRole("banner");
+      const title = screen.getByRole("heading", { level: 1 });
+      const subtitle = screen.getByText(
+        "Gestiona tus tareas de manera eficiente"
+      );
+
+      expect(header.tagName).toBe("HEADER");
+      expect(title.tagName).toBe("H1");
+      expect(subtitle.tagName).toBe("P");
+    });
   });
 
-  /**
-   * Test: Props personalizadas
-   *
-   * Verifica que el componente acepte y renderice correctamente
-   * props personalizadas para título y subtítulo.
-   *
-   * @test {Object} customProps - Props con valores personalizados
-   * @test {string} title - Título personalizado
-   * @test {string} subtitle - Subtítulo personalizado
-   */
-  it("renders with custom title and subtitle", () => {
-    const customProps = {
-      title: "Mi Aplicación Custom",
-      subtitle: "Descripción personalizada",
-    };
+  describe("Layout Structure", () => {
+    /**
+     * Test: Estructura del DOM
+     *
+     * Verifica que la estructura del DOM sea la esperada
+     * con todos los elementos en el orden correcto.
+     */
+    it("should have correct DOM structure", () => {
+      const { container } = render(<Header {...defaultProps} />);
 
-    render(<Header {...customProps} />);
+      const header = container.querySelector("header");
+      const decorativeDiv = header?.querySelector(".absolute.inset-0");
+      const title = header?.querySelector("h1");
+      const subtitle = header?.querySelector("p");
 
-    const title = screen.getByRole("heading", { level: 1 });
-    const subtitle = screen.getByText("Descripción personalizada");
+      expect(header).toBeInTheDocument();
+      expect(decorativeDiv).toBeInTheDocument();
+      expect(title).toBeInTheDocument();
+      expect(subtitle).toBeInTheDocument();
+    });
 
-    expect(title).toHaveTextContent("Mi Aplicación Custom");
-    expect(subtitle).toBeInTheDocument();
-  });
+    /**
+     * Test: Orden de elementos
+     *
+     * Verifica que los elementos aparezcan en el orden correcto
+     * dentro del header.
+     */
+    it("should render elements in correct order", () => {
+      const { container } = render(<Header {...defaultProps} />);
 
-  /**
-   * Test: Jerarquía de headings
-   *
-   * Verifica que el componente mantenga la jerarquía semántica
-   * correcta usando un elemento H1.
-   *
-   * @test {HTMLElement} heading - Elemento heading de nivel 1
-   * @test {string} tagName - Debe ser "H1"
-   */
-  it("maintains proper heading hierarchy", () => {
-    render(<Header {...defaultProps} />);
+      const header = container.querySelector("header");
+      const children = header?.children;
 
-    const heading = screen.getByRole("heading", { level: 1 });
-    expect(heading.tagName).toBe("H1");
-  });
-
-  /**
-   * Test: Contenido de texto accesible
-   *
-   * Verifica que el contenido de texto sea accesible y no esté vacío,
-   * importante para lectores de pantalla y SEO.
-   *
-   * @test {string} textContent - Contenido de texto no vacío
-   * @test {boolean} toBeTruthy - Verificación de contenido existente
-   */
-  it("has accessible text content", () => {
-    render(<Header {...defaultProps} />);
-
-    const title = screen.getByRole("heading", { level: 1 });
-    const subtitle = screen.getByText(
-      "Gestiona tus tareas de manera eficiente"
-    );
-
-    // Check that text is accessible and not empty
-    expect(title.textContent).toBeTruthy();
-    expect(subtitle.textContent).toBeTruthy();
-    expect(title.textContent?.trim()).not.toBe("");
-    expect(subtitle.textContent?.trim()).not.toBe("");
-  });
-
-  /**
-   * Test: Manejo de strings vacíos
-   *
-   * Verifica que el componente maneje correctamente props vacías
-   * sin romper la estructura o causar errores.
-   *
-   * @test {Object} emptyProps - Props con strings vacíos
-   * @test {HTMLElement} header - Header debe renderizarse
-   * @test {HTMLElement} title - Título debe existir aunque esté vacío
-   */
-  it("renders correctly with empty strings", () => {
-    const emptyProps = {
-      title: "",
-      subtitle: "",
-    };
-
-    render(<Header {...emptyProps} />);
-
-    const header = screen.getByRole("banner");
-    const title = screen.getByRole("heading", { level: 1 });
-
-    expect(header).toBeInTheDocument();
-    expect(title).toBeInTheDocument();
-    expect(title).toHaveTextContent("");
-  });
-
-  /**
-   * Test: Manejo de texto largo
-   *
-   * Verifica que el componente maneje correctamente contenido de texto
-   * largo sin romper el layout o la legibilidad.
-   *
-   * @test {Object} longTextProps - Props con texto extenso
-   * @test {HTMLElement} title - Título con texto largo
-   * @test {HTMLElement} subtitle - Subtítulo con texto largo
-   */
-  it("handles long text content properly", () => {
-    const longTextProps = {
-      title:
-        "Este es un título muy largo que debería manejarse correctamente en diferentes tamaños de pantalla",
-      subtitle:
-        "Esta es una descripción muy larga que también debería manejarse correctamente y mantener la legibilidad en diferentes dispositivos y tamaños de pantalla",
-    };
-
-    render(<Header {...longTextProps} />);
-
-    const title = screen.getByRole("heading", { level: 1 });
-    const subtitle = screen.getByText(longTextProps.subtitle);
-
-    expect(title).toHaveTextContent(longTextProps.title);
-    expect(subtitle).toBeInTheDocument();
-  });
-
-  /**
-   * Test: Clases de diseño responsivo
-   *
-   * Verifica que el componente mantenga las clases CSS responsivas
-   * para diferentes tamaños de pantalla.
-   *
-   * @test {string} text-4xl - Tamaño base para móviles
-   * @test {string} md:text-5xl - Tamaño para pantallas medianas
-   */
-  it("maintains responsive design classes", () => {
-    render(<Header {...defaultProps} />);
-
-    const title = screen.getByRole("heading", { level: 1 });
-
-    // Check responsive classes are present
-    expect(title).toHaveClass("text-4xl"); // Base size
-    expect(title).toHaveClass(
-      "text-4xl font-extrabold tracking-tight mb-6 group cursor-default"
-    ); // Medium screen size
+      expect(children).toHaveLength(3);
+      expect(children?.[0]).toHaveClass("absolute", "inset-0"); // Decorative element
+      expect(children?.[1].tagName).toBe("H1"); // Title
+      expect(children?.[2].tagName).toBe("P"); // Subtitle
+    });
   });
 });

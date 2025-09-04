@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { TodoList } from "./TodoList";
-import type { Todo } from "../../../todos";
+import type { Task } from "@/types/todo";
 
 /**
  * Suite de tests para el componente TodoList
@@ -38,20 +38,28 @@ describe("TodoList Component", () => {
    *
    * @constant {Todo[]} mockTodos - Array de todos para testing
    */
-  const mockTodos: Todo[] = [
+  const mockTodos: Task[] = [
     {
       id: 1,
-      name: "Test todo 1",
-      is_finished: false,
-      created_at: new Date("2023-01-01T00:00:00Z"),
-      updated_at: new Date("2023-01-01T00:00:00Z"),
+      title: "Test todo 1",
+      is_completed: false,
+      created_at: "2023-01-01T00:00:00Z",
+      completed_at: null,
+      description: "DESC",
+      status: "pendiente",
+      status_display: "Pendiente",
+      user_username: "user1",
     },
     {
       id: 2,
-      name: "Test todo 2",
-      is_finished: true,
-      created_at: new Date("2023-01-02T00:00:00Z"),
-      updated_at: new Date("2023-01-02T00:00:00Z"),
+      title: "Test todo 2",
+      is_completed: true,
+      created_at: "2023-01-01T00:00:00Z",
+      completed_at: "2023-01-01T10:00:00Z",
+      description: "DESC",
+      status: "completada",
+      status_display: "Completada",
+      user_username: "user1",
     },
   ];
 
@@ -77,9 +85,8 @@ describe("TodoList Component", () => {
       />
     );
 
-    expect(screen.getByText("📝")).toBeInTheDocument();
+    expect(screen.getByText("¡Comienza tu productividad!")).toBeInTheDocument();
     expect(screen.getByText("No hay tareas para mostrar")).toBeInTheDocument();
-    expect(screen.getByText("No hay tareas")).toBeInTheDocument();
   });
 
   /**
@@ -102,7 +109,7 @@ describe("TodoList Component", () => {
     );
 
     expect(screen.getByText(customMessage)).toBeInTheDocument();
-    expect(screen.getByText("📝")).toBeInTheDocument();
+    expect(screen.getByText("¡Comienza tu productividad!")).toBeInTheDocument();
   });
 
   /**
@@ -130,7 +137,9 @@ describe("TodoList Component", () => {
     expect(screen.getByText("Test todo 2")).toBeInTheDocument();
 
     // Verifica que no se muestre el estado vacío
-    expect(screen.queryByText("📝")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("¡Comienza tu productividad!")
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByText("No hay tareas para mostrar")
     ).not.toBeInTheDocument();
@@ -169,27 +178,39 @@ describe("TodoList Component", () => {
    * independientemente de su estado de completado.
    */
   it("renders todos with different completion states", () => {
-    const mixedTodos: Todo[] = [
+    const mixedTodos: Task[] = [
       {
         id: 1,
-        name: "Pending task 1",
-        is_finished: false,
-        created_at: new Date(),
-        updated_at: new Date(),
+        title: "Pending task 1",
+        description: "Description 1",
+        status: "pendiente",
+        status_display: "Pendiente",
+        user_username: "user1",
+        is_completed: false,
+        created_at: "2023-01-01T00:00:00Z",
+        completed_at: null,
       },
       {
         id: 2,
-        name: "Completed task 1",
-        is_finished: true,
-        created_at: new Date(),
-        updated_at: new Date(),
+        title: "Completed task 1",
+        description: "Description 2",
+        status: "completada",
+        status_display: "Completada",
+        user_username: "user1",
+        is_completed: true,
+        created_at: "2023-01-02T00:00:00Z",
+        completed_at: "2023-01-02T10:00:00Z",
       },
       {
         id: 3,
-        name: "Pending task 2",
-        is_finished: false,
-        created_at: new Date(),
-        updated_at: new Date(),
+        title: "Pending task 2",
+        description: "Description 3",
+        status: "pendiente",
+        status_display: "Pendiente",
+        user_username: "user1",
+        is_completed: false,
+        created_at: "2023-01-03T00:00:00Z",
+        completed_at: null,
       },
     ];
 
@@ -227,7 +248,7 @@ describe("TodoList Component", () => {
 
     // Verifica que el contenedor tenga la clase de espaciado vertical
     const listContainer = container.firstChild as HTMLElement;
-    expect(listContainer).toHaveClass("space-y-3");
+    expect(listContainer).toHaveClass("space-y-6");
   });
 
   /**
@@ -291,12 +312,16 @@ describe("TodoList Component", () => {
    * @test {HTMLElement[]} manyTodos - Lista extensa de todos
    */
   it("handles large list of todos", () => {
-    const largeTodoList: Todo[] = Array.from({ length: 10 }, (_, index) => ({
+    const largeTodoList: Task[] = Array.from({ length: 10 }, (_, index) => ({
       id: index + 1,
-      name: `Todo número ${index + 1}`,
-      is_finished: index % 2 === 0,
-      created_at: new Date(`2024-01-${(index % 28) + 1}T09:00:00Z`),
-      updated_at: new Date(`2024-01-${(index % 28) + 1}T09:00:00Z`),
+      title: `Todo número ${index + 1}`,
+      description: `Descripción ${index + 1}`,
+      status: index % 2 === 0 ? "completada" : "pendiente",
+      status_display: index % 2 === 0 ? "Completada" : "Pendiente",
+      user_username: "user1",
+      is_completed: index % 2 === 0,
+      created_at: "",
+      completed_at: null,
     }));
 
     render(
@@ -330,19 +355,12 @@ describe("TodoList Component", () => {
       />
     );
 
-    const emptyContainer = container.firstChild as HTMLElement;
-    expect(emptyContainer).toHaveClass("flex");
-    expect(emptyContainer).toHaveClass("flex-col");
-    expect(emptyContainer).toHaveClass("items-center");
-    expect(emptyContainer).toHaveClass("justify-center");
-    expect(emptyContainer).toHaveClass("py-20");
-
-    // Verifica que el emoji esté presente
-    const emojiElement = screen.getByText("📝");
-    expect(emojiElement).toBeInTheDocument();
+    // Verifica que el contenedor tenga las clases correctas
+    expect(container.querySelector(".bg-white")).toBeInTheDocument();
+    expect(container.querySelector(".border-gray-200")).toBeInTheDocument();
 
     // Verifica que los mensajes estén presentes
-    expect(screen.getByText("No hay tareas")).toBeInTheDocument();
+    expect(screen.getByText("¡Comienza tu productividad!")).toBeInTheDocument();
     expect(screen.getByText("No hay tareas para mostrar")).toBeInTheDocument();
   });
 
@@ -355,7 +373,7 @@ describe("TodoList Component", () => {
    * @test {HTMLElement} messageElement - Mensaje con estilos correctos
    */
   it("has proper styling for empty state", () => {
-    render(
+    const { container } = render(
       <TodoList
         todos={[]}
         onToggleTodo={mockOnToggleTodo}
@@ -363,19 +381,20 @@ describe("TodoList Component", () => {
       />
     );
 
-    const titleElement = screen.getByText("No hay tareas");
+    const titleElement = screen.getByText("¡Comienza tu productividad!");
     expect(titleElement).toHaveClass("text-xl");
     expect(titleElement).toHaveClass("font-semibold");
-    expect(titleElement).toHaveClass("text-slate-300");
+    expect(titleElement).toHaveClass("text-gray-900");
 
     const messageElement = screen.getByText("No hay tareas para mostrar");
-    expect(messageElement).toHaveClass("text-slate-400");
+    expect(messageElement).toHaveClass("text-gray-600");
+    expect(messageElement).toHaveClass("leading-relaxed");
 
-    // Verifica que el emoji tenga animación
-    const emojiElement = screen.getByText("📝");
-    expect(emojiElement).toHaveClass("text-8xl");
-    expect(emojiElement).toHaveClass("opacity-20");
-    expect(emojiElement).toHaveClass("animate-pulse");
+    // Verifica que el icono esté presente (FileText icon)
+    const iconContainer = container.querySelector(
+      ".w-20.h-20.bg-gray-100.rounded-full"
+    );
+    expect(iconContainer).toBeInTheDocument();
   });
 
   /**
@@ -400,8 +419,8 @@ describe("TodoList Component", () => {
     expect(todoItems).toHaveLength(2);
 
     // Verifica que los botones de toggle tengan aria-labels correctos
-    expect(screen.getByLabelText("Marcar como completada")).toBeInTheDocument();
-    expect(screen.getByLabelText("Marcar como pendiente")).toBeInTheDocument();
+    expect(screen.getAllByLabelText("Marcar como completada")).toHaveLength(1);
+    expect(screen.getAllByLabelText("Marcar como pendiente")).toHaveLength(1);
   });
 
   /**
@@ -413,20 +432,28 @@ describe("TodoList Component", () => {
    * @test {HTMLElement[]} duplicateIdTodos - Todos con IDs duplicados
    */
   it("handles edge case with duplicate IDs", () => {
-    const todosWithDuplicateIds: Todo[] = [
+    const todosWithDuplicateIds: Task[] = [
       {
         id: 1,
-        name: "Primer todo",
-        is_finished: false,
-        created_at: new Date("2024-01-15T09:00:00Z"),
-        updated_at: new Date("2024-01-15T09:00:00Z"),
+        title: "Primer todo",
+        description: "Primera descripción",
+        status: "pendiente",
+        status_display: "Pendiente",
+        user_username: "user1",
+        is_completed: false,
+        created_at: "2024-01-15T09:00:00Z",
+        completed_at: null,
       },
       {
         id: 1,
-        name: "Segundo todo con mismo ID",
-        is_finished: true,
-        created_at: new Date("2024-01-16T09:00:00Z"),
-        updated_at: new Date("2024-01-16T09:00:00Z"),
+        title: "Segundo todo con mismo ID",
+        description: "Segunda descripción",
+        status: "completada",
+        status_display: "Completada",
+        user_username: "user1",
+        is_completed: true,
+        created_at: "2024-01-16T09:00:00Z",
+        completed_at: "2024-01-16T10:00:00Z",
       },
     ];
 

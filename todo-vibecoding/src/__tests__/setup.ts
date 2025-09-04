@@ -3,6 +3,9 @@
  *
  * Este archivo contiene la configuración necesaria para ejecutar tests
  * en el entorno de Jest, incluyendo:
+ * - Polyfills para Node.js
+ * - Mock de import.meta.env para variables de entorno de Vite
+ * - Configuración de Mock Service Worker (MSW)
  * - Extensiones de Jest DOM para matchers adicionales
  * - Mocks de APIs del navegador no disponibles en Node.js
  * - Configuración de objetos globales para testing
@@ -11,8 +14,85 @@
  * @version 1.0.0
  */
 
+// Polyfills for Node.js environment
+import "whatwg-fetch";
+import { TextEncoder, TextDecoder } from "util";
+
+// Set up global polyfills
+Object.assign(global, {
+  TextEncoder,
+  TextDecoder,
+});
+
+// Basic polyfills for MSW compatibility
+if (typeof global.ReadableStream === "undefined") {
+  global.ReadableStream =
+    class ReadableStream {} as unknown as typeof ReadableStream;
+}
+if (typeof global.WritableStream === "undefined") {
+  global.WritableStream =
+    class WritableStream {} as unknown as typeof WritableStream;
+}
+if (typeof global.TransformStream === "undefined") {
+  global.TransformStream =
+    class TransformStream {} as unknown as typeof TransformStream;
+}
+
+// Mock import.meta.env for Vite environment variables
+Object.defineProperty(globalThis, "import", {
+  value: {
+    meta: {
+      env: {
+        VITE_API_BASE_URL: "http://localhost:8000/api",
+        VITE_APP_NAME: "Todo VibeCoding",
+        VITE_APP_VERSION: "1.0.0",
+        DEV: true,
+        PROD: false,
+        MODE: "test",
+      },
+    },
+  },
+  writable: true,
+  configurable: true,
+});
+
+// Types for Request mock
+// Note: Request and Response are now provided by whatwg-fetch
+// No need for manual mock implementations
+
+// Mock BroadcastChannel ANTES de importar MSW
+global.BroadcastChannel = jest.fn().mockImplementation(() => ({
+  postMessage: jest.fn(),
+  addEventListener: jest.fn(),
+  removeEventListener: jest.fn(),
+  close: jest.fn(),
+}));
+
 // Importa matchers adicionales de Jest DOM para testing
 import "@testing-library/jest-dom";
+
+// Importa y configura MSW para mocking de APIs
+import { server } from "./mocks/server";
+
+// Establish API mocking before all tests
+beforeAll(() => {
+  // Start the interception on the client side
+  server.listen({
+    // Warn about unhandled requests instead of failing tests
+    onUnhandledRequest: "warn",
+  });
+});
+
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests
+afterEach(() => {
+  server.resetHandlers();
+});
+
+// Clean up after the tests are finished
+afterAll(() => {
+  server.close();
+});
 
 // global.TextDecoder = TextDecoder;
 /**

@@ -77,7 +77,6 @@ class AuthService {
       // Dispatch login start action
       store.dispatch(loginStart());
 
-      // Make API request
       const response = await httpClient.post<ApiAuthResponse>(
         "/auth/login/",
         credentials
@@ -547,8 +546,8 @@ class AuthService {
     }
 
     return {
-      message: "Error desconocido",
-      code: "UNKNOWN_ERROR",
+      message: "Invalid credentials",
+      code: "INVALID_CREDENTIALS",
     };
   }
 
