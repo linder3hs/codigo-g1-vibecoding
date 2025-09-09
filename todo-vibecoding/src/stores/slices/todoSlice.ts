@@ -338,15 +338,6 @@ export const selectFilteredTodos = (state: { todos: TodoState }) => {
         comparison = aText.localeCompare(bText);
         break;
       }
-      case "priority": {
-        const priorityOrder = { low: 1, medium: 2, high: 3 };
-        const aPriority = a.priority || "medium";
-        const bPriority = b.priority || "medium";
-        comparison =
-          priorityOrder[aPriority as keyof typeof priorityOrder] -
-          priorityOrder[bPriority as keyof typeof priorityOrder];
-        break;
-      }
       case "createdAt":
       default: {
         const aDate = a.created_at || a.createdAt || new Date().toISOString();

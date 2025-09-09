@@ -50,12 +50,13 @@ describe("StatsSection Component", () => {
   it("renders the component correctly", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
-    // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen
-      .getByText("Total")
-      .closest('[class*="bg-slate-800"]');
-    const container = firstCard?.parentElement;
+    // Check if the main container is rendered
+    const container = document.querySelector('.space-y-6');
     expect(container).toBeInTheDocument();
+
+    // Check if the title is rendered
+    const title = screen.getByText("Estadísticas");
+    expect(title).toBeInTheDocument();
   });
 
   /**
@@ -100,85 +101,84 @@ describe("StatsSection Component", () => {
   it("applies correct grid layout classes", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
-    // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen
-      .getByText("Total")
-      .closest('[class*="bg-slate-800"]');
-    const container = firstCard?.parentElement;
-    expect(container).toHaveClass("grid");
-    expect(container).toHaveClass("grid-cols-1");
-    expect(container).toHaveClass("md:grid-cols-3");
-    expect(container).toHaveClass("gap-5");
+    // Find the grid container directly by its classes
+    const gridContainer = document.querySelector('.grid.grid-cols-1');
+    expect(gridContainer).toHaveClass("grid");
+    expect(gridContainer).toHaveClass("grid-cols-1");
+    expect(gridContainer).toHaveClass("sm:grid-cols-2");
+    expect(gridContainer).toHaveClass("lg:grid-cols-3");
+    expect(gridContainer).toHaveClass("gap-4");
+    expect(gridContainer).toHaveClass("lg:gap-6");
   });
 
   /**
    * Test: Props correctas para StatsCard Total
    *
    * Verifica que la tarjeta Total reciba las props correctas
-   * incluyendo valor, etiqueta y color azul.
+   * incluyendo valor, etiqueta y color charcoal.
    *
    * @test {HTMLElement} totalValue - Valor total debe estar presente
    * @test {HTMLElement} totalLabel - Etiqueta "Total" debe estar presente
-   * @test {string} text-blue-600 - Color azul en modo claro
-   * @test {string} dark:text-blue-400 - Color azul claro en modo oscuro
+   * @test {string} text-gray-700 - Color charcoal en modo claro
+   * @test {string} group-hover:text-gray-600 - Color charcoal hover
    */
   it("passes correct props to Total StatsCard", () => {
-    render(<StatsSection todosCount={defaultTodosCount} />);
+      render(<StatsSection todosCount={defaultTodosCount} />);
 
-    const totalValue = screen.getByText("15");
-    const totalLabel = screen.getByText("Total");
+      const totalValue = screen.getByText("15");
+      const totalLabel = screen.getByText("Total");
 
-    expect(totalValue).toBeInTheDocument();
-    expect(totalLabel).toBeInTheDocument();
-    expect(totalValue).toHaveClass("text-blue-400");
-    expect(totalValue).toHaveClass("group-hover:text-blue-300");
-  });
+      expect(totalValue).toBeInTheDocument();
+      expect(totalLabel).toBeInTheDocument();
+      expect(totalValue).toHaveClass("text-gray-700");
+      expect(totalValue).toHaveClass("group-hover:text-gray-800");
+    });
 
   /**
    * Test: Props correctas para StatsCard Completadas
    *
    * Verifica que la tarjeta Completadas reciba las props correctas
-   * incluyendo valor, etiqueta y color verde.
+   * incluyendo valor, etiqueta y color persian-green.
    *
    * @test {HTMLElement} completedValue - Valor completadas debe estar presente
    * @test {HTMLElement} completedLabel - Etiqueta "Completadas" debe estar presente
-   * @test {string} text-green-600 - Color verde en modo claro
-   * @test {string} dark:text-green-400 - Color verde claro en modo oscuro
+   * @test {string} text-green-600 - Color persian-green en modo claro
+   * @test {string} group-hover:text-green-500 - Color persian-green hover
    */
   it("passes correct props to Completadas StatsCard", () => {
-    render(<StatsSection todosCount={defaultTodosCount} />);
+      render(<StatsSection todosCount={defaultTodosCount} />);
 
-    const completedValue = screen.getByText("8");
-    const completedLabel = screen.getByText("Completadas");
+      const completedValue = screen.getByText("8");
+      const completedLabel = screen.getByText("Completadas");
 
-    expect(completedValue).toBeInTheDocument();
-    expect(completedLabel).toBeInTheDocument();
-    expect(completedValue).toHaveClass("text-emerald-400");
-    expect(completedValue).toHaveClass("group-hover:text-emerald-300");
-  });
+      expect(completedValue).toBeInTheDocument();
+      expect(completedLabel).toBeInTheDocument();
+      expect(completedValue).toHaveClass("text-green-600");
+      expect(completedValue).toHaveClass("group-hover:text-green-700");
+    });
 
   /**
    * Test: Props correctas para StatsCard Pendientes
    *
    * Verifica que la tarjeta Pendientes reciba las props correctas
-   * incluyendo valor, etiqueta y color naranja.
+   * incluyendo valor, etiqueta y color saffron.
    *
    * @test {HTMLElement} pendingValue - Valor pendientes debe estar presente
    * @test {HTMLElement} pendingLabel - Etiqueta "Pendientes" debe estar presente
-   * @test {string} text-orange-600 - Color naranja en modo claro
-   * @test {string} dark:text-orange-400 - Color naranja claro en modo oscuro
+   * @test {string} text-yellow-600 - Color saffron en modo claro
+   * @test {string} group-hover:text-yellow-500 - Color saffron hover
    */
   it("passes correct props to Pendientes StatsCard", () => {
-    render(<StatsSection todosCount={defaultTodosCount} />);
+      render(<StatsSection todosCount={defaultTodosCount} />);
 
-    const pendingValue = screen.getByText("7");
-    const pendingLabel = screen.getByText("Pendientes");
+      const pendingValue = screen.getByText("7");
+      const pendingLabel = screen.getByText("Pendientes");
 
-    expect(pendingValue).toBeInTheDocument();
-    expect(pendingLabel).toBeInTheDocument();
-    expect(pendingValue).toHaveClass("text-amber-400");
-    expect(pendingValue).toHaveClass("group-hover:text-amber-300");
-  });
+      expect(pendingValue).toBeInTheDocument();
+      expect(pendingLabel).toBeInTheDocument();
+      expect(pendingValue).toHaveClass("text-yellow-600");
+      expect(pendingValue).toHaveClass("group-hover:text-yellow-700");
+    });
 
   /**
    * Test: Manejo correcto de valores cero
@@ -283,11 +283,18 @@ describe("StatsSection Component", () => {
 
     // Each card should have its parent container with the correct classes
     cards.forEach((card) => {
-      // Find the StatsCard container (the div with bg-slate-800 class)
-      const cardContainer = card.closest('[class*="bg-slate-800"]');
-      expect(cardContainer).toHaveClass("bg-slate-800");
+      // Find the StatsCard container (the div with bg-white class)
+      const cardContainer = card.closest('[class*="bg-white"]');
+      expect(cardContainer).toHaveClass("group");
+      expect(cardContainer).toHaveClass("relative");
+      expect(cardContainer).toHaveClass("bg-white");
       expect(cardContainer).toHaveClass("rounded-2xl");
-      expect(cardContainer).toHaveClass("backdrop-blur-md");
+      expect(cardContainer).toHaveClass("p-4");
+      expect(cardContainer).toHaveClass("shadow-sm");
+      expect(cardContainer).toHaveClass("hover:shadow-md");
+      expect(cardContainer).toHaveClass("border");
+      expect(cardContainer).toHaveClass("transition-all");
+      expect(cardContainer).toHaveClass("duration-300");
     });
   });
 
@@ -298,21 +305,19 @@ describe("StatsSection Component", () => {
    * para un diseño responsivo apropiado.
    *
    * @test {string} grid-cols-1 - Una columna en dispositivos móviles
-   * @test {string} md:grid-cols-3 - Tres columnas en pantallas medianas+
+   * @test {string} sm:grid-cols-2 - Dos columnas en tablet
+   * @test {string} lg:grid-cols-3 - Tres columnas en desktop
    */
   it("has responsive design classes", () => {
-    render(<StatsSection todosCount={defaultTodosCount} />);
+      render(<StatsSection todosCount={defaultTodosCount} />);
 
-    // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen
-      .getByText("Total")
-      .closest('[class*="bg-slate-800"]');
-    const container = firstCard?.parentElement;
+      const gridContainer = screen.getByText("Total").closest(".grid");
 
-    // Should be single column on mobile, 3 columns on medium screens and up
-    expect(container).toHaveClass("grid-cols-1");
-    expect(container).toHaveClass("md:grid-cols-3");
-  });
+      // Should be single column on mobile, 2 columns on tablet, 3 columns on desktop
+      expect(gridContainer).toHaveClass("grid-cols-1");
+      expect(gridContainer).toHaveClass("sm:grid-cols-2");
+      expect(gridContainer).toHaveClass("lg:grid-cols-3");
+    });
 
   /**
    * Test: Espaciado apropiado
@@ -321,20 +326,16 @@ describe("StatsSection Component", () => {
    * entre tarjetas y márgenes apropiados.
    *
    * @test {string} gap-6 - Espacio entre tarjetas
-   * @test {string} mb-8 - Margen inferior del contenedor
    */
   it("maintains proper spacing", () => {
-    render(<StatsSection todosCount={defaultTodosCount} />);
+      render(<StatsSection todosCount={defaultTodosCount} />);
 
-    // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen
-      .getByText("Total")
-      .closest('[class*="bg-slate-800"]');
-    const container = firstCard?.parentElement;
+      const gridContainer = screen.getByText("Total").closest(".grid");
 
-    // Check spacing classes
-    expect(container).toHaveClass("gap-5"); // Gap between cards
-  });
+      // Check spacing classes - responsive gap
+       expect(gridContainer).toHaveClass("gap-4"); // Gap on mobile
+       expect(gridContainer).toHaveClass("lg:gap-6"); // Gap on desktop
+    });
 
   /**
    * Test: Actualización cuando cambia la prop todosCount
@@ -387,14 +388,10 @@ describe("StatsSection Component", () => {
   it("has proper semantic structure", () => {
     render(<StatsSection todosCount={defaultTodosCount} />);
 
-    // Find the grid container - it's the parent of the first StatsCard
-    const firstCard = screen
-      .getByText("Total")
-      .closest('[class*="bg-slate-800"]');
-    const container = firstCard?.parentElement;
+    const gridContainer = document.querySelector('.grid.grid-cols-1');
 
     // Should be a div container with grid layout
-    expect(container?.tagName).toBe("DIV");
-    expect(container).toHaveClass("grid");
+    expect(gridContainer?.tagName).toBe("DIV");
+    expect(gridContainer).toHaveClass("grid");
   });
 });

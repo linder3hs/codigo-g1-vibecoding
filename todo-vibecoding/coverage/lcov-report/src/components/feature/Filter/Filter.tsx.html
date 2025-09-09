@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -172,12 +172,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -191,18 +191,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">37x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -256,8 +256,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -270,18 +270,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Filter component - Modern filter component with shadcn/ui integration
  * Enhanced styling and improved user experience with Card and Button components
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { useState } from "react";</span>
-<span class="cstat-no" title="statement not covered" >import { FilterButtons } from "../FilterButtons";</span>
+import { useState } from "react";
+import { FilterButtons } from "../FilterButtons";
 import type { FilterType } from "../../../types";
-<span class="cstat-no" title="statement not covered" >import { ChevronDown, ChevronUp, Filter as FilterIcon } from "lucide-react";</span>
-<span class="cstat-no" title="statement not covered" >import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";</span>
-<span class="cstat-no" title="statement not covered" >import { Button } from "../../ui/button";</span>
+import { ChevronDown, ChevronUp, Filter as FilterIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Button } from "../../ui/button";
 &nbsp;
 interface FilterProps {
   currentFilter: FilterType;
@@ -295,18 +295,18 @@ interface FilterProps {
  * Desktop: Elegant card-based filter panel
  * Mobile: Collapsible filter section with smooth animations
  */
-export const <span class="cstat-no" title="statement not covered" >Filter = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span></span>
+export const Filter = ({
   currentFilter,
   onFilterChange,
-  className = <span class="branch-0 cbranch-no" title="branch not covered" >"",</span>
+  className = "",
 }: FilterProps) =&gt; {
-  const [isExpanded, setIsExpanded] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+  const [isExpanded, setIsExpanded] = useState(false);
 &nbsp;
-  const toggleExpanded = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setIsExpanded(!isExpanded);</span>
+  const toggleExpanded = () =&gt; {
+    setIsExpanded(!isExpanded);
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className={`filter-component ${className}`}&gt;
       {/* Desktop Filter Panel */}
       &lt;div className="hidden lg:block"&gt;
@@ -359,9 +359,9 @@ export const <span class="cstat-no" title="statement not covered" >Filter = <spa
               &lt;div className="space-y-3"&gt;
                 &lt;FilterButtons
                   currentFilter={currentFilter}
-                  onFilterChange={<span class="fstat-no" title="function not covered" >(f</span>ilter) =&gt; {
-<span class="cstat-no" title="statement not covered" >                    onFilterChange(filter);</span>
-<span class="cstat-no" title="statement not covered" >                    setIsExpanded(false); </span>// Auto-collapse after selection
+                  onFilterChange={(filter) =&gt; {
+                    onFilterChange(filter);
+                    setIsExpanded(false); // Auto-collapse after selection
                   }}
                   layout="vertical"
                 /&gt;
@@ -374,7 +374,7 @@ export const <span class="cstat-no" title="statement not covered" >Filter = <spa
   );
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default Filter;</span>
+export default Filter;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -382,7 +382,7 @@ export const <span class="cstat-no" title="statement not covered" >Filter = <spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-04T03:01:55.261Z
+                at 2025-09-09T01:34:47.094Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

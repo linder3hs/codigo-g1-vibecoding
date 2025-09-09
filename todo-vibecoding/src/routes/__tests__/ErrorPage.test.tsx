@@ -23,7 +23,6 @@ jest.mock("../../components", () => ({
       <p>{subtitle}</p>
     </div>
   ),
-  Footer: () => <footer>Footer</footer>,
 }));
 
 const renderWithRouter = (component: React.ReactElement) => {
@@ -49,7 +48,6 @@ describe("ErrorPage", () => {
         "Lo sentimos, la página que estás buscando no existe o ha sido movida."
       )
     ).toBeInTheDocument();
-    expect(screen.getByText("Footer")).toBeInTheDocument();
   });
 
   it("renders the back to home link", () => {
@@ -106,7 +104,10 @@ describe("ErrorPage", () => {
       "py-3",
       "bg-blue-600",
       "text-white",
-      "rounded-lg"
+      "rounded-lg",
+      "hover:bg-blue-700",
+      "transition-colors",
+      "font-medium"
     );
   });
 

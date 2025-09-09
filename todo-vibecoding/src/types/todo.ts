@@ -74,7 +74,7 @@ export interface Todo {
   created_at: string;
   /** When the todo was completed (ISO string or null) */
   completed_at: string | null;
-  
+
   // Legacy fields for backward compatibility
   /** @deprecated Use title instead */
   text?: string;
@@ -163,13 +163,13 @@ export interface UpdateTodoInput {
 /**
  * Todo filter status options
  */
-export type TodoFilterStatus = 'all' | 'completed' | 'pending';
+export type TodoFilterStatus = "all" | "completed" | "pending";
 
 /**
  * Todo sort options
  */
-export type TodoSortBy = 'createdAt' | 'priority' | 'text' | 'title';
-export type TodoSortOrder = 'asc' | 'desc';
+export type TodoSortBy = "createdAt" | "priority" | "text" | "title";
+export type TodoSortOrder = "asc" | "desc";
 
 /**
  * Todo filters interface
@@ -242,7 +242,7 @@ export interface FetchTodosPayload {
   /** Filters to apply */
   filters?: Partial<TodoFilters>;
   /** Pagination options */
-  pagination?: Partial<Pick<TodoPagination, 'page' | 'limit'>>;
+  pagination?: Partial<Pick<TodoPagination, "page" | "limit">>;
 }
 
 /**
@@ -284,7 +284,7 @@ export interface CreateTodoFailurePayload {
  */
 export interface UpdateTodoPayload {
   /** Todo ID */
-  id: string;
+  id: number;
   /** Update data */
   updates: UpdateTodoInput;
 }
@@ -310,7 +310,7 @@ export interface UpdateTodoFailurePayload {
  */
 export interface DeleteTodoPayload {
   /** Todo ID */
-  id: string;
+  id: number;
 }
 
 /**
@@ -318,7 +318,7 @@ export interface DeleteTodoPayload {
  */
 export interface DeleteTodoSuccessPayload {
   /** Deleted todo ID */
-  id: string;
+  id: number;
 }
 
 /**

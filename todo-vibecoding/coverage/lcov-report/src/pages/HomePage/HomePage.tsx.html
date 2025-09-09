@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -222,31 +222,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">15x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -306,7 +306,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -368,38 +368,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * HomePage component - Dashboard de estadísticas de tareas
  * Vista exclusiva para visualización de métricas y análisis de datos
  * Diseño optimizado para mostrar estadísticas de manera clara y efectiva
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { useTodo } from "../../hooks/useTodo";</span>
-<span class="cstat-no" title="statement not covered" >import { Header, StatsSection, StatsChart } from "../../components";</span>
-<span class="cstat-no" title="statement not covered" >import { useNavigate } from "react-router";</span>
-<span class="cstat-no" title="statement not covered" >import { BarChart3, TrendingUp, Activity } from "lucide-react";</span>
-<span class="cstat-no" title="statement not covered" >import { Button } from "../../components/ui/button";</span>
+import { useTodo } from "../../hooks/useTodo";
+import { Header, StatsSection, StatsChart } from "../../components";
+import { useNavigate } from "react-router";
+import { BarChart3, TrendingUp, Activity } from "lucide-react";
+import { Button } from "../../components/ui/button";
 &nbsp;
 /**
  * HomePage - Dashboard principal de estadísticas de tareas
  * Vista centrada en métricas, análisis y visualización de datos
  */
-export const <span class="cstat-no" title="statement not covered" >HomePage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =</span>&gt; {</span>
-  const { todosStats } = <span class="cstat-no" title="statement not covered" >useTodo();</span>
-  const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+export const HomePage = () =&gt; {
+  const { todosStats } = useTodo();
+  const navigate = useNavigate();
 &nbsp;
   // Navigate to tasks list
-  const handleViewTasks = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    navigate("/tasks");</span>
+  const handleViewTasks = () =&gt; {
+    navigate("/tasks");
   };
 &nbsp;
   // Navigate to create new task
-  const handleCreateNew = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    navigate("/crear-todo");</span>
+  const handleCreateNew = () =&gt; {
+    navigate("/crear-todo");
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div className="min-h-screen bg-white"&gt;
       &lt;div className="mx-auto px-4 sm:px-6 lg:px-8 py-6 max-w-7xl"&gt;
         {/* Header Section */}
@@ -458,8 +458,8 @@ export const <span class="cstat-no" title="statement not covered" >HomePage = <s
                 title="Análisis de Progreso"
                 height={400}
                 showTitle={true}
-                onSegmentClick={<span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; {
-<span class="cstat-no" title="statement not covered" >                  console.log("Segmento seleccionado:", data);</span>
+                onSegmentClick={(data) =&gt; {
+                  console.log("Segmento seleccionado:", data);
                   // Implementar navegación basada en filtros
                 }}
               /&gt;
@@ -479,7 +479,7 @@ export const <span class="cstat-no" title="statement not covered" >HomePage = <s
                       ? Math.round(
                           (todosStats.completed / todosStats.total) * 100
                         )
-                      : 0}
+                      : <span class="branch-1 cbranch-no" title="branch not covered" >0}</span>
                     %
                   &lt;/p&gt;
                 &lt;/div&gt;
@@ -521,7 +521,7 @@ export const <span class="cstat-no" title="statement not covered" >HomePage = <s
   );
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default HomePage;</span>
+export default HomePage;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -529,7 +529,7 @@ export const <span class="cstat-no" title="statement not covered" >HomePage = <s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-04T03:01:55.261Z
+                at 2025-09-09T01:34:47.094Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

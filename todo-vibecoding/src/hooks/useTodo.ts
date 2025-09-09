@@ -228,7 +228,7 @@ export const useTodo = (): UseTodoReturn => {
         const response = await taskService.deleteTask(String(id));
 
         if (response.success) {
-          dispatch(deleteTodoSuccess({ id: String(id) }));
+          dispatch(deleteTodoSuccess({ id: Number(id) }));
         } else {
           dispatch(
             deleteTodoFailure({

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">6.25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>1/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -146,35 +146,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -192,7 +190,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -222,33 +222,33 @@
  */
 &nbsp;
 // Import all schemas from validationSchemas.ts
-<span class="cstat-no" title="statement not covered" >export {</span>
+export {
   // Authentication schemas
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  loginSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  registerSchema,</span></span>
+  loginSchema,
+<span class="fstat-no" title="function not covered" >  registerSchema,</span>
   
   // Task schemas
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  taskSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  taskFiltersSchema,</span></span>
+<span class="fstat-no" title="function not covered" >  taskSchema,</span>
+<span class="fstat-no" title="function not covered" >  taskFiltersSchema,</span>
   
   // User profile schemas
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  userProfileSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  passwordChangeSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  passwordResetSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  passwordResetConfirmSchema,</span></span>
+<span class="fstat-no" title="function not covered" >  userProfileSchema,</span>
+<span class="fstat-no" title="function not covered" >  passwordChangeSchema,</span>
+<span class="fstat-no" title="function not covered" >  passwordResetSchema,</span>
+<span class="fstat-no" title="function not covered" >  passwordResetConfirmSchema,</span>
   
   // Utility schemas
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  paginationSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  searchSchema,</span></span>
+<span class="fstat-no" title="function not covered" >  paginationSchema,</span>
+<span class="fstat-no" title="function not covered" >  searchSchema,</span>
   
   // Utility functions
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  validateWithSchema,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  formatZodErrors,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  getFirstZodError,</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  transformZodErrors,</span></span>
+<span class="fstat-no" title="function not covered" >  validateWithSchema,</span>
+<span class="fstat-no" title="function not covered" >  formatZodErrors,</span>
+<span class="fstat-no" title="function not covered" >  getFirstZodError,</span>
+<span class="fstat-no" title="function not covered" >  transformZodErrors,</span>
   
   // Default export
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >  default </span>as validationSchemas</span>
+<span class="fstat-no" title="function not covered" >  default </span>as validationSchemas
 } from './validationSchemas';
 &nbsp;
 // Type exports for better TypeScript integration
@@ -268,7 +268,7 @@ export type {
 /**
  * Re-export commonly used Zod types for convenience
  */
-<span class="cstat-no" title="statement not covered" >export { <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >z</span> </span>} from 'zod';</span>
+export { <span class="fstat-no" title="function not covered" >z </span>} from 'zod';
 &nbsp;
 /**
  * Schema validation result types
@@ -298,7 +298,7 @@ export type ValidationOptions = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-04T03:01:55.316Z
+                at 2025-09-09T01:34:47.150Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

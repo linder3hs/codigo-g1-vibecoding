@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/45</span>
+                <span class='fraction'>35/45</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -198,9 +198,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -208,23 +208,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -322,15 +322,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * TodoItem component for displaying individual todo items
  * Enhanced design with priority, dates, and status information
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { Check, Trash2, Calendar } from "lucide-react";</span>
+import { Check, Trash2, Calendar } from "lucide-react";
 import type { Todo } from "../../../types/todo";
-<span class="cstat-no" title="statement not covered" >import { formatDate } from "../../../utils";</span>
+import { formatDate } from "../../../utils";
 &nbsp;
 interface TodoItemProps {
   todo: Todo;
@@ -338,23 +338,23 @@ interface TodoItemProps {
   onDelete?: (id: number) =&gt; void;
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >TodoItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>{</span> todo, onToggle, onDelete }: TodoItemProps) =&gt; {</span>
+export const TodoItem = ({ todo, onToggle, onDelete }: TodoItemProps) =&gt; {
   // Support both new and legacy fields
-  const isCompleted = <span class="cstat-no" title="statement not covered" >todo.is_completed ?? todo.completed ?? false;</span>
-  const title = <span class="cstat-no" title="statement not covered" >todo.title || todo.text || "";</span>
+  const isCompleted = todo.is_completed ?? <span class="branch-1 cbranch-no" title="branch not covered" >todo.completed </span>?? <span class="branch-1 cbranch-no" title="branch not covered" >false;</span>
+  const title = todo.title || <span class="branch-1 cbranch-no" title="branch not covered" >todo.text </span>|| <span class="branch-2 cbranch-no" title="branch not covered" >"";</span>
   const createdAt =
-<span class="cstat-no" title="statement not covered" >    todo.created_at ||</span>
-    (todo.createdAt ? new Date(todo.createdAt).toISOString() : "");
+    todo.created_at ||
+    (todo.createdAt ? <span class="branch-0 cbranch-no" title="branch not covered" >new Date(todo.createdAt).toISOString() </span>: "");
 &nbsp;
-  const handleToggle = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    onToggle?.(todo.id);</span>
+  const handleToggle = () =&gt; {
+    onToggle<span class="branch-0 cbranch-no" title="branch not covered" >?.(t</span>odo.id);
   };
 &nbsp;
-  const handleDelete = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    onDelete?.(todo.id);</span>
+  const handleDelete = () =&gt; {
+    onDelete<span class="branch-0 cbranch-no" title="branch not covered" >?.(t</span>odo.id);
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;div
       className={`
       group relative p-5 rounded-xl border transition-all duration-200 hover:shadow-md
@@ -426,7 +426,7 @@ export const <span class="cstat-no" title="statement not covered" >TodoItem = <s
               `}
             &gt;
               {todo.status_display ||
-                (isCompleted ? "Completada" : "Pendiente")}
+                (<span class="branch-1 cbranch-no" title="branch not covered" >isCompleted ? "Completada" : "Pendiente")</span>}
             &lt;/span&gt;
 &nbsp;
             {/* Creation Date */}
@@ -452,7 +452,7 @@ export const <span class="cstat-no" title="statement not covered" >TodoItem = <s
   );
 };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default TodoItem;</span>
+export default TodoItem;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -460,7 +460,7 @@ export const <span class="cstat-no" title="statement not covered" >TodoItem = <s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-04T03:01:55.316Z
+                at 2025-09-09T01:34:47.150Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
