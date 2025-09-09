@@ -97,7 +97,7 @@ describe("TaskService", () => {
         // Act & Assert
         await expect(taskService.getTasks()).rejects.toMatchObject({
           message: "Network connection failed",
-          code: "UNKNOWN_ERROR"
+          code: "UNKNOWN_ERROR",
         });
         expect(mockedHttpClient.get).toHaveBeenCalledTimes(1);
       });
@@ -107,8 +107,8 @@ describe("TaskService", () => {
         const serverError = Object.assign(new Error(), {
           response: {
             status: 500,
-            data: { message: "Internal server error", code: "SERVER_ERROR" }
-          }
+            data: { message: "Internal server error", code: "SERVER_ERROR" },
+          },
         });
         mockedHttpClient.get.mockRejectedValue(serverError);
 
@@ -116,7 +116,7 @@ describe("TaskService", () => {
         await expect(taskService.getTasks()).rejects.toMatchObject({
           message: "Internal server error",
           code: "SERVER_ERROR",
-          status: 500
+          status: 500,
         });
       });
 
@@ -125,8 +125,8 @@ describe("TaskService", () => {
         const notFoundError = Object.assign(new Error(), {
           response: {
             status: 404,
-            data: { message: "Tasks not found", code: "NOT_FOUND" }
-          }
+            data: { message: "Tasks not found", code: "NOT_FOUND" },
+          },
         });
         mockedHttpClient.get.mockRejectedValue(notFoundError);
 
@@ -134,7 +134,7 @@ describe("TaskService", () => {
         await expect(taskService.getTasks()).rejects.toMatchObject({
           message: "Tasks not found",
           code: "NOT_FOUND",
-          status: 404
+          status: 404,
         });
       });
 
@@ -143,8 +143,8 @@ describe("TaskService", () => {
         const axiosError = Object.assign(new Error(), {
           response: {
             status: 400,
-            data: {}
-          }
+            data: {},
+          },
         });
         mockedHttpClient.get.mockRejectedValue(axiosError);
 
@@ -152,7 +152,7 @@ describe("TaskService", () => {
         await expect(taskService.getTasks()).rejects.toMatchObject({
           message: "Error fetching tasks",
           code: "API_ERROR",
-          status: 400
+          status: 400,
         });
       });
 
@@ -165,7 +165,7 @@ describe("TaskService", () => {
         await expect(taskService.getTasks()).rejects.toMatchObject({
           message: "Title is required",
           code: "VALIDATION_ERROR",
-          status: 400
+          status: 400,
         });
       });
 
@@ -177,7 +177,7 @@ describe("TaskService", () => {
         // Act & Assert
         await expect(taskService.getTasks()).rejects.toMatchObject({
           message: "Error fetching tasks",
-          code: "UNKNOWN_ERROR"
+          code: "UNKNOWN_ERROR",
         });
       });
     });

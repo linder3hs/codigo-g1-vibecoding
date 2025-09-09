@@ -22,8 +22,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { MemoryRouter } from "react-router";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import TodoPage from "../../pages/TodoPage/TodoPage";
-import todoReducer from "../../stores/slices/todoSlice";
+import TodoPage from "./pages/TodoPage/TodoPage";
+import todoReducer from "./stores/slices/todoSlice";
 
 /**
  * Suite de Tests de Integración: App Component
@@ -400,7 +400,11 @@ describe("App Component - Minimalist UI Integration", () => {
 
     // Check for empty state content
     expect(screen.getByText("¡Comienza tu productividad!")).toBeInTheDocument();
-    expect(screen.getByText("¡Comienza creando tu primera tarea para organizar tu día!")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "¡Comienza creando tu primera tarea para organizar tu día!"
+      )
+    ).toBeInTheDocument();
 
     // Verify the empty state structure
     const emptyStateHeading = screen.getByText("¡Comienza tu productividad!");
@@ -410,7 +414,9 @@ describe("App Component - Minimalist UI Integration", () => {
       "text-gray-900"
     );
 
-    const emptyMessage = screen.getByText("¡Comienza creando tu primera tarea para organizar tu día!");
+    const emptyMessage = screen.getByText(
+      "¡Comienza creando tu primera tarea para organizar tu día!"
+    );
     expect(emptyMessage).toHaveClass("text-gray-600", "leading-relaxed");
   });
 });

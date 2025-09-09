@@ -6,7 +6,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router";
-import { ErrorPage } from "../ErrorPage";
+import { ErrorPage } from "./ErrorPage";
 
 // Mock react-router's useRouteError hook
 const mockUseRouteError = jest.fn();

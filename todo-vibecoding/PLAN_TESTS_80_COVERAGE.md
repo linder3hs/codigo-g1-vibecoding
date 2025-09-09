@@ -71,7 +71,7 @@ Actualmente el proyecto tiene **28.66%** de cobertura. Necesitamos implementar t
   - Auto-dismiss functionality
   - Queue de notificaciones
 
-- [ ] **LoginForm Component** - `src/components/feature/LoginForm/LoginForm.test.tsx`
+- [x] **LoginForm Component** - `src/components/feature/LoginForm/LoginForm.test.tsx`
 
   - Renderizado de campos de login
   - Validación de formulario
@@ -108,61 +108,23 @@ Actualmente el proyecto tiene **28.66%** de cobertura. Necesitamos implementar t
   - Estados de loading y error
   - Integración con store
 
-#### 🎨 Componentes UI Base (0% → 80%)
-
-- [ ] **Sidebar Component** - `src/components/ui/Sidebar/Sidebar.test.tsx`
-
-  - Renderizado responsive (desktop/mobile)
-  - FAB button functionality
-  - Collapsible behavior
-  - Filter integration
-
-- [ ] **Button Component** - `src/components/ui/button.test.tsx`
-
-  - Variantes de botón (primary, secondary, etc.)
-  - Estados (disabled, loading)
-  - Sizes y props
-  - Click handlers
-  - Accesibilidad
-
-- [ ] **Input Component** - `src/components/ui/input.test.tsx`
-
-  - Renderizado básico
-  - Tipos de input (text, password, email)
-  - Estados (disabled, error)
-  - Validation states
-  - Focus y blur events
-
-- [ ] **Card Component** - `src/components/ui/card.test.tsx`
-
-  - Renderizado de estructura
-  - Children rendering
-  - Variantes de estilo
-  - Responsive behavior
-
-- [ ] **Checkbox Component** - `src/components/ui/checkbox.test.tsx`
-  - Estados checked/unchecked
-  - Disabled state
-  - Change handlers
-  - Accesibilidad (ARIA)
-
 #### 📄 Páginas (0% → 80%)
 
-- [ ] **LoginPage** - `src/pages/LoginPage/LoginPage.test.tsx`
+- [x] **LoginPage** - `src/pages/LoginPage/LoginPage.test.tsx`
 
   - Renderizado de página completa
   - Integración con LoginForm
   - Navegación y redirección
   - Estados de autenticación
 
-- [ ] **RegisterPage** - `src/pages/RegisterPage/RegisterPage.test.tsx`
+- [x] **RegisterPage** - `src/pages/RegisterPage/RegisterPage.test.tsx`
 
   - Renderizado de página completa
   - Integración con RegisterForm
   - Navegación post-registro
   - Manejo de errores
 
-- [ ] **TodoPage** - `src/pages/TodoPage/TodoPage.test.tsx`
+- [x] **TodoPage** - `src/pages/TodoPage/TodoPage.test.tsx`
   - Renderizado de página principal
   - Integración con todos los componentes
   - Estados de loading

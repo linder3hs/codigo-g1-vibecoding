@@ -17,7 +17,7 @@ import todoSlice, {
   selectFilteredTodos,
   selectTodoStats,
   selectTodoById,
-} from "../../stores/slices/todoSlice";
+} from "./todoSlice";
 import type { Todo, TodoState, TodoError } from "../../types/todo";
 
 // Mock data with new backend structure
