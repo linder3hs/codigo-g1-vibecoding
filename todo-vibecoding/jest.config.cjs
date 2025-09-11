@@ -45,6 +45,7 @@ module.exports = {
     "!src/schemas/validationSchemas.ts",
     "!src/__tests__/mocks/validationSchemas.mock.ts",
     "!src/__tests__/mocks/handlers/**/*",
+    "!src/__tests__/utils/mswUtils.ts",
     "!src/components/ui/**/*",
   ],
   coverageDirectory: "coverage",

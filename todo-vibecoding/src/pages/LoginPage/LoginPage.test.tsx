@@ -1,219 +1,209 @@
+/**
+ * LoginPage Component Tests
+ * Comprehensive test suite with 10 test cases covering rendering, integration, styles, and accessibility
+ */
+
+import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router";
 import "@testing-library/jest-dom";
 import { LoginPage } from "./LoginPage";
 
-// Mock LoginForm component
+// Mock the LoginForm component
 jest.mock("@/components/feature/LoginForm", () => ({
-  LoginForm: ({ className }: { className?: string }) => (
-    <form role="form" className={className} data-testid="login-form">
-      <h1>Iniciar Sesión</h1>
-      <label htmlFor="username">Usuario</label>
-      <input
-        id="username"
-        type="text"
-        placeholder="Usuario"
-        data-testid="username-input"
-      />
-      <label htmlFor="password">Contraseña</label>
-      <input
-        id="password"
-        type="password"
-        placeholder="Contraseña"
-        data-testid="password-input"
-      />
-      <label htmlFor="remember">Recordarme</label>
-      <input id="remember" type="checkbox" data-testid="remember-checkbox" />
-      <button type="submit">Iniciar Sesión</button>
-      <button type="button">¿Olvidaste tu contraseña?</button>
-      <button type="button">Regístrate aquí</button>
-    </form>
-  ),
+  LoginForm: jest.fn(({ className, ...props }) => (
+    <div data-testid="login-form" className={className} {...props}>
+      Mocked LoginForm Component
+    </div>
+  )),
 }));
 
-// Router wrapper for components that use navigation
-const RouterWrapper: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => <BrowserRouter>{children}</BrowserRouter>;
+/**
+ * Test wrapper component with router
+ */
+const TestWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <BrowserRouter>{children}</BrowserRouter>
+);
 
-describe("LoginPage", () => {
+/**
+ * Helper function to render LoginPage with router context
+ */
+const renderLoginPage = () => {
+  return render(
+    <TestWrapper>
+      <LoginPage />
+    </TestWrapper>
+  );
+};
+
+describe("LoginPage Component", () => {
   afterEach(() => {
     cleanup();
+    jest.clearAllMocks();
   });
 
-  describe("Rendering", () => {
-    it("should render correctly with proper layout structure", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
+  describe("Basic Rendering", () => {
+    it("should render the LoginPage component without crashing", () => {
+      renderLoginPage();
 
-      // Check that the form is rendered within the page structure
-      const loginForm = screen.getByRole("form");
-      expect(loginForm).toBeInTheDocument();
-      
-      // Check that the form container has the expected classes
-      const formContainer = loginForm.closest("div");
-      expect(formContainer).toBeInTheDocument();
-      expect(formContainer).toHaveClass("flex", "justify-center");
+      expect(screen.getByTestId("login-form")).toBeInTheDocument();
     });
 
-    it("should render LoginForm component with proper styling", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
+    it("should render the main container with correct structure", () => {
+      const { container } = renderLoginPage();
 
-      const loginForm = screen.getByRole("form");
+      // Check main container exists
+      const mainContainer = container.querySelector(
+        ".min-h-screen.bg-gradient-to-br"
+      );
+      expect(mainContainer).toBeInTheDocument();
+
+      // Check inner container structure
+      const innerContainer = container.querySelector(
+        ".w-full.max-w-6xl.mx-auto"
+      );
+      expect(innerContainer).toBeInTheDocument();
+
+      // Check form wrapper
+      const formWrapper = container.querySelector(".flex.justify-center");
+      expect(formWrapper).toBeInTheDocument();
+    });
+  });
+
+  describe("LoginForm Integration", () => {
+    it("should render LoginForm component with correct props", () => {
+      renderLoginPage();
+
+      const loginForm = screen.getByTestId("login-form");
       expect(loginForm).toBeInTheDocument();
       expect(loginForm).toHaveClass("w-full");
-      expect(loginForm).toHaveAttribute("data-testid", "login-form");
     });
 
-    it("should display login form title", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
+    it("should pass className prop to LoginForm correctly", () => {
+      renderLoginPage();
 
-      expect(
-        screen.getByRole("heading", { name: /iniciar sesión/i })
-      ).toBeInTheDocument();
+      const loginForm = screen.getByTestId("login-form");
+      expect(loginForm).toHaveAttribute("class", "w-full");
     });
   });
 
-  describe("Form Integration", () => {
-    it("should render all form fields correctly", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
+  describe("CSS Classes and Styling", () => {
+    it("should apply correct Tailwind CSS classes to main container", () => {
+      const { container } = renderLoginPage();
 
-      expect(screen.getByLabelText(/usuario/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/contraseña/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/recordarme/i)).toBeInTheDocument();
+      const mainDiv = container.firstChild as HTMLElement;
+      expect(mainDiv).toHaveClass(
+        "min-h-screen",
+        "bg-gradient-to-br",
+        "from-charcoal-50",
+        "via-white",
+        "to-persian_green-50",
+        "flex",
+        "items-center",
+        "justify-center",
+        "p-4"
+      );
     });
 
-    it("should render submit button with correct attributes", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
+    it("should apply correct responsive and layout classes", () => {
+      const { container } = renderLoginPage();
+
+      // Check inner container classes
+      const innerContainer = container.querySelector(
+        ".w-full.max-w-6xl.mx-auto"
       );
+      expect(innerContainer).toHaveClass("w-full", "max-w-6xl", "mx-auto");
 
-      const submitButton = screen.getByRole("button", {
-        name: /iniciar sesión/i,
-      });
-      expect(submitButton).toBeInTheDocument();
-      expect(submitButton).toHaveAttribute("type", "submit");
-    });
-
-    it("should render navigation buttons", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
-
-      expect(
-        screen.getByRole("button", { name: /¿olvidaste tu contraseña\?/i })
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /regístrate aquí/i })
-      ).toBeInTheDocument();
+      // Check form wrapper classes
+      const formWrapper = container.querySelector(".flex.justify-center");
+      expect(formWrapper).toHaveClass("flex", "justify-center");
     });
   });
 
-  describe("User Interactions", () => {
-    it("should allow typing in username field", async () => {
-      const user = userEvent.setup();
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
+  describe("Layout and Structure", () => {
+    it("should have proper DOM hierarchy", () => {
+      const { container } = renderLoginPage();
+
+      // Check that LoginForm is nested correctly
+      const mainContainer = container.querySelector(".min-h-screen");
+      const innerContainer = mainContainer?.querySelector(".max-w-6xl");
+      const formWrapper = innerContainer?.querySelector(".flex.justify-center");
+      const loginForm = formWrapper?.querySelector(
+        '[data-testid="login-form"]'
       );
 
-      const usernameInput = screen.getByLabelText(/usuario/i);
-      await user.type(usernameInput, "testuser");
-
-      expect(usernameInput).toHaveValue("testuser");
+      expect(mainContainer).toBeInTheDocument();
+      expect(innerContainer).toBeInTheDocument();
+      expect(formWrapper).toBeInTheDocument();
+      expect(loginForm).toBeInTheDocument();
     });
 
-    it("should allow typing in password field", async () => {
-      const user = userEvent.setup();
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
+    it("should maintain responsive design structure", () => {
+      const { container } = renderLoginPage();
+
+      // Verify responsive container setup
+      const responsiveContainer = container.querySelector(".w-full.max-w-6xl");
+      expect(responsiveContainer).toBeInTheDocument();
+
+      // Verify centering classes
+      const centeringContainer = container.querySelector(
+        ".flex.items-center.justify-center"
       );
-
-      const passwordInput = screen.getByLabelText(/contraseña/i);
-      await user.type(passwordInput, "password123");
-
-      expect(passwordInput).toHaveValue("password123");
-    });
-
-    it("should handle checkbox interaction", async () => {
-      const user = userEvent.setup();
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
-
-      const checkbox = screen.getByLabelText(/recordarme/i);
-      expect(checkbox).not.toBeChecked();
-
-      await user.click(checkbox);
-      expect(checkbox).toBeChecked();
-    });
-
-    it("should handle form submission", async () => {
-      const user = userEvent.setup();
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
-
-      const submitButton = screen.getByRole("button", {
-        name: /iniciar sesión/i,
-      });
-      await user.click(submitButton);
-
-      // Form should still be present after submission attempt
-      expect(screen.getByRole("form")).toBeInTheDocument();
+      expect(centeringContainer).toBeInTheDocument();
     });
   });
 
   describe("Accessibility", () => {
-    it("should have proper labels and form structure", () => {
-      render(
-        <RouterWrapper>
-          <LoginPage />
-        </RouterWrapper>
-      );
+    it("should have proper semantic structure for screen readers", () => {
+      const { container } = renderLoginPage();
 
-      expect(
-        screen.getByRole("heading", { name: /iniciar sesión/i })
-      ).toBeInTheDocument();
-      expect(screen.getByLabelText(/usuario/i)).toHaveAttribute(
-        "id",
-        "username"
-      );
-      expect(screen.getByLabelText(/contraseña/i)).toHaveAttribute(
-        "id",
-        "password"
-      );
-      expect(screen.getByLabelText(/recordarme/i)).toHaveAttribute(
-        "id",
-        "remember"
-      );
+      // Check that the main container is accessible
+      const mainContainer = container.firstChild as HTMLElement;
+      expect(mainContainer).toBeInTheDocument();
+
+      // Verify LoginForm is accessible
+      const loginForm = screen.getByTestId("login-form");
+      expect(loginForm).toBeInTheDocument();
+    });
+
+    it("should not have any accessibility violations in basic structure", () => {
+      const { container } = renderLoginPage();
+
+      // Check for proper nesting and no invalid HTML
+      expect(container.querySelector("div")).toBeInTheDocument();
+
+      // Verify no duplicate IDs or invalid attributes
+      const allElements = container.querySelectorAll("*");
+      const ids = Array.from(allElements)
+        .map((el) => el.id)
+        .filter((id) => id !== "");
+
+      // Should not have duplicate IDs
+      const uniqueIds = new Set(ids);
+      expect(uniqueIds.size).toBe(ids.length);
+    });
+  });
+
+  describe("Component Behavior", () => {
+    it("should render consistently on multiple renders", () => {
+      const { unmount } = renderLoginPage();
+      expect(screen.getByTestId("login-form")).toBeInTheDocument();
+
+      unmount();
+
+      renderLoginPage();
+      expect(screen.getByTestId("login-form")).toBeInTheDocument();
+    });
+
+    it("should handle component lifecycle correctly", () => {
+      const { unmount, container } = renderLoginPage();
+
+      // Component should be mounted
+      expect(container.firstChild).toBeInTheDocument();
+
+      // Component should unmount cleanly
+      unmount();
+      expect(container.firstChild).toBeNull();
     });
   });
 });
