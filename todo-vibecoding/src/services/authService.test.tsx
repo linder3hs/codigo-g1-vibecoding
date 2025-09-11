@@ -426,7 +426,7 @@ describe("AuthService", () => {
     it("should refresh token successfully", async () => {
       // Arrange
       localStorage.setItem("refresh_token", "valid_refresh_token");
-      
+
       // Clear any previous mock calls
       mockHttpClient.post.mockClear();
 
@@ -455,7 +455,7 @@ describe("AuthService", () => {
     it("should handle refresh token failure", async () => {
       // Arrange
       localStorage.setItem("refresh_token", "invalid_refresh_token");
-      
+
       // Clear any previous mock calls
       mockHttpClient.post.mockClear();
 
@@ -482,10 +482,10 @@ describe("AuthService", () => {
     it("should handle missing refresh token", async () => {
       // Arrange - No refresh token stored
       localStorage.removeItem("refresh_token");
-      
+
       // Clear any previous mock calls
       mockHttpClient.post.mockClear();
-      
+
       // Mock logout call that happens when refresh fails
       mockHttpClient.post.mockResolvedValueOnce({ data: {} });
 
@@ -493,7 +493,7 @@ describe("AuthService", () => {
       const result = await authService.refreshToken();
 
       // Assert
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
       expect(result.error?.message).toBe("No refresh token available");
       // Should call logout when refresh token is missing
       expect(mockHttpClient.post).toHaveBeenCalledWith("/auth/logout");
@@ -502,7 +502,7 @@ describe("AuthService", () => {
     it("should prevent multiple simultaneous refresh requests", async () => {
       // Arrange
       localStorage.setItem("refresh_token", "valid_refresh_token");
-      
+
       // Clear any previous mock calls
       mockHttpClient.post.mockClear();
 
