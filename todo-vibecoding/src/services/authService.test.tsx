@@ -493,7 +493,7 @@ describe("AuthService", () => {
       const result = await authService.refreshToken();
 
       // Assert
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
       expect(result.error?.message).toBe("No refresh token available");
       // Should call logout when refresh token is missing
       expect(mockHttpClient.post).toHaveBeenCalledWith("/auth/logout");
