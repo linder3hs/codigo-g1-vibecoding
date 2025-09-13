@@ -1,0 +1,49 @@
+# Docker Compose configuration for Development Environment
+# Provides hot reload, volume mounting, and development-specific settings
+
+version: '3.8'
+
+services:
+  # Main web application service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: todo-vibecoding-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - VITE_NODE_ENV=development
+    env_file:
+      - .env.development
+    volumes:
+      # Mount source code for hot reload
+      - .:/app
+      # Exclude node_modules to avoid conflicts
+      - /app/node_modules
+      # Mount package files for dependency changes
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+    networks:
+      - dev-network
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# Network configuration
+networks:
+  dev-network:
+    driver: bridge
+    name: todo-vibecoding-dev-network
+
+# Volume configuration for persistent data if needed
+volumes:
+  node_modules:
+    driver: local
