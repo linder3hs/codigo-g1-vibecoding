@@ -1,0 +1,57 @@
+# Dockerfile for Testing Environment
+# Optimized container for running automated tests with Jest, coverage, and MSW
+
+FROM node:22-alpine AS test
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies for testing
+RUN apk add --no-cache \
+    git \
+    curl \
+    bash \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont
+
+# Set Puppeteer to use installed Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Copy package files for better Docker layer caching
+COPY package*.json ./
+
+# Install all dependencies (including devDependencies for testing)
+RUN npm i && npm cache clean --force
+
+# Copy source code and configuration files
+COPY . .
+
+# Create coverage directory with proper permissions
+RUN mkdir -p coverage && chmod 755 coverage
+
+# Set environment variables for testing
+ENV NODE_ENV=test
+ENV CI=true
+
+# Expose port for potential test servers
+EXPOSE 3000
+
+# Health check to ensure container is ready
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD node --version || exit 1
+
+# Default command runs all tests with coverage
+CMD ["npm", "run", "test:ci"]
+
+# Alternative commands for different test scenarios:
+# docker run <image> npm run test              # Run tests once
+# docker run <image> npm run test:watch        # Run tests in watch mode
+# docker run <image> npm run test:coverage     # Run tests with coverage
+# docker run <image> npm run lint              # Run linting
+# docker run <image> bash                      # Interactive shell for debugging

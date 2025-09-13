@@ -1,0 +1,117 @@
+# Docker Compose configuration for testing environment
+# Provides multiple services for different testing scenarios
+
+version: '3.8'
+
+services:
+  # Main test service - runs all tests with coverage
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: todo-vibecoding-test
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./coverage:/app/coverage
+    environment:
+      - NODE_ENV=test
+      - CI=true
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_APP_NAME=Todo VibeCoding
+      - VITE_APP_VERSION=1.0.0
+    command: npm run test:ci
+    networks:
+      - test-network
+
+  # Test watch service - runs tests in watch mode for development
+  test-watch:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: todo-vibecoding-test-watch
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+      - CI=false
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_APP_NAME=Todo VibeCoding
+      - VITE_APP_VERSION=1.0.0
+    command: npm run test:watch
+    stdin_open: true
+    tty: true
+    networks:
+      - test-network
+
+  # Coverage service - generates detailed coverage reports
+  test-coverage:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: todo-vibecoding-test-coverage
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./coverage:/app/coverage
+    environment:
+      - NODE_ENV=test
+      - CI=true
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_APP_NAME=Todo VibeCoding
+      - VITE_APP_VERSION=1.0.0
+    command: npm run test:coverage
+    networks:
+      - test-network
+
+  # Lint service - runs ESLint for code quality checks
+  lint:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: todo-vibecoding-lint
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+    command: npm run lint
+    networks:
+      - test-network
+
+  # Interactive shell for debugging tests
+  test-shell:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: todo-vibecoding-test-shell
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+      - CI=false
+      - VITE_API_BASE_URL=http://localhost:8000/api
+      - VITE_APP_NAME=Todo VibeCoding
+      - VITE_APP_VERSION=1.0.0
+    command: bash
+    stdin_open: true
+    tty: true
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
+
+volumes:
+  coverage:
+    driver: local
+
+# Usage examples:
+# docker-compose -f docker-compose.test.yml up test           # Run all tests with coverage
+# docker-compose -f docker-compose.test.yml up test-watch    # Run tests in watch mode
+# docker-compose -f docker-compose.test.yml up test-coverage # Generate coverage report
+# docker-compose -f docker-compose.test.yml up lint          # Run linting
+# docker-compose -f docker-compose.test.yml run test-shell   # Interactive shell

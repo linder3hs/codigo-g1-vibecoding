@@ -140,7 +140,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Iniciar Sesión
           </h1>
-          <p className="text-gray-600">DockerFile dev</p>
+          <p className="text-gray-600">Ingresa tus credenciales para acceder</p>
         </motion.div>
 
         {/* Error Message */}

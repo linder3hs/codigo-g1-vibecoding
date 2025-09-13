@@ -22,3 +22,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+docker-compose.*.local.yml
+*.dockerfile.local
+.docker/
+docker-data/
+
+# Environment files (keep examples)
+.env.local
+.env.*.local
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Test results
+test-results/
+junit.xml

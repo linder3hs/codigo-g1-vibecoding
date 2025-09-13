@@ -78,8 +78,7 @@ __tests__
 .prettierrc*
 babel.config.*
 jest.config.*
-vite.config.ts
-tsconfig*.json
+# Note: vite.config.ts and tsconfig*.json are needed for build
 
 # Temporary files
 *.tmp

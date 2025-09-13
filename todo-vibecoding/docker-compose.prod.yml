@@ -1,0 +1,76 @@
+# Docker Compose configuration for Production Environment
+# Optimized for performance, security, and reliability
+
+version: '3.8'
+
+services:
+  # Main web application service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: todo-vibecoding-prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+      - VITE_NODE_ENV=production
+    env_file:
+      - .env.production
+    restart: unless-stopped
+    networks:
+      - prod-network
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    # Health check configuration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    # Read-only root filesystem for security
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # Labels for monitoring and management
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.todo-app.rule=Host(`localhost`)"
+      - "traefik.http.services.todo-app.loadbalancer.server.port=80"
+      - "com.docker.compose.service=web"
+      - "com.docker.compose.project=todo-vibecoding"
+
+# Network configuration for production
+networks:
+  prod-network:
+    driver: bridge
+    name: todo-vibecoding-prod-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volume configuration (if needed for future extensions)
+volumes:
+  nginx_cache:
+    driver: local
+  app_logs:
+    driver: local
