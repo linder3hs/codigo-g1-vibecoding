@@ -7,6 +7,9 @@ env/
 .env
 .env.local
 .env.*.local
+.env.development
+.env.production
+.env.*.local
 
 # Python Cache Files
 __pycache__/
@@ -58,6 +61,21 @@ coverage.xml
 # pyenv
 .python-version
 
+# Docker
+.dockerignore
+docker-compose.override.yml
+docker-compose.*.yml
+
+# Docker Volumes (local development)
+postgres_data/
+staticfiles/
+media/
+
+# Docker Logs
+docker/logs/
+
+# SSL Certificates (for production)
+nginx/ssl/
 # Backup Files
 *.bak
 *.backup

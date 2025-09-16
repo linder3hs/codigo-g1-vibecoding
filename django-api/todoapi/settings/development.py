@@ -20,13 +20,13 @@ ALLOWED_HOSTS = config(
 
 
 # Database configuration for development
-# Default SQLite configuration for development
-default_database_url = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+# Default PostgreSQL configuration for development (Docker container)
+default_database_url = config('DATABASE_URL', default='postgresql://todoapi_user:todoapi_password@postgres:5432/todoapi_dev')
 
-# Use DATABASE_URL from environment or default to SQLite
+# Use DATABASE_URL from environment or default to PostgreSQL
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL', default=default_database_url)
+        default=default_database_url
     )
 }
 
@@ -98,6 +98,10 @@ LOGGING = {
 
 # Email backend for development (console)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Static files configuration for development
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 # Cache configuration for development (dummy cache)

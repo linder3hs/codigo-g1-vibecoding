@@ -174,3 +174,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Additional security headers
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Static files configuration for production
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
