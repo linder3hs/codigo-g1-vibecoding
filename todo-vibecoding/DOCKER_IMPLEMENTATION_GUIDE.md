@@ -124,12 +124,12 @@ services:
 
 ### Estructura de Archivos
 
-```
-├── .env.example          # Template
-├── .env.local           # Desarrollo local
-├── .env.development     # Docker desarrollo
-├── .env.production      # Docker producción
-├── .env.test           # Docker testing
+```md
+├── .env.example # Template
+├── .env.local # Desarrollo local
+├── .env.development # Docker desarrollo
+├── .env.production # Docker producción
+├── .env.test # Docker testing
 ```
 
 ### Configuración por Entorno
