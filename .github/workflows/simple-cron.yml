@@ -1,0 +1,24 @@
+name: Email cron Job
+# cuando se ejecutarea este cron job
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+# definir que jobs se haran cada 5 minutos
+jobs:
+  # nombre del job(puede ser cualquiera)
+  send-email:
+    # indicarle en que maquina va a correr
+    runs-on: ubuntu-latest
+    steps:
+      # fases
+      - name: Enviar el request al endpoint
+        run: |
+           # Hace un POST a edge-email-test.vercel.app
+           curl -X POST https://edge-email-test.vercel.app/api/send-email \
+           -H "Content-Type: application/json"
+      - name: Mostrar informacion del server
+        run: |
+          # Imprimir la data del server
+          echo "Ejecutando el cron $(date)"
+          echo "Run runner ${{ github.run_number }}"
